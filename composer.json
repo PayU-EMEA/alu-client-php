@@ -1,0 +1,25 @@
+{
+    "name": "payu/alu-client",
+    "description": "Automatic Live Update Client",
+    "license": "Apache2",
+    "keywords": ["alu", "payu", "automatic live update", "payment"],
+    "authors": [
+        {
+            "name": "PayU Romania",
+            "email": "support@payu.ro"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PayU\\Alu\\": "src/PayU/Alu/",
+            "PayU\\Alu\\Exceptions\\": "src/PayU/Alu/Exceptions"
+        }
+    }
+}
