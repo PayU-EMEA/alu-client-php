@@ -42,7 +42,3 @@ You can find usage examples in the examples directory:
 * basicExample.php - Minimal requirements for order authorization via ALU protocol using Credit Card Information (If you are PCI DSS compliant)
 * tokenPayment.php - Minimal requirements for order authorization via ALU protocol using Token
 * threeDSReturn.php - Example of return from 3D Secure authorization and response
-
-## Documentation
-
-* [ALU Documentation] (https://secure.payu.ro/docs/alu/v3) - ONLY for PCI DSS compliant merchants
