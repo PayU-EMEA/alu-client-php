@@ -29,7 +29,7 @@ To use the library, include Composer's [autoload](https://getcomposer.org/doc/00
 
 Obtain the latest version of the PayU Automatic Live Update Client Library with:
 
-    git clone https://github.com/payu/alu-client
+    git clone https://github.com/PayU/AluClient.git
 
 To use the Library, add the following to your PHP script:
 
