@@ -1,5 +1,5 @@
 # PayU Automatic Live Update Client Library
-{<img src="https://api.travis-ci.org/PayU/AluClient.svg" alt="Build Status" />}[https://travis-ci.org/PayU/AluClient/]
+[<img src="https://api.travis-ci.org/PayU/AluClient.svg" alt="Build Status" />](https://travis-ci.org/PayU/AluClient/)
 
 ## Prerequisites
 
