@@ -1,5 +1,5 @@
 # PayU Automatic Live Update Client Library
-[<img src="https://api.travis-ci.org/PayU/AluClient.svg" alt="Build Status" />](https://travis-ci.org/PayU/AluClient/)
+[![Travis CI](https://travis-ci.org/PayU/alu-client-php.svg)](https://travis-ci.org/PayU/alu-client-php) [![Latest Stable Version](https://poser.pugx.org/payu/alu-client/v/stable.svg)](https://packagist.org/packages/payu/alu-client) [![Total Downloads](https://poser.pugx.org/payu/alu-client/downloads.svg)](https://packagist.org/packages/payu/alu-client) [![License](https://poser.pugx.org/payu/alu-client/license.svg)](https://packagist.org/packages/payu/alu-client)
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ To use the library, include Composer's [autoload](https://getcomposer.org/doc/00
 
 Obtain the latest version of the PayU Automatic Live Update Client Library with:
 
-    git clone https://github.com/PayU/AluClient.git
+    git clone https://github.com/PayU/alu-client-php.git
 
 To use the Library, add the following to your PHP script:
 
