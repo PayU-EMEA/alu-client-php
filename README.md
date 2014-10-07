@@ -1,16 +1,16 @@
-# PayU Automatic Live Update Client Library
+# клиенткая библиотека PayU для протокола Automatic Live Update
 [![Travis CI](https://travis-ci.org/PayU/alu-client-php.svg)](https://travis-ci.org/PayU/alu-client-php) [![Latest Stable Version](https://poser.pugx.org/payu/alu-client/v/stable.svg)](https://packagist.org/packages/payu/alu-client) [![Total Downloads](https://poser.pugx.org/payu/alu-client/downloads.svg)](https://packagist.org/packages/payu/alu-client) [![License](https://poser.pugx.org/payu/alu-client/license.svg)](https://packagist.org/packages/payu/alu-client)
 
-## Prerequisites
+## Требования
 
- * PHP 5.3 and above
- * curl extension with support for OpenSSL
- * PHPUnit 4.2.0 for running test suite (Optional)
- * Composer (Optional)
+ * PHP 5.3 или выше
+ * curl extension с поддержкой OpenSSL
+ * PHPUnit 4.2.0 для запуска набора тестов (по желанию)
+ * Composer (по желанию)
 
 ## Composer
 
-You can install the library via [Composer](http://getcomposer.org/). Add this to your composer.json:
+Вы можете установить библиотеку используя [Composer](http://getcomposer.org/). Добавьте следующий кусок кода в ваш файлcomposer.json:
 
     {
       "require": {
@@ -18,28 +18,29 @@ You can install the library via [Composer](http://getcomposer.org/). Add this to
       }
     }
 
-Then install via:
+Потом установите командой:
 
     composer install
 
-To use the library, include Composer's [autoload](https://getcomposer.org/doc/00-intro.md#autoloading]):
+Для использования библиотеке включите Composer's [autoload](https://getcomposer.org/doc/00-intro.md#autoloading]):
 
     require_once('vendor/autoload.php');
 
-## Manual Installation
+## Ручная установка
 
-Obtain the latest version of the PayU Automatic Live Update Client Library with:
+Для получения последней версии клиенткой библиотеки PayU для протокола Automatic Live Update выполните:
 
-    git clone https://github.com/PayU/alu-client-php.git
+    git clone https://github.com/PayU/AluClient.git
 
-To use the Library, add the following to your PHP script:
+Для того, что бы воспользоваться библиотекой, вам нужно добавить следующую строчку в ваш PHP скрипт:
 
     require_once("/path/to/payu/alu-client/src/init.php");
 
-## Getting Started
+## Приступая к работе
 
-You can find usage examples in the examples directory:
+Вы можете найти примеры использования в папке с примерами (examples):
 
-* basicExample.php - Minimal requirements for order authorization via ALU protocol using Credit Card Information (If you are PCI DSS compliant)
-* tokenPayment.php - Minimal requirements for order authorization via ALU protocol using Token
-* threeDSReturn.php - Example of return from 3D Secure authorization and response
+* basicExample.php - Минимальные требования для авторизации через протокол ALU используя информацию о кредитной/дебитойвой банковской карте (Если у вас есть сертификат PCI DSS)
+* tokenPayment.php - Минимальные требования для авторизации заказа через протокол ALU используя токены (Token)
+* threeDSReturn.php - Пример возврата со страницы 3D Secure авторизации и пример ответа
+
