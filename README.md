@@ -1,6 +1,8 @@
 # PayU Automatic Live Update Client Library
 [![Travis CI](https://travis-ci.org/PayU/alu-client-php.svg)](https://travis-ci.org/PayU/alu-client-php) [![Latest Stable Version](https://poser.pugx.org/payu/alu-client/v/stable.svg)](https://packagist.org/packages/payu/alu-client) [![Total Downloads](https://poser.pugx.org/payu/alu-client/downloads.svg)](https://packagist.org/packages/payu/alu-client) [![License](https://poser.pugx.org/payu/alu-client/license.svg)](https://packagist.org/packages/payu/alu-client)
 
+Documentation in [Russian](docs-intl/README.ru.md).
+
 ## Prerequisites
 
  * PHP 5.3 and above
