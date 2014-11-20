@@ -139,8 +139,9 @@ $delivery->withAddressLine1('Address1')
  * Create new CardToken with params:
  *
  * Token
+ * CVV
  */
-$cardToken = new CardToken('g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==');
+$cardToken = new CardToken('g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==', '277');
 
 /**
  * Create new Request with params:
