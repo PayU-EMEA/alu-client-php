@@ -125,6 +125,9 @@ class Request
 
         if (is_null($this->card) && !is_null($this->cardToken)) {
             $this->internalArray['CC_TOKEN'] = $this->cardToken->getToken();
+            if ($this->cardToken->hasCvv()) {
+                $this->internalArray['CC_CVV'] = $this->cardToken->getCvv();
+            }
         }
 
         $this->internalArray['BACK_REF'] = $this->order->getBackRef();

@@ -16,9 +16,11 @@ class CardToken
     /**
      * @param string $token
      */
-    public function __construct($token)
+    public function __construct($token, $cvv = null)
     {
         $this->token = $token;
+        $this->cvv = $cvv;
+
     }
 
     /**
@@ -27,5 +29,21 @@ class CardToken
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCvv()
+    {
+        return $this->cvv;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasCvv()
+    {
+        return !empty($this->cvv);
     }
 }
