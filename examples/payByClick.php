@@ -138,8 +138,8 @@ $delivery->withAddressLine1('Address1')
 /**
  * Create new CardToken with params:
  *
- * Token
- * CVV
+ * Token as RefNo of a previous sale
+ * Card CVV
  */
 $cardToken = new CardToken('2943002', '277');
 
