@@ -88,6 +88,11 @@ class Order
     /**
      * @var string
      */
+    private $luTokenExpirationTime;
+
+    /**
+     * @var string
+     */
     private $ccNumberRecipient;
 
 
@@ -229,12 +234,11 @@ class Order
     }
 
     /**
-     * @param boolean $luEnabledToken
      * @return $this
      */
-    public function withLuEnabledToken($luEnabledToken)
+    public function withLuEnabledToken()
     {
-        $this->luEnabledToken = $luEnabledToken;
+        $this->luEnabledToken = 1;
         return $this;
     }
 
@@ -407,4 +411,23 @@ class Order
     {
         return $this->ccNumberRecipient;
     }
+
+    /**
+     * @return string
+     */
+    public function getLuTokenExpirationTime()
+    {
+        return $this->luTokenExpirationTime;
+    }
+
+    /**
+     * @param $luTokenExpirationTime
+     * @return $this
+     */
+    public function withLuTokenExpirationTime($luTokenExpirationTime)
+    {
+        $this->luTokenExpirationTime = $luTokenExpirationTime;
+        return $this;
+    }
+
 }

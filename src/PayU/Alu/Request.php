@@ -173,6 +173,12 @@ class Request
             $this->internalArray['DELIVERY_EMAIL'] = $this->deliveryData->getEmail();
         }
 
+        if ($this->order->getLuEnabledToken() == 1) {
+            $this->internalArray['LU_ENABLE_TOKEN'] = 1;
+            $this->internalArray['LU_TOKEN_TYPE'] = $this->order->getLuTokenType();
+            $this->internalArray['TOKEN_EXPIRATION_TIME'] = $this->order->getLuTokenExpirationTime();
+        }
+
         $this->internalArray['CC_NUMBER_RECIPIENT'] = $this->order->getCcNumberRecipient();
 
         if (is_array($this->order->getCustomParams())) {
