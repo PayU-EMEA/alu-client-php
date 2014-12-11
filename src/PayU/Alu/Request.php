@@ -175,8 +175,13 @@ class Request
 
         if ($this->order->getLuEnabledToken() == 1) {
             $this->internalArray['LU_ENABLE_TOKEN'] = 1;
-            $this->internalArray['LU_TOKEN_TYPE'] = $this->order->getLuTokenType();
-            $this->internalArray['TOKEN_EXPIRATION_TIME'] = $this->order->getLuTokenExpirationTime();
+
+            if (!is_null($this->order->getLuTokenType())) {
+                $this->internalArray['LU_TOKEN_TYPE'] = $this->order->getLuTokenType();
+            }
+            if (!is_null($this->order->getLuTokenExpirationTime())) {
+                $this->internalArray['TOKEN_EXPIRATION_TIME'] = $this->order->getLuTokenExpirationTime();
+            }
         }
 
         $this->internalArray['CC_NUMBER_RECIPIENT'] = $this->order->getCcNumberRecipient();

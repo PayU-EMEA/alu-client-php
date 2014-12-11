@@ -57,7 +57,7 @@ $order->withBackRef('http://path/to/your/returnUrlScript')
  * Setup the order to accept token
  * Enable token for further token payments
  * Set token type as PAY_BY_CLICK
- * Set token expiration time in SECTONDS
+ * Set token expiration time in SECONDS
  */
 $order->withLuEnabledToken()
     ->withLuTokenType('PAY_BY_CLICK')
