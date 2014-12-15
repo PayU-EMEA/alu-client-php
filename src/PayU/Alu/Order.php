@@ -78,12 +78,17 @@ class Order
     /**
      * @var boolean
      */
-    private $luEnabledToken;
+    private $enabledToken;
 
     /**
      * @var string
      */
-    private $luTokenType;
+    private $tokenType;
+
+    /**
+     * @var string
+     */
+    private $tokenExpirationTime;
 
     /**
      * @var string
@@ -229,39 +234,38 @@ class Order
     }
 
     /**
-     * @param boolean $luEnabledToken
      * @return $this
      */
-    public function withLuEnabledToken($luEnabledToken)
+    public function withEnabledToken()
     {
-        $this->luEnabledToken = $luEnabledToken;
+        $this->enabledToken = 1;
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getLuEnabledToken()
+    public function getEnabledToken()
     {
-        return $this->luEnabledToken;
+        return $this->enabledToken;
     }
 
     /**
-     * @param string $luTokenType
+     * @param string $tokenType
      * @return $this
      */
-    public function withLuTokenType($luTokenType)
+    public function withTokenType($tokenType)
     {
-        $this->luTokenType = $luTokenType;
+        $this->tokenType = $tokenType;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getLuTokenType()
+    public function getTokenType()
     {
-        return $this->luTokenType;
+        return $this->tokenType;
     }
 
     /**
@@ -407,4 +411,23 @@ class Order
     {
         return $this->ccNumberRecipient;
     }
+
+    /**
+     * @return string
+     */
+    public function getTokenExpirationTime()
+    {
+        return $this->tokenExpirationTime;
+    }
+
+    /**
+     * @param string $tokenExpirationTime
+     * @return $this
+     */
+    public function withTokenExpirationTime($tokenExpirationTime)
+    {
+        $this->tokenExpirationTime = $tokenExpirationTime;
+        return $this;
+    }
+
 }
