@@ -54,6 +54,16 @@ $order->withBackRef('http://path/to/your/returnUrlScript')
     ->withPayMethod('CCVISAMC');
 
 /**
+ * Setup the order to accept token
+ * Enable token for further token payments
+ * Set token type as PAY_BY_CLICK
+ * Set token expiration time in SECONDS
+ */
+$order->withEnabledToken()
+    ->withTokenType('PAY_BY_CLICK')
+    ->withTokenExpirationTime('300');
+
+/**
  * Create new product
  */
 $product = new Product();
@@ -198,4 +208,3 @@ try {
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }
-

@@ -173,14 +173,14 @@ class Request
             $this->internalArray['DELIVERY_EMAIL'] = $this->deliveryData->getEmail();
         }
 
-        if ($this->order->getLuEnabledToken() == 1) {
+        if ($this->order->getEnabledToken() == 1) {
             $this->internalArray['LU_ENABLE_TOKEN'] = 1;
 
-            if (!is_null($this->order->getLuTokenType())) {
-                $this->internalArray['LU_TOKEN_TYPE'] = $this->order->getLuTokenType();
+            if (!is_null($this->order->getTokenType())) {
+                $this->internalArray['LU_TOKEN_TYPE'] = $this->order->getTokenType();
             }
-            if (!is_null($this->order->getLuTokenExpirationTime())) {
-                $this->internalArray['TOKEN_EXPIRATION_TIME'] = $this->order->getLuTokenExpirationTime();
+            if (!is_null($this->order->getTokenExpirationTime())) {
+                $this->internalArray['TOKEN_EXPIRATION_TIME'] = $this->order->getTokenExpirationTime();
             }
         }
 

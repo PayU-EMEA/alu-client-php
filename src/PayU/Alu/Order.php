@@ -78,17 +78,17 @@ class Order
     /**
      * @var boolean
      */
-    private $luEnabledToken;
+    private $enabledToken;
 
     /**
      * @var string
      */
-    private $luTokenType;
+    private $tokenType;
 
     /**
      * @var string
      */
-    private $luTokenExpirationTime;
+    private $tokenExpirationTime;
 
     /**
      * @var string
@@ -236,36 +236,36 @@ class Order
     /**
      * @return $this
      */
-    public function withLuEnabledToken()
+    public function withEnabledToken()
     {
-        $this->luEnabledToken = 1;
+        $this->enabledToken = 1;
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getLuEnabledToken()
+    public function getEnabledToken()
     {
-        return $this->luEnabledToken;
+        return $this->enabledToken;
     }
 
     /**
-     * @param string $luTokenType
+     * @param string $tokenType
      * @return $this
      */
-    public function withLuTokenType($luTokenType)
+    public function withTokenType($tokenType)
     {
-        $this->luTokenType = $luTokenType;
+        $this->tokenType = $tokenType;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getLuTokenType()
+    public function getTokenType()
     {
-        return $this->luTokenType;
+        return $this->tokenType;
     }
 
     /**
@@ -415,18 +415,18 @@ class Order
     /**
      * @return string
      */
-    public function getLuTokenExpirationTime()
+    public function getTokenExpirationTime()
     {
-        return $this->luTokenExpirationTime;
+        return $this->tokenExpirationTime;
     }
 
     /**
-     * @param $luTokenExpirationTime
+     * @param string $tokenExpirationTime
      * @return $this
      */
-    public function withLuTokenExpirationTime($luTokenExpirationTime)
+    public function withTokenExpirationTime($tokenExpirationTime)
     {
-        $this->luTokenExpirationTime = $luTokenExpirationTime;
+        $this->tokenExpirationTime = $tokenExpirationTime;
         return $this;
     }
 
