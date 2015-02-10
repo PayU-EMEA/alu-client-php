@@ -90,6 +90,15 @@ class Order
      */
     private $ccNumberRecipient;
 
+    /**
+     * @var float
+     */
+    private $loyaltyPointsAmount;
+
+    /**
+     * @var string
+     */
+    private $campaignType;
 
     /**
      * @param string $name
@@ -407,4 +416,40 @@ class Order
     {
         return $this->ccNumberRecipient;
     }
+
+    /**
+     * @param float $loyaltyPointsAmount
+     * @return $this
+     */
+    public function withLoyaltyPointsAmount($loyaltyPointsAmount)
+    {
+        $this->loyaltyPointsAmount = $loyaltyPointsAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLoyaltyPointsAmount()
+    {
+        return $this->loyaltyPointsAmount;
+    }
+
+    /**
+     * @param string $campaignType
+     * @return $this
+     */
+    public function withCampaignType($campaignType)
+    {
+        $this->campaignType = $campaignType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCampaignType() {
+        return $this->campaignType;
+    }
+
 }

@@ -129,8 +129,11 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
                      'PAY_METHOD' => 'CCVISAMC',
                      'PRICES_CURRENCY' => 'RON',
                      'SELECTED_INSTALLMENTS_NUMBER' => NULL,
+                     'USE_LOYALTY_POINTS' => 'YES',
+                     'LOYALTY_POINTS_AMOUNT' => 50,
+                     'CAMPAIGN_TYPE' => NULL,
                  ),
-                'd6ebc94ef712b184c323f949633270c6'
+                'a302862d9d9f883c95e2cb8351d1f3bb',
             )
         );
     }
