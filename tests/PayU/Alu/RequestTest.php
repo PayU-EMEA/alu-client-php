@@ -24,7 +24,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             ->withCurrency('RON')
             ->withOrderDate('2014-09-19 10:00:00')
             ->withOrderTimeout(1000)
-            ->withPayMethod('CCVISAMC');
+            ->withPayMethod('CCVISAMC')
+            ->withInstallmentsNumber(2)
+            ->withCampaignType('EXTRA_INSTALLMENTS');
 
         $product = new Product();
         $product->withCode('PCODE01')
@@ -167,7 +169,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                 ),
             'PAY_METHOD' => 'CCVISAMC',
             'PRICES_CURRENCY' => 'RON',
-            'SELECTED_INSTALLMENTS_NUMBER' => NULL,
+            'SELECTED_INSTALLMENTS_NUMBER' => '2',
+            'USE_LOYALTY_POINTS' => NULL,
+            'LOYALTY_POINTS_AMOUNT' => NULL,
+            'CAMPAIGN_TYPE' => 'EXTRA_INSTALLMENTS',
         );
         $this->assertEquals($result, $this->request->getRequestParams());
     }

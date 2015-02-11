@@ -175,6 +175,11 @@ class Request
 
         $this->internalArray['CC_NUMBER_RECIPIENT'] = $this->order->getCcNumberRecipient();
 
+        $this->internalArray['USE_LOYALTY_POINTS'] = $this->order->getUseLoyaltyPoints();
+        $this->internalArray['LOYALTY_POINTS_AMOUNT'] = $this->order->getLoyaltyPointsAmount();
+
+        $this->internalArray['CAMPAIGN_TYPE'] = $this->order->getCampaignType();
+
         if (is_array($this->order->getCustomParams())) {
             foreach ($this->order->getCustomParams() as $paramName => $paramValue) {
                 $this->internalArray[$paramName] = $paramValue;
