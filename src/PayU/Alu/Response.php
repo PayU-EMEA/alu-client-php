@@ -2,7 +2,10 @@
 
 namespace PayU\Alu;
 
-
+/**
+ * Class Response
+ * @package PayU\Alu
+ */
 class Response
 {
     /**
@@ -64,6 +67,56 @@ class Response
      * @var array
      */
     private $internalArray = array();
+
+    /**
+     * @var ResponseWireAccount[]
+     */
+    private $wireAccounts = array();
+
+    /**
+     * @var ResponseWireRecipient
+     */
+    private $wireRecipient;
+
+    /**
+     * @return ResponseWireAccount[]
+     */
+    public function getWireAccounts()
+    {
+        return $this->wireAccounts;
+    }
+
+    /**
+     * @param ResponseWireAccount[] $wireAccounts
+     */
+    public function setWireAccounts($wireAccounts)
+    {
+        $this->wireAccounts = $wireAccounts;
+    }
+
+    /**
+     * @param ResponseWireAccount $account
+     */
+    public function addWireAccount(ResponseWireAccount $account)
+    {
+        $this->wireAccounts[] = $account;
+    }
+
+    /**
+     * @return ResponseWireRecipient
+     */
+    public function getWireRecipient()
+    {
+        return $this->wireRecipient;
+    }
+
+    /**
+     * @param ResponseWireRecipient $wireRecipient
+     */
+    public function setWireRecipient($wireRecipient)
+    {
+        $this->wireRecipient = $wireRecipient;
+    }
 
     /**
      * @param string $alias
@@ -276,6 +329,24 @@ class Response
         }
         if (!is_null($this->rrn)) {
             $this->internalArray['RRN'] = $this->rrn;
+        }
+
+        if (!empty($this->getWireAccounts())) {
+            foreach ($this->getWireAccounts() as $account) {
+                $this->internalArray['WIRE_ACCOUNTS'][] = array(
+                    'BANK_IDENTIFIER' => $account->getBankIdentifier(),
+                    'BANK_ACCOUNT' => $account->getBankAccount(),
+                    'ROUTING_NUMBER' => $account->getRoutingNumber(),
+                    'IBAN_ACCOUNT' => $account->getIbanAccount(),
+                    'BANK_SWIFT' => $account->getBankSwift(),
+                    'COUNTRY' => $account->getCountry()
+                );
+            }
+        }
+
+        if (!is_null($this->getWireRecipient())) {
+            $this->internalArray['WIRE_RECIPIENT']['NAME'] = $this->wireRecipient->getName();
+            $this->internalArray['WIRE_RECIPIENT']['VAT_ID'] = $this->wireRecipient->getVatId();
         }
 
         return $this->internalArray;

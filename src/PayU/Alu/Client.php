@@ -1,8 +1,10 @@
 <?php
 
 namespace PayU\Alu;
+
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
+use SimpleXMLElement;
 
 /**
  * Class Client
@@ -70,10 +72,11 @@ class Client
     }
 
     /**
-     * @param \SimpleXMLElement $xmlObject
+     * @param SimpleXMLElement $xmlObject
+     * @param SimpleXMLElement $xmlObject
      * @return Response
      */
-    private function getResponse($xmlObject)
+    private function getResponse(SimpleXMLElement $xmlObject)
     {
         $response = new Response();
         $response->setRefno((string) $xmlObject->REFNO);
@@ -103,7 +106,48 @@ class Client
             $response->setHash((string)$xmlObject->HASH);
         }
 
+        if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
+            foreach ($xmlObject->WIRE_ACCOUNTS->ITEM as $account) {
+                $response->addWireAccount($this->getResponseWireAccount($account));
+            }
+        }
+
+        if (property_exists($xmlObject, 'WIRE_RECIPIENT')) {
+            $wireRecipient = $this->getResponseWireRecipient($xmlObject->WIRE_RECIPIENT);
+            $response->setWireRecipient($wireRecipient);
+        }
+
         return $response;
+    }
+
+    /**
+     * @param SimpleXMLElement $account
+     * @return ResponseWireAccount
+     */
+    private function getResponseWireAccount(SimpleXMLElement $account)
+    {
+        $responseWireAccount = new ResponseWireAccount();
+        $responseWireAccount->setBankIdentifier((string)$account->BANK_IDENTIFIER);
+        $responseWireAccount->setBankAccount((string)$account->BANK_ACCOUNT);
+        $responseWireAccount->setRoutingNumber((string)$account->ROUTING_NUMBER);
+        $responseWireAccount->setIbanAccount((string)$account->IBAN_ACCOUNT);
+        $responseWireAccount->setBankSwift((string)$account->BANK_SWIFT);
+        $responseWireAccount->setCountry((string)$account->COUNTRY);
+
+        return $responseWireAccount;
+    }
+
+    /**
+     * @param SimpleXMLElement $xmlObject
+     * @return ResponseWireRecipient
+     */
+    private function getResponseWireRecipient(SimpleXMLElement $xmlObject)
+    {
+        $wireRecipient = new ResponseWireRecipient();
+        $wireRecipient->setName((string)$xmlObject->NAME);
+        $wireRecipient->setVatId((string)$xmlObject->VAT_ID);
+
+        return $wireRecipient;
     }
 
     /**
@@ -130,7 +174,7 @@ class Client
         $requestParams = $request->getRequestParams();
         $responseXML = $httpClient->post($this->getAluUrl(), $requestParams);
         try {
-            $xmlObject = new \SimpleXMLElement($responseXML);
+            $xmlObject = new SimpleXMLElement($responseXML);
         } catch (\Exception $e) {
             throw new ClientException($e->getMessage(), $e->getCode());
         }
