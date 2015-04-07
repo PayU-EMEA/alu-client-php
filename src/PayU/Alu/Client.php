@@ -220,6 +220,39 @@ class Client
         $response->setRrn($returnData['RRN']);
         $response->setHash($returnData['HASH']);
 
+        if (array_key_exists('WIRE_ACCOUNTS', $returnData)
+            && is_array($returnData['WIRE_ACCOUNTS'])
+        ) {
+            foreach ($returnData['WIRE_ACCOUNTS'] as $wireAccount) {
+                if (array_key_exists('BANK_IDENTIFIER', $wireAccount)
+                    && array_key_exists('BANK_ACCOUNT', $wireAccount)
+                    && array_key_exists('ROUTING_NUMBER', $wireAccount)
+                    && array_key_exists('IBAN_ACCOUNT', $wireAccount)
+                    && array_key_exists('BANK_SWIFT', $wireAccount)
+                    && array_key_exists('COUNTRY', $wireAccount)
+                ) {
+                    $responseWireAccount = new ResponseWireAccount();
+                    $responseWireAccount->setBankIdentifier($wireAccount['BANK_IDENTIFIER']);
+                    $responseWireAccount->setBankAccount($wireAccount['BANK_ACCOUNT']);
+                    $responseWireAccount->setRoutingNumber($wireAccount['ROUTING_NUMBER']);
+                    $responseWireAccount->setIbanAccount($wireAccount['IBAN_ACCOUNT']);
+                    $responseWireAccount->setBankSwift($wireAccount['BANK_SWIFT']);
+                    $responseWireAccount->setCountry($wireAccount['COUNTRY']);
+                    $response->addWireAccount($responseWireAccount);
+                }
+            }
+        }
+
+        if (array_key_exists('WIRE_RECIPIENT', $returnData)
+            && array_key_exists('NAME', $returnData['WIRE_RECIPIENT'])
+            && array_key_exists('VAT_ID', $returnData['WIRE_RECIPIENT'])
+        ) {
+            $responseWireRecipient = new ResponseWireRecipient();
+            $responseWireRecipient->setName($returnData['WIRE_RECIPIENT']['NAME']);
+            $responseWireRecipient->setName($returnData['WIRE_RECIPIENT']['VAT_ID']);
+            $response->setWireRecipient($responseWireRecipient);
+        }
+
         return $response;
     }
 }

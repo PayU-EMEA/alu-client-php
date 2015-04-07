@@ -89,7 +89,7 @@ class Response
     /**
      * @param ResponseWireAccount[] $wireAccounts
      */
-    public function setWireAccounts($wireAccounts)
+    public function setWireAccounts(array $wireAccounts)
     {
         $this->wireAccounts = $wireAccounts;
     }
@@ -113,7 +113,7 @@ class Response
     /**
      * @param ResponseWireRecipient $wireRecipient
      */
-    public function setWireRecipient($wireRecipient)
+    public function setWireRecipient(ResponseWireRecipient $wireRecipient)
     {
         $this->wireRecipient = $wireRecipient;
     }
@@ -331,7 +331,7 @@ class Response
             $this->internalArray['RRN'] = $this->rrn;
         }
 
-        if (!empty($this->getWireAccounts())) {
+        if (is_array($this->getWireAccounts())) {
             foreach ($this->getWireAccounts() as $account) {
                 $this->internalArray['WIRE_ACCOUNTS'][] = array(
                     'BANK_IDENTIFIER' => $account->getBankIdentifier(),

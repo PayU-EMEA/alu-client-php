@@ -177,33 +177,30 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
                     'RRN' => '',
                     'WIRE_ACCOUNTS' =>
                         array (
-                            0 =>
-                                array (
-                                    'BANK_IDENTIFIER' => 'BANCA AGRICOLA-RAIFFEISEN S.A.',
-                                    'BANK_ACCOUNT' => 'a12c8c196b11afb9beb8fe6221540a4f',
-                                    'ROUTING_NUMBER' => '',
-                                    'IBAN_ACCOUNT' => '',
-                                    'BANK_SWIFT' => 'BANK7',
-                                    'COUNTRY' => 'Romania',
-                                ),
-                            1 =>
-                                array (
-                                    'BANK_IDENTIFIER' => 'BRD Groupe Societe Generale',
-                                    'BANK_ACCOUNT' => 'a82d196141b7a58b60c49c40afe9b90f',
-                                    'ROUTING_NUMBER' => '',
-                                    'IBAN_ACCOUNT' => '',
-                                    'BANK_SWIFT' => 'BRDEURBU',
-                                    'COUNTRY' => 'Romania',
-                                ),
-                            2 =>
-                                array (
-                                    'BANK_IDENTIFIER' => 'BCR',
-                                    'BANK_ACCOUNT' => 'd14cd64064813aacaac1ce9d55731af9',
-                                    'ROUTING_NUMBER' => '',
-                                    'IBAN_ACCOUNT' => '',
-                                    'BANK_SWIFT' => 'BANK7',
-                                    'COUNTRY' => 'Romania',
-                                ),
+                            array (
+                                'BANK_IDENTIFIER' => 'BANCA AGRICOLA-RAIFFEISEN S.A.',
+                                'BANK_ACCOUNT' => 'a12c8c196b11afb9beb8fe6221540a4f',
+                                'ROUTING_NUMBER' => '',
+                                'IBAN_ACCOUNT' => '',
+                                'BANK_SWIFT' => 'BANK7',
+                                'COUNTRY' => 'Romania',
+                            ),
+                            array (
+                                'BANK_IDENTIFIER' => 'BRD Groupe Societe Generale',
+                                'BANK_ACCOUNT' => 'a82d196141b7a58b60c49c40afe9b90f',
+                                'ROUTING_NUMBER' => '',
+                                'IBAN_ACCOUNT' => '',
+                                'BANK_SWIFT' => 'BRDEURBU',
+                                'COUNTRY' => 'Romania',
+                            ),
+                            array (
+                                'BANK_IDENTIFIER' => 'BCR',
+                                'BANK_ACCOUNT' => 'd14cd64064813aacaac1ce9d55731af9',
+                                'ROUTING_NUMBER' => '',
+                                'IBAN_ACCOUNT' => '',
+                                'BANK_SWIFT' => 'BANK7',
+                                'COUNTRY' => 'Romania',
+                            ),
                         ),
                     'WIRE_RECIPIENT' =>
                         array (
