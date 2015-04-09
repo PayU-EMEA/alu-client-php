@@ -31,7 +31,7 @@ class Client
     /**
      * @var string
      */
-    private $aluUrlPath = '/order/alu/v3';
+    private $aluUrlPath = '/order/alu/v4';
 
     /**
      * @var string
@@ -112,11 +112,6 @@ class Client
             }
         }
 
-        if (property_exists($xmlObject, 'WIRE_RECIPIENT')) {
-            $wireRecipient = $this->getResponseWireRecipient($xmlObject->WIRE_RECIPIENT);
-            $response->setWireRecipient($wireRecipient);
-        }
-
         return $response;
     }
 
@@ -133,21 +128,10 @@ class Client
         $responseWireAccount->setIbanAccount((string)$account->IBAN_ACCOUNT);
         $responseWireAccount->setBankSwift((string)$account->BANK_SWIFT);
         $responseWireAccount->setCountry((string)$account->COUNTRY);
+        $responseWireAccount->setWireRecipientName((string)$account->WIRE_RECIPIENT_NAME);
+        $responseWireAccount->setWireRecipientVatId((string)$account->WIRE_RECIPIENT_VAT_ID);
 
         return $responseWireAccount;
-    }
-
-    /**
-     * @param SimpleXMLElement $xmlObject
-     * @return ResponseWireRecipient
-     */
-    private function getResponseWireRecipient(SimpleXMLElement $xmlObject)
-    {
-        $wireRecipient = new ResponseWireRecipient();
-        $wireRecipient->setName((string)$xmlObject->NAME);
-        $wireRecipient->setVatId((string)$xmlObject->VAT_ID);
-
-        return $wireRecipient;
     }
 
     /**
@@ -224,35 +208,45 @@ class Client
             && is_array($returnData['WIRE_ACCOUNTS'])
         ) {
             foreach ($returnData['WIRE_ACCOUNTS'] as $wireAccount) {
-                if (array_key_exists('BANK_IDENTIFIER', $wireAccount)
-                    && array_key_exists('BANK_ACCOUNT', $wireAccount)
-                    && array_key_exists('ROUTING_NUMBER', $wireAccount)
-                    && array_key_exists('IBAN_ACCOUNT', $wireAccount)
-                    && array_key_exists('BANK_SWIFT', $wireAccount)
-                    && array_key_exists('COUNTRY', $wireAccount)
-                ) {
-                    $responseWireAccount = new ResponseWireAccount();
-                    $responseWireAccount->setBankIdentifier($wireAccount['BANK_IDENTIFIER']);
-                    $responseWireAccount->setBankAccount($wireAccount['BANK_ACCOUNT']);
-                    $responseWireAccount->setRoutingNumber($wireAccount['ROUTING_NUMBER']);
-                    $responseWireAccount->setIbanAccount($wireAccount['IBAN_ACCOUNT']);
-                    $responseWireAccount->setBankSwift($wireAccount['BANK_SWIFT']);
-                    $responseWireAccount->setCountry($wireAccount['COUNTRY']);
-                    $response->addWireAccount($responseWireAccount);
-                }
+                $response->addWireAccount($this->getResponseWireAccountFromArray($wireAccount));
             }
         }
 
-        if (array_key_exists('WIRE_RECIPIENT', $returnData)
-            && array_key_exists('NAME', $returnData['WIRE_RECIPIENT'])
-            && array_key_exists('VAT_ID', $returnData['WIRE_RECIPIENT'])
-        ) {
-            $responseWireRecipient = new ResponseWireRecipient();
-            $responseWireRecipient->setName($returnData['WIRE_RECIPIENT']['NAME']);
-            $responseWireRecipient->setName($returnData['WIRE_RECIPIENT']['VAT_ID']);
-            $response->setWireRecipient($responseWireRecipient);
+        return $response;
+    }
+
+    /**
+     * @param array $wireAccount
+     * @return ResponseWireAccount
+     */
+    private function getResponseWireAccountFromArray(array $wireAccount)
+    {
+        $responseWireAccount = new ResponseWireAccount();
+        if (array_key_exists('BANK_IDENTIFIER', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['BANK_IDENTIFIER']);
+        }
+        if (array_key_exists('BANK_ACCOUNT', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['BANK_ACCOUNT']);
+        }
+        if (array_key_exists('ROUTING_NUMBER', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['ROUTING_NUMBER']);
+        }
+        if (array_key_exists('IBAN_ACCOUNT', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['IBAN_ACCOUNT']);
+        }
+        if (array_key_exists('BANK_SWIFT', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['BANK_SWIFT']);
+        }
+        if (array_key_exists('COUNTRY', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['COUNTRY']);
+        }
+        if (array_key_exists('WIRE_RECIPIENT_NAME', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['WIRE_RECIPIENT_NAME']);
+        }
+        if (array_key_exists('WIRE_RECIPIENT_VAT_ID', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['WIRE_RECIPIENT_VAT_ID']);
         }
 
-        return $response;
+        return $responseWireAccount;
     }
 }

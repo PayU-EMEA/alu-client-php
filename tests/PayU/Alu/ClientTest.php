@@ -79,6 +79,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                             'IBAN_ACCOUNT' => '',
                             'BANK_SWIFT' => 'BANK7',
                             'COUNTRY' => 'Romania',
+                            'WIRE_RECIPIENT_NAME' => 'GECAD ePayment International SA SRL',
+                            'WIRE_RECIPIENT_VAT_ID' => 'RO16490162',
                         ),
                         array(
                             'BANK_IDENTIFIER' => 'BRD Groupe Societe Generale',
@@ -87,6 +89,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                             'IBAN_ACCOUNT' => '',
                             'BANK_SWIFT' => 'BRDEURBU',
                             'COUNTRY' => 'Romania',
+                            'WIRE_RECIPIENT_NAME' => 'GECAD ePayment International SA SRL',
+                            'WIRE_RECIPIENT_VAT_ID' => 'RO16490162',
                         ),
                         array(
                             'BANK_IDENTIFIER' => 'BCR',
@@ -95,13 +99,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                             'IBAN_ACCOUNT' => '',
                             'BANK_SWIFT' => 'BANK7',
                             'COUNTRY' => 'Romania',
+                            'WIRE_RECIPIENT_NAME' => 'GECAD ePayment International SA SRL',
+                            'WIRE_RECIPIENT_VAT_ID' => 'RO16490162',
                         ),
                     ),
-                    'WIRE_RECIPIENT' => array(
-                        'NAME' => 'GECAD ePayment International SA SRL',
-                        'VAT_ID' => 'RO16490162',
-                    ),
-                    'HASH' => 'fda0a34e8f82ee073b63c6a6a7585207'
+                    'HASH' => 'e47fe8af799f5df0b867c2d47cc2a8c4'
                 )
             ),
         );
@@ -207,12 +209,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                       <IBAN_ACCOUNT></IBAN_ACCOUNT>
                       <BANK_SWIFT>BANK7</BANK_SWIFT>
                       <COUNTRY>Romania</COUNTRY>
+                      <WIRE_RECIPIENT_NAME>GECAD ePayment International SA SRL</WIRE_RECIPIENT_NAME>
+                    <WIRE_RECIPIENT_VAT_ID>RO16490162</WIRE_RECIPIENT_VAT_ID>
                     </ITEM>
                   </WIRE_ACCOUNTS>
-                  <WIRE_RECIPIENT>
-                    <NAME>GECAD ePayment International SA SRL</NAME>
-                    <VAT_ID>RO16490162</VAT_ID>
-                  </WIRE_RECIPIENT>
                   <HASH>1ef929de57a17b747c8b8569371f611e</HASH>
                 </EPAYMENT>'
             ));

@@ -40,6 +40,48 @@ class ResponseWireAccount
     private $country;
 
     /**
+     * @var string
+     */
+    private $wireRecipientName;
+
+    /**
+     * @var string
+     */
+    private $wireRecipientVatId;
+
+    /**
+     * @return string
+     */
+    public function getWireRecipientName()
+    {
+        return $this->wireRecipientName;
+    }
+
+    /**
+     * @param string $wireRecipientName
+     */
+    public function setWireRecipientName($wireRecipientName)
+    {
+        $this->wireRecipientName = $wireRecipientName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWireRecipientVatId()
+    {
+        return $this->wireRecipientVatId;
+    }
+
+    /**
+     * @param string $wireRecipientVatId
+     */
+    public function setWireRecipientVatId($wireRecipientVatId)
+    {
+        $this->wireRecipientVatId = $wireRecipientVatId;
+    }
+
+    /**
      * @return string
      */
     public function getBankIdentifier()

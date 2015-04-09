@@ -73,10 +73,6 @@ class Response
      */
     private $wireAccounts = array();
 
-    /**
-     * @var ResponseWireRecipient
-     */
-    private $wireRecipient;
 
     /**
      * @return ResponseWireAccount[]
@@ -103,20 +99,6 @@ class Response
     }
 
     /**
-     * @return ResponseWireRecipient
-     */
-    public function getWireRecipient()
-    {
-        return $this->wireRecipient;
-    }
-
-    /**
-     * @param ResponseWireRecipient $wireRecipient
-     */
-    public function setWireRecipient(ResponseWireRecipient $wireRecipient)
-    {
-        $this->wireRecipient = $wireRecipient;
-    }
 
     /**
      * @param string $alias
@@ -339,14 +321,11 @@ class Response
                     'ROUTING_NUMBER' => $account->getRoutingNumber(),
                     'IBAN_ACCOUNT' => $account->getIbanAccount(),
                     'BANK_SWIFT' => $account->getBankSwift(),
-                    'COUNTRY' => $account->getCountry()
+                    'COUNTRY' => $account->getCountry(),
+                    'WIRE_RECIPIENT_NAME' => $account->getWireRecipientName(),
+                    'WIRE_RECIPIENT_VAT_ID' => $account->getWireRecipientVatId(),
                 );
             }
-        }
-
-        if (!is_null($this->getWireRecipient())) {
-            $this->internalArray['WIRE_RECIPIENT']['NAME'] = $this->wireRecipient->getName();
-            $this->internalArray['WIRE_RECIPIENT']['VAT_ID'] = $this->wireRecipient->getVatId();
         }
 
         return $this->internalArray;
