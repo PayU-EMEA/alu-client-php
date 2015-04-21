@@ -15,5 +15,5 @@ require_once dirname(__FILE__) . '/PayU/Alu/Product.php';
 require_once dirname(__FILE__) . '/PayU/Alu/Order.php';
 require_once dirname(__FILE__) . '/PayU/Alu/Request.php';
 require_once dirname(__FILE__) . '/PayU/Alu/Response.php';
+require_once dirname(__FILE__) . '/PayU/Alu/ResponseWireAccount.php';
 require_once dirname(__FILE__) . '/PayU/Alu/Client.php';
-
