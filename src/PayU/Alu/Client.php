@@ -31,7 +31,7 @@ class Client
     /**
      * @var string
      */
-    private $aluUrlPath = '/order/alu/v4';
+    private $aluUrlPath = '/order/alu/v3';
 
     /**
      * @var string
