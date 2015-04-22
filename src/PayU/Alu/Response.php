@@ -73,7 +73,6 @@ class Response
      */
     private $wireAccounts = array();
 
-
     /**
      * @return ResponseWireAccount[]
      */
@@ -97,8 +96,6 @@ class Response
     {
         $this->wireAccounts[] = $account;
     }
-
-    /**
 
     /**
      * @param string $alias
