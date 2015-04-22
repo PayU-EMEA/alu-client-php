@@ -5,7 +5,6 @@
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="false"
          convertWarningsToExceptions="false"
-         strict="false"
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="true"

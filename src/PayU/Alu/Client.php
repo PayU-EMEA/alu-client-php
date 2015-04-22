@@ -1,8 +1,10 @@
 <?php
 
 namespace PayU\Alu;
+
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
+use SimpleXMLElement;
 
 /**
  * Class Client
@@ -70,10 +72,11 @@ class Client
     }
 
     /**
-     * @param \SimpleXMLElement $xmlObject
+     * @param SimpleXMLElement $xmlObject
+     * @param SimpleXMLElement $xmlObject
      * @return Response
      */
-    private function getResponse($xmlObject)
+    private function getResponse(SimpleXMLElement $xmlObject)
     {
         $response = new Response();
         $response->setRefno((string) $xmlObject->REFNO);
@@ -103,7 +106,32 @@ class Client
             $response->setHash((string)$xmlObject->HASH);
         }
 
+        if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
+            foreach ($xmlObject->WIRE_ACCOUNTS->ITEM as $account) {
+                $response->addWireAccount($this->getResponseWireAccount($account));
+            }
+        }
+
         return $response;
+    }
+
+    /**
+     * @param SimpleXMLElement $account
+     * @return ResponseWireAccount
+     */
+    private function getResponseWireAccount(SimpleXMLElement $account)
+    {
+        $responseWireAccount = new ResponseWireAccount();
+        $responseWireAccount->setBankIdentifier((string)$account->BANK_IDENTIFIER);
+        $responseWireAccount->setBankAccount((string)$account->BANK_ACCOUNT);
+        $responseWireAccount->setRoutingNumber((string)$account->ROUTING_NUMBER);
+        $responseWireAccount->setIbanAccount((string)$account->IBAN_ACCOUNT);
+        $responseWireAccount->setBankSwift((string)$account->BANK_SWIFT);
+        $responseWireAccount->setCountry((string)$account->COUNTRY);
+        $responseWireAccount->setWireRecipientName((string)$account->WIRE_RECIPIENT_NAME);
+        $responseWireAccount->setWireRecipientVatId((string)$account->WIRE_RECIPIENT_VAT_ID);
+
+        return $responseWireAccount;
     }
 
     /**
@@ -130,7 +158,7 @@ class Client
         $requestParams = $request->getRequestParams();
         $responseXML = $httpClient->post($this->getAluUrl(), $requestParams);
         try {
-            $xmlObject = new \SimpleXMLElement($responseXML);
+            $xmlObject = new SimpleXMLElement($responseXML);
         } catch (\Exception $e) {
             throw new ClientException($e->getMessage(), $e->getCode());
         }
@@ -176,6 +204,49 @@ class Client
         $response->setRrn($returnData['RRN']);
         $response->setHash($returnData['HASH']);
 
+        if (array_key_exists('WIRE_ACCOUNTS', $returnData)
+            && is_array($returnData['WIRE_ACCOUNTS'])
+        ) {
+            foreach ($returnData['WIRE_ACCOUNTS'] as $wireAccount) {
+                $response->addWireAccount($this->getResponseWireAccountFromArray($wireAccount));
+            }
+        }
+
         return $response;
+    }
+
+    /**
+     * @param array $wireAccount
+     * @return ResponseWireAccount
+     */
+    private function getResponseWireAccountFromArray(array $wireAccount)
+    {
+        $responseWireAccount = new ResponseWireAccount();
+        if (array_key_exists('BANK_IDENTIFIER', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['BANK_IDENTIFIER']);
+        }
+        if (array_key_exists('BANK_ACCOUNT', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['BANK_ACCOUNT']);
+        }
+        if (array_key_exists('ROUTING_NUMBER', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['ROUTING_NUMBER']);
+        }
+        if (array_key_exists('IBAN_ACCOUNT', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['IBAN_ACCOUNT']);
+        }
+        if (array_key_exists('BANK_SWIFT', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['BANK_SWIFT']);
+        }
+        if (array_key_exists('COUNTRY', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['COUNTRY']);
+        }
+        if (array_key_exists('WIRE_RECIPIENT_NAME', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['WIRE_RECIPIENT_NAME']);
+        }
+        if (array_key_exists('WIRE_RECIPIENT_VAT_ID', $wireAccount)) {
+            $responseWireAccount->setBankIdentifier($wireAccount['WIRE_RECIPIENT_VAT_ID']);
+        }
+
+        return $responseWireAccount;
     }
 }
