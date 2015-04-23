@@ -2,7 +2,10 @@
 
 namespace PayU\Alu;
 
-
+/**
+ * Class Response
+ * @package PayU\Alu
+ */
 class Response
 {
     /**
@@ -64,6 +67,35 @@ class Response
      * @var array
      */
     private $internalArray = array();
+
+    /**
+     * @var ResponseWireAccount[]
+     */
+    private $wireAccounts = array();
+
+    /**
+     * @return ResponseWireAccount[]
+     */
+    public function getWireAccounts()
+    {
+        return $this->wireAccounts;
+    }
+
+    /**
+     * @param ResponseWireAccount[] $wireAccounts
+     */
+    public function setWireAccounts(array $wireAccounts)
+    {
+        $this->wireAccounts = $wireAccounts;
+    }
+
+    /**
+     * @param ResponseWireAccount $account
+     */
+    public function addWireAccount(ResponseWireAccount $account)
+    {
+        $this->wireAccounts[] = $account;
+    }
 
     /**
      * @param string $alias
@@ -276,6 +308,21 @@ class Response
         }
         if (!is_null($this->rrn)) {
             $this->internalArray['RRN'] = $this->rrn;
+        }
+
+        if (is_array($this->getWireAccounts())) {
+            foreach ($this->getWireAccounts() as $account) {
+                $this->internalArray['WIRE_ACCOUNTS'][] = array(
+                    'BANK_IDENTIFIER' => $account->getBankIdentifier(),
+                    'BANK_ACCOUNT' => $account->getBankAccount(),
+                    'ROUTING_NUMBER' => $account->getRoutingNumber(),
+                    'IBAN_ACCOUNT' => $account->getIbanAccount(),
+                    'BANK_SWIFT' => $account->getBankSwift(),
+                    'COUNTRY' => $account->getCountry(),
+                    'WIRE_RECIPIENT_NAME' => $account->getWireRecipientName(),
+                    'WIRE_RECIPIENT_VAT_ID' => $account->getWireRecipientVatId(),
+                );
+            }
         }
 
         return $this->internalArray;
