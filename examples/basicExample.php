@@ -30,7 +30,6 @@ $cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
  * Create user with params:
  *
  * User IP - User's IP address
- * Card Number Input Time - Time it took the user to enter credit card number in seconds
  * User Time  - Time of user computer - optional
  *
  */
