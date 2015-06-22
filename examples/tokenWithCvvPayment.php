@@ -5,7 +5,7 @@
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
 use PayU\Alu\Billing;
-use PayU\Alu\Card;
+use PayU\Alu\CardToken;
 use PayU\Alu\Client;
 use PayU\Alu\Delivery;
 use PayU\Alu\MerchantConfig;
@@ -15,7 +15,6 @@ use PayU\Alu\Request;
 use PayU\Alu\User;
 use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Exceptions\ClientException;
-
 
 /**
  * Create configuration with params:
@@ -137,15 +136,11 @@ $delivery->withAddressLine1('Address1')
     ->withPhoneNumber('40123456789');
 
 /**
- * Create new Card with params:
+ * Create new CardToken with params:
  *
- * Credit Card Number
- * Credit Card Expiration Month
- * Credit Card Expiration Year
- * Credit Card CVV (Security Code)
- * Credit Card Owner
+ * Token
  */
-$card = new Card('4111111111111111', '12', 2016, 123, 'Card Owner Name');
+$cardToken = new CardToken('g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==', '123');
 
 /**
  * Create new Request with params:
@@ -159,9 +154,9 @@ $card = new Card('4111111111111111', '12', 2016, 123, 'Card Owner Name');
 $request = new Request($cfg, $order, $billing, $delivery, $user);
 
 /**
- * Add the Credit Card to the Request
+ * Add the Card Token to the Request
  */
-$request->setCard($card);
+$request->setCardToken($cardToken);
 
 /**
  * Create new API Client, passing the Config object as parameter
@@ -190,11 +185,11 @@ try {
         die();
     }
 
-    echo $response->getStatus(). ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo $response->getReturnMessage();
+    echo $response->getRefno();
 
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }
-

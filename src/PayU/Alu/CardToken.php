@@ -15,12 +15,12 @@ class CardToken
 
     /**
      * @param string $token
+     * @param string $cvv
      */
-    public function __construct($token, $cvv = null)
+    public function __construct($token, $cvv = '')
     {
         $this->token = $token;
         $this->cvv = $cvv;
-
     }
 
     /**
