@@ -118,6 +118,9 @@ class Request
             $this->internalArray['EXP_YEAR'] = $this->card->getCardExpirationYear();
             $this->internalArray['CC_CVV'] = $this->card->getCardCVV();
             $this->internalArray['CC_OWNER'] = $this->card->getCardOwnerName();
+            if ($this->card->isEnableTokenCreation()) {
+                $this->internalArray['LU_ENABLE_TOKEN'] = '1';
+            }
         }
 
         $this->internalArray['SELECTED_INSTALLMENTS_NUMBER'] = $this->order->getInstallmentsNumber();

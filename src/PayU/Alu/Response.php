@@ -85,6 +85,9 @@ class Response
      */
     private $wireAccounts = array();
 
+    /** @var string */
+    private $tokenHash;
+
     /**
      * @return ResponseWireAccount[]
      */
@@ -350,6 +353,22 @@ class Response
     }
 
     /**
+     * @return string
+     */
+    public function getTokenHash()
+    {
+        return $this->tokenHash;
+    }
+
+    /**
+     * @param string $tokenHash
+     */
+    public function setTokenHash($tokenHash)
+    {
+        $this->tokenHash = $tokenHash;
+    }
+
+    /**
      * @return bool
      */
     public function isThreeDs()
@@ -397,6 +416,10 @@ class Response
         }
         if (!is_null($this->rrn)) {
             $this->internalArray['RRN'] = $this->rrn;
+        }
+
+        if (!is_null($this->tokenHash)) {
+            $this->internalArray['TOKEN_HASH'] = $this->tokenHash;
         }
 
         if (is_array($this->getWireAccounts())) {

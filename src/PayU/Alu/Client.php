@@ -122,7 +122,9 @@ class Client
 
         // @todo implement ALU response plugin parameters on ALU v2 and v3
 
-        // @todo implement TOKEN_HASH parameter
+        if (property_exists($xmlObject, 'TOKEN_HASH')) {
+            $response->setTokenHash((string)$xmlObject->TOKEN_HASH);
+        }
 
         // parameters used for wire payments on ALU v3
         if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
