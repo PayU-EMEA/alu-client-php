@@ -86,42 +86,45 @@ class Client
         $response->setReturnMessage((string) $xmlObject->RETURN_MESSAGE);
         $response->setDate((string) $xmlObject->DATE);
 
-        if (property_exists($xmlObject, 'URL_3DS')) {
-            $response->setThreeDsUrl((string)$xmlObject->URL_3DS);
-        }
-
-        if (property_exists($xmlObject, 'AMOUNT')) {
-            $response->setAmount((string) $xmlObject->AMOUNT);
-        }
-
-        if (property_exists($xmlObject, 'CURRENCY')) {
-            $response->setCurrency((string) $xmlObject->CURRENCY);
-        }
-
-        if (property_exists($xmlObject, 'INSTALLMENTS_NO')) {
-            $response->setInstallmentsNo((string) $xmlObject->INSTALLMENTS_NO);
-        }
-
-        if (property_exists($xmlObject, 'CARD_PROGRAM_NAME')) {
-            $response->setCardProgramName((string) $xmlObject->CARD_PROGRAM_NAME);
-        }
-
-        if (property_exists($xmlObject, 'ORDER_REF')) {
-            $response->setOrderRef((string) $xmlObject->ORDER_REF);
-        }
-
-        if (property_exists($xmlObject, 'AUTH_CODE')) {
-            $response->setAuthCode((string)$xmlObject->AUTH_CODE);
-        }
-
-        if (property_exists($xmlObject, 'RRN')) {
-            $response->setRrn((string)$xmlObject->RRN);
-        }
-
         if (property_exists($xmlObject, 'HASH')) {
             $response->setHash((string)$xmlObject->HASH);
         }
 
+        // for 3D secure handling flow
+        if (property_exists($xmlObject, 'URL_3DS')) {
+            $response->setThreeDsUrl((string)$xmlObject->URL_3DS);
+        }
+
+        // 4 parameters used only on TR platform for ALU v1, v2 and v3
+        if (property_exists($xmlObject, 'AMOUNT')) {
+            $response->setAmount((string)$xmlObject->AMOUNT);
+        }
+        if (property_exists($xmlObject, 'CURRENCY')) {
+            $response->setCurrency((string)$xmlObject->CURRENCY);
+        }
+        if (property_exists($xmlObject, 'INSTALLMENTS_NO')) {
+            $response->setInstallmentsNo((string)$xmlObject->INSTALLMENTS_NO);
+        }
+        if (property_exists($xmlObject, 'CARD_PROGRAM_NAME')) {
+            $response->setCardProgramName((string)$xmlObject->CARD_PROGRAM_NAME);
+        }
+
+        // parameters used on ALU v2 and v3
+        if (property_exists($xmlObject, 'ORDER_REF')) {
+            $response->setOrderRef((string) $xmlObject->ORDER_REF);
+        }
+        if (property_exists($xmlObject, 'AUTH_CODE')) {
+            $response->setAuthCode((string)$xmlObject->AUTH_CODE);
+        }
+        if (property_exists($xmlObject, 'RRN')) {
+            $response->setRrn((string)$xmlObject->RRN);
+        }
+
+        // @todo implement ALU response plugin parameters on ALU v2 and v3
+
+        // @todo implement TOKEN_HASH parameter
+
+        // parameters used for wire payments on ALU v3
         if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
             foreach ($xmlObject->WIRE_ACCOUNTS->ITEM as $account) {
                 $response->addWireAccount($this->getResponseWireAccount($account));
