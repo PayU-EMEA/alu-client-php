@@ -86,12 +86,28 @@ class Client
         $response->setReturnMessage((string) $xmlObject->RETURN_MESSAGE);
         $response->setDate((string) $xmlObject->DATE);
 
-        if (property_exists($xmlObject, 'ORDER_REF')) {
-            $response->setOrderRef((string) $xmlObject->ORDER_REF);
-        }
-
         if (property_exists($xmlObject, 'URL_3DS')) {
             $response->setThreeDsUrl((string)$xmlObject->URL_3DS);
+        }
+
+        if (property_exists($xmlObject, 'AMOUNT')) {
+            $response->setAmount((string) $xmlObject->AMOUNT);
+        }
+
+        if (property_exists($xmlObject, 'CURRENCY')) {
+            $response->setCurrency((string) $xmlObject->CURRENCY);
+        }
+
+        if (property_exists($xmlObject, 'INSTALLMENTS_NO')) {
+            $response->setInstallmentsNo((string) $xmlObject->INSTALLMENTS_NO);
+        }
+
+        if (property_exists($xmlObject, 'CARD_PROGRAM_NAME')) {
+            $response->setCardProgramName((string) $xmlObject->CARD_PROGRAM_NAME);
+        }
+
+        if (property_exists($xmlObject, 'ORDER_REF')) {
+            $response->setOrderRef((string) $xmlObject->ORDER_REF);
         }
 
         if (property_exists($xmlObject, 'AUTH_CODE')) {
@@ -199,9 +215,30 @@ class Client
         $response->setReturnCode($returnData['RETURN_CODE']);
         $response->setReturnMessage($returnData['RETURN_MESSAGE']);
         $response->setDate($returnData['DATE']);
-        $response->setOrderRef($returnData['ORDER_REF']);
-        $response->setAuthCode($returnData['AUTH_CODE']);
-        $response->setRrn($returnData['RRN']);
+
+        if (array_key_exists('AMOUNT', $returnData)) {
+            $response->setAmount($returnData['AMOUNT']);
+        }
+        if (array_key_exists('CURRENCY', $returnData)) {
+            $response->setCurrency($returnData['CURRENCY']);
+        }
+        if (array_key_exists('INSTALLMENTS_NO', $returnData)) {
+            $response->setInstallmentsNo($returnData['INSTALLMENTS_NO']);
+        }
+        if (array_key_exists('CARD_PROGRAM_NAME', $returnData)) {
+            $response->setCardProgramName($returnData['CARD_PROGRAM_NAME']);
+        }
+
+        if (array_key_exists('ORDER_REF', $returnData)) {
+            $response->setOrderRef($returnData['ORDER_REF']);
+        }
+        if (array_key_exists('AUTH_CODE', $returnData)) {
+            $response->setAuthCode($returnData['AUTH_CODE']);
+        }
+        if (array_key_exists('RRN', $returnData)) {
+            $response->setRrn($returnData['RRN']);
+        }
+
         $response->setHash($returnData['HASH']);
 
         if (array_key_exists('WIRE_ACCOUNTS', $returnData)
