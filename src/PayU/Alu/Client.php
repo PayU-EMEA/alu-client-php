@@ -120,7 +120,7 @@ class Client
             $response->setRrn((string)$xmlObject->RRN);
         }
 
-        // @todo implement ALU response plugin parameters on ALU v2 and v3
+        $response->parseAdditionalsParameters($xmlObject);
 
         // @todo implement TOKEN_HASH parameter
 
