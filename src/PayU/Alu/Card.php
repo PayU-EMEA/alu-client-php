@@ -33,6 +33,9 @@ class Card
      */
     private $cardOwnerName;
 
+    /** @var bool */
+    private $enableTokenCreation;
+
     /**
      * @param string $cardNumber
      * @param int $cardExpirationMonth
@@ -90,5 +93,19 @@ class Card
     public function getCardOwnerName()
     {
         return $this->cardOwnerName;
+    }
+
+    public function enableTokenCreation()
+    {
+        $this->enableTokenCreation = true;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEnableTokenCreation()
+    {
+        return $this->enableTokenCreation;
     }
 }

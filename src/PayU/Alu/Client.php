@@ -122,7 +122,9 @@ class Client
 
         $response->parseAdditionalParameters($xmlObject);
 
-        // @todo implement TOKEN_HASH parameter
+        if (property_exists($xmlObject, 'TOKEN_HASH')) {
+            $response->setTokenHash((string)$xmlObject->TOKEN_HASH);
+        }
 
         // parameters used for wire payments on ALU v3
         if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
@@ -245,6 +247,10 @@ class Client
         }
 
         $response->parseAdditionalParameters($returnData);
+
+        if (array_key_exists('TOKEN_HASH', $returnData)) {
+            $response->setTokenHash($returnData['TOKEN_HASH']);
+        }
 
         if (array_key_exists('WIRE_ACCOUNTS', $returnData)
             && is_array($returnData['WIRE_ACCOUNTS'])
