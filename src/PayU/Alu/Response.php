@@ -75,6 +75,9 @@ class Response
      */
     private $rrn;
 
+    /** @var string[] */
+    private $additionalResponseParameters = array();
+
     /**
      * @var array
      */
@@ -352,6 +355,45 @@ class Response
         $this->rrn = $rrn;
     }
 
+    public function parseAdditionalParameters($parameters)
+    {
+        $possibleParameters = array(
+            'PROCRETURNCODE',
+            'ERRORMESSAGE',
+            'BANK_MERCHANT_ID',
+            'PAN',
+            'EXPYEAR',
+            'EXPMONTH',
+            'CLIENTID',
+            'HOSTREFNUM',
+            'OID',
+            'RESPONSE',
+            'TERMINAL_BANK',
+            'MDSTATUS',
+            'MDERRORMSG',
+            'TXSTATUS',
+            'XID',
+            'ECI',
+            'CAVV',
+            'TRANSID',
+        );
+
+        foreach ($parameters as $parameterKey => $value) {
+            if (in_array((string)$parameterKey, $possibleParameters)) {
+                $this->additionalResponseParameters[(string)$parameterKey] = (string)$value;
+            }
+        }
+    }
+
+    public function getAdditionalParameterValue($name)
+    {
+        $name = (string)$name;
+        if (array_key_exists($name, $this->additionalResponseParameters)) {
+            return $this->additionalResponseParameters[$name];
+        }
+        return null;
+    }
+
     /**
      * @return string
      */
@@ -416,6 +458,10 @@ class Response
         }
         if (!is_null($this->rrn)) {
             $this->internalArray['RRN'] = $this->rrn;
+        }
+
+        foreach ($this->additionalResponseParameters as $parameterKey => $parameterValue) {
+            $this->internalArray[$parameterKey] = $parameterValue;
         }
 
         if (!is_null($this->tokenHash)) {

@@ -120,7 +120,7 @@ class Client
             $response->setRrn((string)$xmlObject->RRN);
         }
 
-        // @todo implement ALU response plugin parameters on ALU v2 and v3
+        $response->parseAdditionalParameters($xmlObject);
 
         if (property_exists($xmlObject, 'TOKEN_HASH')) {
             $response->setTokenHash((string)$xmlObject->TOKEN_HASH);
@@ -245,6 +245,8 @@ class Client
         if (array_key_exists('RRN', $returnData)) {
             $response->setRrn($returnData['RRN']);
         }
+
+        $response->parseAdditionalParameters($returnData);
 
         if (array_key_exists('TOKEN_HASH', $returnData)) {
             $response->setTokenHash($returnData['TOKEN_HASH']);
