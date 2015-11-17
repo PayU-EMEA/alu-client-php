@@ -120,7 +120,7 @@ class Client
             $response->setRrn((string)$xmlObject->RRN);
         }
 
-        $response->parseAdditionalsParameters($xmlObject);
+        $response->parseAdditionalParameters($xmlObject);
 
         // @todo implement TOKEN_HASH parameter
 

@@ -352,7 +352,7 @@ class Response
         $this->rrn = $rrn;
     }
 
-    public function parseAdditionalsParameters($parameters)
+    public function parseAdditionalParameters($parameters)
     {
         $possibleParameters = array(
             'PROCRETURNCODE',
@@ -380,6 +380,15 @@ class Response
                 $this->additionalResponseParameters[(string)$parameterKey] = (string)$value;
             }
         }
+    }
+
+    public function getAdditionalParameterValue($name)
+    {
+        $name = (string)$name;
+        if (array_key_exists($name, $this->additionalResponseParameters)) {
+            return $this->additionalResponseParameters[$name];
+        }
+        return null;
     }
 
     /**
