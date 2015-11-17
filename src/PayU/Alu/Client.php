@@ -221,6 +221,8 @@ class Client
         $response->setReturnMessage($returnData['RETURN_MESSAGE']);
         $response->setDate($returnData['DATE']);
 
+        $response->setHash($returnData['HASH']);
+
         if (array_key_exists('AMOUNT', $returnData)) {
             $response->setAmount($returnData['AMOUNT']);
         }
@@ -244,7 +246,9 @@ class Client
             $response->setRrn($returnData['RRN']);
         }
 
-        $response->setHash($returnData['HASH']);
+        if (array_key_exists('TOKEN_HASH', $returnData)) {
+            $response->setTokenHash($returnData['TOKEN_HASH']);
+        }
 
         if (array_key_exists('WIRE_ACCOUNTS', $returnData)
             && is_array($returnData['WIRE_ACCOUNTS'])
