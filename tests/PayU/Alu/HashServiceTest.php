@@ -157,6 +157,32 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
                 array(
                     'REFNO' => '11844987',
                     'ALIAS' => '',
+                    'STATUS' => 'SUCCESS',
+                    'RETURN_CODE' => 'AUTHORIZED',
+                    'RETURN_MESSAGE' => 'The payment for your order authorized.',
+                    'DATE' => '2015-11-15 09:32:50',
+                ),
+                '3f112ab43ff5114957d086134d94ec60'
+            ),
+            array(
+                array(
+                    'REFNO' => '11844987',
+                    'ALIAS' => '',
+                    'STATUS' => 'SUCCESS',
+                    'RETURN_CODE' => 'AUTHORIZED',
+                    'RETURN_MESSAGE' => 'The payment for your order authorized.',
+                    'DATE' => '2015-11-15 09:39:24',
+                    'AMOUNT' => '199.8',
+                    'CURRENCY' => 'TRY',
+                    'INSTALLMENTS_NO' => '6',
+                    'CARD_PROGRAM_NAME' => 'Advantage',
+                ),
+                'ece32d1ab3d0e2c2218131c80d0b0ba9'
+            ),
+            array(
+                array(
+                    'REFNO' => '11844987',
+                    'ALIAS' => '',
                     'STATUS' => 'FAILED',
                     'RETURN_CODE' => 'ALREADY_AUTHORIZED',
                     'RETURN_MESSAGE' => 'The payment for your order is already authorized.',

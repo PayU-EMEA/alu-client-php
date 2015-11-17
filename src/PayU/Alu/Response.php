@@ -48,6 +48,18 @@ class Response
      */
     private $hash;
 
+    /** @var string */
+    private $amount;
+
+    /** @var string */
+    private $currency;
+
+    /** @var string */
+    private $installmentsNo;
+
+    /** @var string */
+    private $cardProgramName;
+
     /**
      * @var string
      */
@@ -62,6 +74,9 @@ class Response
      * @var string
      */
     private $rrn;
+
+    /** @var string[] */
+    private $additionalResponseParameters = array();
 
     /**
      * @var array
@@ -226,6 +241,70 @@ class Response
     }
 
     /**
+     * @param string $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param string $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $installmentsNo
+     */
+    public function setInstallmentsNo($installmentsNo)
+    {
+        $this->installmentsNo = $installmentsNo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstallmentsNo()
+    {
+        return $this->installmentsNo;
+    }
+
+    /**
+     * @param string $cardProgramName
+     */
+    public function setCardProgramName($cardProgramName)
+    {
+        $this->cardProgramName = $cardProgramName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardProgramName()
+    {
+        return $this->cardProgramName;
+    }
+
+    /**
      * @return string
      */
     public function getOrderRef()
@@ -273,6 +352,45 @@ class Response
         $this->rrn = $rrn;
     }
 
+    public function parseAdditionalParameters($parameters)
+    {
+        $possibleParameters = array(
+            'PROCRETURNCODE',
+            'ERRORMESSAGE',
+            'BANK_MERCHANT_ID',
+            'PAN',
+            'EXPYEAR',
+            'EXPMONTH',
+            'CLIENTID',
+            'HOSTREFNUM',
+            'OID',
+            'RESPONSE',
+            'TERMINAL_BANK',
+            'MDSTATUS',
+            'MDERRORMSG',
+            'TXSTATUS',
+            'XID',
+            'ECI',
+            'CAVV',
+            'TRANSID',
+        );
+
+        foreach ($parameters as $parameterKey => $value) {
+            if (in_array((string)$parameterKey, $possibleParameters)) {
+                $this->additionalResponseParameters[(string)$parameterKey] = (string)$value;
+            }
+        }
+    }
+
+    public function getAdditionalParameterValue($name)
+    {
+        $name = (string)$name;
+        if (array_key_exists($name, $this->additionalResponseParameters)) {
+            return $this->additionalResponseParameters[$name];
+        }
+        return null;
+    }
+
     /**
      * @return bool
      */
@@ -300,6 +418,19 @@ class Response
         $this->internalArray['RETURN_MESSAGE'] = $this->returnMessage;
         $this->internalArray['DATE'] = $this->date;
 
+        if (!is_null($this->amount)) {
+            $this->internalArray['AMOUNT'] = $this->amount;
+        }
+        if (!is_null($this->currency)) {
+            $this->internalArray['CURRENCY'] = $this->currency;
+        }
+        if (!is_null($this->installmentsNo)) {
+            $this->internalArray['INSTALLMENTS_NO'] = $this->installmentsNo;
+        }
+        if (!is_null($this->cardProgramName)) {
+            $this->internalArray['CARD_PROGRAM_NAME'] = $this->cardProgramName;
+        }
+
         if (!is_null($this->orderRef)) {
             $this->internalArray['ORDER_REF'] = $this->orderRef;
         }
@@ -308,6 +439,10 @@ class Response
         }
         if (!is_null($this->rrn)) {
             $this->internalArray['RRN'] = $this->rrn;
+        }
+
+        foreach ($this->additionalResponseParameters as $parameterKey => $parameterValue) {
+            $this->internalArray[$parameterKey] = $parameterValue;
         }
 
         if (is_array($this->getWireAccounts())) {
