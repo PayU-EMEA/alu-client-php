@@ -76,16 +76,6 @@ class Order
     private $customParams = array();
 
     /**
-     * @var boolean
-     */
-    private $luEnabledToken;
-
-    /**
-     * @var string
-     */
-    private $luTokenType;
-
-    /**
      * @var string
      */
     private $ccNumberRecipient;
@@ -235,42 +225,6 @@ class Order
     public function getInstallmentsNumber()
     {
         return $this->installmentsNumber;
-    }
-
-    /**
-     * @param boolean $luEnabledToken
-     * @return $this
-     */
-    public function withLuEnabledToken($luEnabledToken)
-    {
-        $this->luEnabledToken = $luEnabledToken;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getLuEnabledToken()
-    {
-        return $this->luEnabledToken;
-    }
-
-    /**
-     * @param string $luTokenType
-     * @return $this
-     */
-    public function withLuTokenType($luTokenType)
-    {
-        $this->luTokenType = $luTokenType;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLuTokenType()
-    {
-        return $this->luTokenType;
     }
 
     /**
