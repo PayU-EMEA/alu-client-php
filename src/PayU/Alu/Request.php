@@ -146,6 +146,7 @@ class Request
         $this->internalArray['BILL_CISERIAL'] = $this->billingData->getIdentityCardSeries();
         $this->internalArray['BILL_CINUMBER'] = $this->billingData->getIdentityCardNumber();
         $this->internalArray['BILL_CIISSUER'] = $this->billingData->getIdentityCardIssuer();
+        $this->internalArray['BILL_CITYPE'] = $this->billingData->getIdentityCardType();
         $this->internalArray['BILL_CNP'] = $this->billingData->getPersonalNumericCode();
         $this->internalArray['BILL_COMPANY'] = $this->billingData->getCompany();
         $this->internalArray['BILL_FISCALCODE'] = $this->billingData->getCompanyFiscalCode();

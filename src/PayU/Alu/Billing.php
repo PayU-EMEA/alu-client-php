@@ -26,6 +26,11 @@ class Billing extends AbstractCommonAddress
     /**
      * @var string
      */
+    private $identityCardType;
+
+    /**
+     * @var string
+     */
     private $personalNumericCode;
 
     /**
@@ -119,6 +124,16 @@ class Billing extends AbstractCommonAddress
     }
 
     /**
+     * @param string $identityCardType
+     * @return $this
+     */
+    public function withIdentityCardType($identityCardType)
+    {
+        $this->identityCardType = $identityCardType;
+        return $this;
+    }
+
+    /**
      * @param string $personalNumericCode
      * @return $this
      */
@@ -182,6 +197,14 @@ class Billing extends AbstractCommonAddress
     public function getIdentityCardSeries()
     {
         return $this->identityCardSeries;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentityCardType()
+    {
+        return $this->identityCardType;
     }
 
     /**
