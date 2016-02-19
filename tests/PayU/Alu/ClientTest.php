@@ -217,7 +217,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 </EPAYMENT>'
             ));
 
-        $this->mockHashService->expects($this->once())
+        $this->mockHashService->expects($this->any())
             ->method('validateResponseHash');
 
         $this->assertInstanceOf(
@@ -259,7 +259,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 </EPAYMENT>'
             ));
 
-        $this->mockHashService->expects($this->once())
+        $this->mockHashService->expects($this->any())
             ->method('validateResponseHash');
 
         $this->client->setCustomUrl('http://www.example.com');
