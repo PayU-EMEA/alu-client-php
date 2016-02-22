@@ -89,7 +89,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'BILL_CIISSUER' => NULL,
             'BILL_CINUMBER' => '324322',
             'BILL_CISERIAL' => NULL,
-            'BILL_CITYPE' => NULL,
             'BILL_CITY' => 'Bucuresti',
             'BILL_CNP' => NULL,
             'BILL_COMPANY' => NULL,
