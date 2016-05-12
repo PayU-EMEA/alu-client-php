@@ -126,6 +126,10 @@ class Client
             $response->setTokenHash((string)$xmlObject->TOKEN_HASH);
         }
 
+        if (property_exists($xmlObject, 'URL_REDIRECT')) {
+            $response->setUrlRedirect((string)$xmlObject->URL_REDIRECT);
+        }
+
         // parameters used for wire payments on ALU v3
         if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
             foreach ($xmlObject->WIRE_ACCOUNTS->ITEM as $account) {

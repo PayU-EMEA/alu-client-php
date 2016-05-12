@@ -60,36 +60,29 @@ class Response
     /** @var string */
     private $cardProgramName;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $orderRef;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $authCode;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $rrn;
 
     /** @var string[] */
     private $additionalResponseParameters = array();
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $internalArray = array();
 
-    /**
-     * @var ResponseWireAccount[]
-     */
+    /** @var ResponseWireAccount[] */
     private $wireAccounts = array();
 
     /** @var string */
     private $tokenHash;
+
+    /** @var string */
+    private $urlRedirect;
 
     /**
      * @return ResponseWireAccount[]
@@ -355,6 +348,25 @@ class Response
         $this->rrn = $rrn;
     }
 
+    /**
+     * @return string
+     */
+    public function getUrlRedirect()
+    {
+        return $this->urlRedirect;
+    }
+
+    /**
+     * @param string $urlRedirect
+     */
+    public function setUrlRedirect($urlRedirect)
+    {
+        $this->urlRedirect = $urlRedirect;
+    }
+
+    /**
+     * @param array $parameters
+     */
     public function parseAdditionalParameters($parameters)
     {
         $possibleParameters = array(
@@ -376,6 +388,7 @@ class Response
             'ECI',
             'CAVV',
             'TRANSID',
+            'URL_REDIRECT',
         );
 
         foreach ($parameters as $parameterKey => $value) {
