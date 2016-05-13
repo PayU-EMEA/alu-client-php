@@ -196,7 +196,7 @@ try {
         die();
     }
 
-    echo $response->getStatus(). ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
 
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();

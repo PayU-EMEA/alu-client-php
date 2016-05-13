@@ -48,40 +48,64 @@ class Response
      */
     private $hash;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $amount;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $currency;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $installmentsNo;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $cardProgramName;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $orderRef;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $authCode;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $rrn;
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private $additionalResponseParameters = array();
 
-    /** @var array */
+    /**
+     * @var array
+     */
     private $internalArray = array();
 
-    /** @var ResponseWireAccount[] */
+    /**
+     * @var ResponseWireAccount[]
+     */
     private $wireAccounts = array();
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $tokenHash;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $urlRedirect;
 
     /**
@@ -388,7 +412,6 @@ class Response
             'ECI',
             'CAVV',
             'TRANSID',
-            'URL_REDIRECT',
         );
 
         foreach ($parameters as $parameterKey => $value) {
@@ -462,7 +485,6 @@ class Response
         if (!is_null($this->cardProgramName)) {
             $this->internalArray['CARD_PROGRAM_NAME'] = $this->cardProgramName;
         }
-
         if (!is_null($this->orderRef)) {
             $this->internalArray['ORDER_REF'] = $this->orderRef;
         }
@@ -471,6 +493,9 @@ class Response
         }
         if (!is_null($this->rrn)) {
             $this->internalArray['RRN'] = $this->rrn;
+        }
+        if (!is_null($this->urlRedirect)) {
+            $this->internalArray['URL_REDIRECT'] = $this->urlRedirect;
         }
 
         foreach ($this->additionalResponseParameters as $parameterKey => $parameterValue) {

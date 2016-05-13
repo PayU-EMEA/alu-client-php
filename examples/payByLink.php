@@ -5,7 +5,6 @@
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
 use PayU\Alu\Billing;
-use PayU\Alu\CardToken;
 use PayU\Alu\Client;
 use PayU\Alu\Delivery;
 use PayU\Alu\MerchantConfig;
@@ -140,9 +139,9 @@ try {
      * See documentation for Response params
      */
     $response = $client->pay($request);
-    echo $response->getReturnMessage();
-    echo $response->getRefno();
-    echo $response->getUrlRedirect();
+
+    echo $response->getReturnMessage() . ' ' . $response->getRefno() . ' ' . $response->getUrlRedirect();
+
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {
