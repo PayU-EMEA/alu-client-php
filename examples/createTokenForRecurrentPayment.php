@@ -198,6 +198,8 @@ try {
 
     echo $response->getStatus(). ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
 
+    echo ' Token:' . $response->getTokenHash();
+
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {
