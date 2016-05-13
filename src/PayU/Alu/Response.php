@@ -494,14 +494,14 @@ class Response
         if (!is_null($this->rrn)) {
             $this->internalArray['RRN'] = $this->rrn;
         }
-        if (!is_null($this->urlRedirect)) {
-            $this->internalArray['URL_REDIRECT'] = $this->urlRedirect;
-        }
 
         foreach ($this->additionalResponseParameters as $parameterKey => $parameterValue) {
             $this->internalArray[$parameterKey] = $parameterValue;
         }
 
+        if (!is_null($this->urlRedirect)) {
+            $this->internalArray['URL_REDIRECT'] = $this->urlRedirect;
+        }
         if (!is_null($this->tokenHash)) {
             $this->internalArray['TOKEN_HASH'] = $this->tokenHash;
         }
