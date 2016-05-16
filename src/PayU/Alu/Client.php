@@ -120,6 +120,10 @@ class Client
             $response->setRrn((string)$xmlObject->RRN);
         }
 
+        if (property_exists($xmlObject, 'URL_REDIRECT')) {
+            $response->setUrlRedirect((string)$xmlObject->URL_REDIRECT);
+        }
+
         $response->parseAdditionalParameters($xmlObject);
 
         if (property_exists($xmlObject, 'TOKEN_HASH')) {

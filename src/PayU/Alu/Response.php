@@ -48,16 +48,24 @@ class Response
      */
     private $hash;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $amount;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $currency;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $installmentsNo;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $cardProgramName;
 
     /**
@@ -75,7 +83,9 @@ class Response
      */
     private $rrn;
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private $additionalResponseParameters = array();
 
     /**
@@ -88,8 +98,15 @@ class Response
      */
     private $wireAccounts = array();
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $tokenHash;
+
+    /**
+     * @var string
+     */
+    private $urlRedirect;
 
     /**
      * @return ResponseWireAccount[]
@@ -355,6 +372,25 @@ class Response
         $this->rrn = $rrn;
     }
 
+    /**
+     * @return string
+     */
+    public function getUrlRedirect()
+    {
+        return $this->urlRedirect;
+    }
+
+    /**
+     * @param string $urlRedirect
+     */
+    public function setUrlRedirect($urlRedirect)
+    {
+        $this->urlRedirect = $urlRedirect;
+    }
+
+    /**
+     * @param array $parameters
+     */
     public function parseAdditionalParameters($parameters)
     {
         $possibleParameters = array(
@@ -449,7 +485,6 @@ class Response
         if (!is_null($this->cardProgramName)) {
             $this->internalArray['CARD_PROGRAM_NAME'] = $this->cardProgramName;
         }
-
         if (!is_null($this->orderRef)) {
             $this->internalArray['ORDER_REF'] = $this->orderRef;
         }
@@ -464,6 +499,9 @@ class Response
             $this->internalArray[$parameterKey] = $parameterValue;
         }
 
+        if (!is_null($this->urlRedirect)) {
+            $this->internalArray['URL_REDIRECT'] = $this->urlRedirect;
+        }
         if (!is_null($this->tokenHash)) {
             $this->internalArray['TOKEN_HASH'] = $this->tokenHash;
         }
