@@ -76,6 +76,16 @@ class Order
     private $customParams = array();
 
     /**
+     * @var boolean
+     */
+    private $luEnabledToken;
+
+    /**
+     * @var string
+     */
+    private $luTokenType;
+
+    /**
      * @var string
      */
     private $ccNumberRecipient;
@@ -225,6 +235,46 @@ class Order
     public function getInstallmentsNumber()
     {
         return $this->installmentsNumber;
+    }
+
+    /**
+     * @deprecated This method will be removed in a later version. You should use Card::enableTokenCreation() to enable token creation.
+     * @param boolean $luEnabledToken
+     * @return $this
+     */
+    public function withLuEnabledToken($luEnabledToken)
+    {
+        $this->luEnabledToken = $luEnabledToken;
+        return $this;
+    }
+
+    /**
+     * @deprecated see withLuEnabledToken()
+     * @return boolean
+     */
+    public function getLuEnabledToken()
+    {
+        return $this->luEnabledToken;
+    }
+
+    /**
+     * @deprecated see withLuEnabledToken()
+     * @param string $luTokenType
+     * @return $this
+     */
+    public function withLuTokenType($luTokenType)
+    {
+        $this->luTokenType = $luTokenType;
+        return $this;
+    }
+
+    /**
+     * @deprecated see withLuEnabledToken()
+     * @return string
+     */
+    public function getLuTokenType()
+    {
+        return $this->luTokenType;
     }
 
     /**
@@ -402,7 +452,8 @@ class Order
     /**
      * @return string
      */
-    public function getCampaignType() {
+    public function getCampaignType()
+    {
         return $this->campaignType;
     }
 
