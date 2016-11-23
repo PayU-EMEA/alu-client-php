@@ -171,7 +171,7 @@ class Request
             $this->internalArray['DELIVERY_ADDRESS'] = $this->deliveryData->getAddressLine1();
             $this->internalArray['DELIVERY_ADDRESS2'] = $this->deliveryData->getAddressLine2();
             $this->internalArray['DELIVERY_ZIPCODE'] = $this->deliveryData->getZipCode();
-            $this->internalArray['DELIVERY_CITY'] = $this->deliveryData->getState();
+            $this->internalArray['DELIVERY_CITY'] = $this->deliveryData->getCity();
             $this->internalArray['DELIVERY_STATE'] = $this->deliveryData->getState();
             $this->internalArray['DELIVERY_COUNTRYCODE'] = $this->deliveryData->getCountryCode();
             $this->internalArray['DELIVERY_EMAIL'] = $this->deliveryData->getEmail();
