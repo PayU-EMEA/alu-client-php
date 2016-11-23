@@ -61,7 +61,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $delivery = new Delivery();
         $delivery->withAddressLine1('ADDRESS1')
             ->withAddressLine2('ADDRESS2')
-            ->withCity('Bucuresti')
+            ->withCity('Istanbul')
             ->withCountryCode('RO')
             ->withEmail('john.doe@mail.com')
             ->withFirstName('John')
@@ -112,7 +112,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'CLIENT_TIME' => '',
             'DELIVERY_ADDRESS' => 'ADDRESS1',
             'DELIVERY_ADDRESS2' => 'ADDRESS2',
-            'DELIVERY_CITY' => NULL,
+            'DELIVERY_CITY' => 'Istanbul',
             'DELIVERY_COMPANY' => NULL,
             'DELIVERY_COUNTRYCODE' => 'RO',
             'DELIVERY_EMAIL' => 'john.doe@mail.com',
