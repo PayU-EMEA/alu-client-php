@@ -101,6 +101,8 @@ class Request
             $this->internalArray['ORDER_PCODE'][$cnt] = $product->getCode();
             $this->internalArray['ORDER_PINFO'][$cnt] = $product->getInfo();
             $this->internalArray['ORDER_PRICE'][$cnt] = $product->getPrice();
+            $this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
+            $this->internalArray['ORDER_PRICE_TYPE'][$cnt] = $product->getPriceType();
             $this->internalArray['ORDER_QTY'][$cnt] = $product->getQuantity();
             $this->internalArray['ORDER_MPLACE_MERCHANT'][$cnt] = $product->getMarketPlaceMerchantCode();
             $this->internalArray['ORDER_VER'][$cnt] = $product->getProductVersion();
