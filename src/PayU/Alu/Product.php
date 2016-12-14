@@ -35,6 +35,11 @@ class Product
      * @var float
      */
     private $VAT;
+    
+    /**
+     * @var string GROSS|NET
+     */
+    private $priceType = "NET";
 
     /**
      * @var string
@@ -108,6 +113,21 @@ class Product
     public function withPrice($price)
     {
         $this->price = $price;
+        return $this;
+    }
+    
+    /**
+     * @param string $priceType GROSS|NET
+     * @return $this
+     * @throws \Exception
+     */
+    public function withPriceType($priceType = self::PRICE_TYPE_NET)
+    {
+        if(!in_array($priceType, [self::PRICE_TYPE_NET, self::PRICE_TYPE_GROSS])){
+            throw new \Exception("Price type is not valid.");
+        }
+
+        $this->priceType = $priceType;
         return $this;
     }
 
