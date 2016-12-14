@@ -168,6 +168,13 @@ class Product
     {
         return $this->VAT;
     }
+    
+    /**
+     * @return string
+     */
+    public function getPriceType(){
+        return $this->priceType;
+    }
 
     /**
      * @return string
