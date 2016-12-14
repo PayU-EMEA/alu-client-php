@@ -389,7 +389,7 @@ class Response
     }
 
     /**
-     * @param array $parameters
+     * @param array|\SimpleXMLElement $parameters
      */
     public function parseAdditionalParameters($parameters)
     {
