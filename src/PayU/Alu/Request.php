@@ -133,6 +133,8 @@ class Request
             $this->internalArray['CC_TOKEN'] = $this->cardToken->getToken();
             if ($this->cardToken->hasCvv()) {
                 $this->internalArray['CC_CVV'] = $this->cardToken->getCvv();
+            } else {
+                $this->internalArray['CC_CVV'] = '';
             }
         }
 
