@@ -174,6 +174,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'USE_LOYALTY_POINTS' => NULL,
             'LOYALTY_POINTS_AMOUNT' => NULL,
             'CAMPAIGN_TYPE' => 'EXTRA_INSTALLMENTS',
+            'ORDER_VAT' =>
+                array(
+                    0 => 24,
+                    1 => 24,
+                ),
         );
         $this->assertEquals($result, $this->request->getRequestParams());
     }
