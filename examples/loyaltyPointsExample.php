@@ -47,11 +47,12 @@ $order = new Order();
  */
 $order->withBackRef('http://path/to/your/returnUrlScript')
     ->withOrderRef('MerchantOrderRef')
-    ->withCurrency('RON')
+    ->withCurrency('TRY')
     ->withOrderDate(gmdate('Y-m-d H:i:s'))
     ->withOrderTimeout(1000)
     ->withPayMethod('CCVISAMC')
-    ->withMultipleLoyaltyPointsAmount(['BNS'=>20,'FBB'=>10]);
+    ->withUseLoyaltyPoints('YES')
+    ->withMultipleLoyaltyPointsAmount(['BNS' => 20,'FBB' => 10]);
 
 /**
  * Create new product
@@ -146,7 +147,7 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '12', '2016', '123', 'Card Owner Name');
+$card = new Card('4111111111111111', '12', '2017', '123', 'Card Owner Name');
 
 
 /**

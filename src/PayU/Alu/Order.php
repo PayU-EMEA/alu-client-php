@@ -96,11 +96,6 @@ class Order
     private $loyaltyPointsAmount;
 
     /**
-     * @var array
-     */
-    private $loyaltyMultiplePointsAmount;
-
-    /**
      * @var string
      */
     private $campaignType;
@@ -438,19 +433,21 @@ class Order
     }
 
     /**
-     * @param [] $loyaltyPointsAmounts - can be use in case of card support multiple Loyalty Points Types.
-     * For Example Garanti on Turkey support BNS and FBB.
+     * @param [] $loyaltyPointsAmounts - can be used in case of card support multiple Loyalty Points Types.
+     * For Example Garanti on Turkey supports BNS and FBB.
      * So you can use like ['BNS' =>34,'FBB'=>20] or ['FBB'=>20] or ['BNS'=>10].
      * @return $this
      */
     public function withMultipleLoyaltyPointsAmount($loyaltyPointsAmounts)
     {
-        $this->loyaltyMultiplePointsAmount = $loyaltyPointsAmounts;
+        foreach ($loyaltyPointsAmounts as $key => $value) {
+            $this->loyaltyPointsAmount[$key] = $value;
+        }
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|array
      */
     public function getLoyaltyPointsAmount()
     {
@@ -474,14 +471,5 @@ class Order
     {
         return $this->campaignType;
     }
-
-    /**
-     * @return array
-     */
-    public function getLoyaltyMultiplePointsAmount()
-    {
-        return $this->loyaltyMultiplePointsAmount;
-    }
-
 
 }
