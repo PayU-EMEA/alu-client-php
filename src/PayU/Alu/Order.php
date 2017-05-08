@@ -422,6 +422,7 @@ class Order
     }
 
     /**
+     * @see Order::withMultipleLoyaltyPointsAmount() for multiple loyalty points.
      * @param float $loyaltyPointsAmount
      * @return $this
      */
@@ -432,7 +433,21 @@ class Order
     }
 
     /**
-     * @return float
+     * @param [] $loyaltyPointsAmounts - can be used in case of card support multiple Loyalty Points Types.
+     * For Example Garanti on Turkey supports BNS and FBB.
+     * So you can use like ['BNS' =>34,'FBB'=>20] or ['FBB'=>20] or ['BNS'=>10].
+     * @return $this
+     */
+    public function withMultipleLoyaltyPointsAmount($loyaltyPointsAmounts)
+    {
+        foreach ($loyaltyPointsAmounts as $key => $value) {
+            $this->loyaltyPointsAmount[$key] = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * @return float|array
      */
     public function getLoyaltyPointsAmount()
     {
