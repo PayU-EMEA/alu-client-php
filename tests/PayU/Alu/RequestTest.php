@@ -75,11 +75,67 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setCard($card);
 
+        $airlineInfo = new AirlineInfo();
+
+        $airlineInfo->setPassengerName('John Doe')
+            ->setTicketNumber('TICKET_1234')
+            ->setRestrictedRefund(0)
+            ->setReservationSystem('DATS')
+            ->setTravelAgencyCode('MYTRAVEL')
+            ->setTravelAgencyName('My Travel Agency');
+
+        $airlineInfo->addFlightSegment(
+            '2017-01-10',
+            'MOS',
+            'SOF'
+        );
+
+        $airlineInfo->addFlightSegment(
+            '2017-02-10',
+            'ANK',
+            'WDC',
+            'XY',
+            'B',
+            1,
+            'MAXY12',
+            'F5512'
+        );
+        $order->withAirlineInfo($airlineInfo);
     }
 
     public function testGetParams()
     {
-        $result = array (
+        $result = array(
+            'AIRLINE_INFO' => array(
+                'PASSENGER_NAME' => 'John Doe',
+                'TICKET_NUMBER' => 'TICKET_1234',
+                'RESTRICTED_REFUND' => 0,
+                'RESERVATION_SYSTEM' => 'DATS',
+                'TRAVEL_AGENCY_CODE' => 'MYTRAVEL',
+                'TRAVEL_AGENCY_NAME' => 'My Travel Agency',
+                'FLIGHT_SEGMENTS' => array(
+                    array(
+                        'DEPARTURE_DATE' => '2017-01-10',
+                        'DEPARTURE_AIRPORT' => 'MOS',
+                        'DESTINATION_AIRPORT' => 'SOF',
+                        'AIRLINE_CODE' => null,
+                        'SERVICE_CLASS' => null,
+                        'STOPOVER' => null,
+                        'FARE_CODE' => null,
+                        'FLIGHT_NUMBER' => null,
+                    ),
+                    array(
+                        'DEPARTURE_DATE' => '2017-02-10',
+                        'DEPARTURE_AIRPORT' => 'ANK',
+                        'DESTINATION_AIRPORT' => 'WDC',
+                        'AIRLINE_CODE' => 'XY',
+                        'SERVICE_CLASS' => 'B',
+                        'STOPOVER' => 1,
+                        'FARE_CODE' => 'MAXY12',
+                        'FLIGHT_NUMBER' => 'F5512',
+                    ),
+                ),
+            ),
             'ALIAS' => NULL,
             'BACK_REF' => 'http://path/to/your/returnUrlScript',
             'BILL_ADDRESS' => 'ADDRESS1',

@@ -147,8 +147,6 @@ class AirlineInfo
             'FLIGHT_NUMBER' => $flightNumber,
         );
 
-        $segment = array_filter($segment);
-
         $this->flightSegments[] = $segment;
 
         return $this;

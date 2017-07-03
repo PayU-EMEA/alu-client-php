@@ -201,8 +201,6 @@ class Request
                 'TRAVEL_AGENCY_NAME' => $this->order->getAirlineInfo()->getTravelAgencyName(),
                 'FLIGHT_SEGMENTS' => $this->order->getAirlineInfo()->getFlightSegments(),
             );
-
-            $this->internalArray['AIRLINE_INFO'] = array_filter($this->internalArray['AIRLINE_INFO']);
         }
 
         if (is_array($this->order->getCustomParams())) {
