@@ -14,7 +14,6 @@ class Order
      */
     private $orderRef;
 
-
     /**
      * @var string
      */
@@ -99,6 +98,11 @@ class Order
      * @var string
      */
     private $campaignType;
+
+    /**
+     * @var AirlineInfo
+     */
+    private $airlineInfo;
 
     /**
      * @param string $name
@@ -470,6 +474,27 @@ class Order
     public function getCampaignType()
     {
         return $this->campaignType;
+    }
+
+    /**
+     * Sets the AIRLINE_INFO parameter information
+     *
+     * @param AirlineInfo $airlineInfo
+     * @return $this
+     */
+    public function withAirlineInfo(AirlineInfo $airlineInfo)
+    {
+        $this->airlineInfo = $airlineInfo;
+
+        return $this;
+    }
+
+    /**
+     * @return AirlineInfo
+     */
+    public function getAirlineInfo()
+    {
+        return $this->airlineInfo;
     }
 
 }
