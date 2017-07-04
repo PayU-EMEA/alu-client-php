@@ -189,6 +189,20 @@ class Request
 
         $this->internalArray['CAMPAIGN_TYPE'] = $this->order->getCampaignType();
 
+        $airlineInfoInstance = $this->order->getAirlineInfo();
+
+        if ($airlineInfoInstance instanceof AirlineInfo) {
+            $this->internalArray['AIRLINE_INFO'] = array(
+                'PASSENGER_NAME' => $this->order->getAirlineInfo()->getPassengerName(),
+                'TICKET_NUMBER' => $this->order->getAirlineInfo()->getTicketNumber(),
+                'RESTRICTED_REFUND' => $this->order->getAirlineInfo()->getRestrictedRefund(),
+                'RESERVATION_SYSTEM' => $this->order->getAirlineInfo()->getReservationSystem(),
+                'TRAVEL_AGENCY_CODE' => $this->order->getAirlineInfo()->getTravelAgencyCode(),
+                'TRAVEL_AGENCY_NAME' => $this->order->getAirlineInfo()->getTravelAgencyName(),
+                'FLIGHT_SEGMENTS' => $this->order->getAirlineInfo()->getFlightSegments(),
+            );
+        }
+
         if (is_array($this->order->getCustomParams())) {
             foreach ($this->order->getCustomParams() as $paramName => $paramValue) {
                 $this->internalArray[$paramName] = $paramValue;
