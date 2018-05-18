@@ -1,7 +1,7 @@
 {
     "name": "payu/alu-client",
     "description": "Automatic Live Update Client",
-    "license": "Apache2",
+    "license": "Apache-2.0",
     "keywords": ["alu", "payu", "automatic live update", "payment"],
     "authors": [
         {
