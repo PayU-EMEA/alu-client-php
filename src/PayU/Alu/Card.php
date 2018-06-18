@@ -24,7 +24,7 @@ class Card
     private $cardExpirationYear;
 
     /**
-     * @var int
+     * @var int|string
      */
     private $cardCVV;
 
@@ -40,7 +40,7 @@ class Card
      * @param string $cardNumber
      * @param int $cardExpirationMonth
      * @param int $cardExpirationYear
-     * @param int $cardCVV
+     * @param int|string $cardCVV
      * @param string $cardOwnerName
      */
     public function __construct($cardNumber, $cardExpirationMonth, $cardExpirationYear, $cardCVV, $cardOwnerName)
