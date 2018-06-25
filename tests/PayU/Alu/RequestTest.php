@@ -76,7 +76,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $card = new Card('5431210111111111', '11', 2016, 123, 'test');
 
-        $this->request = new Request($cfg, $this->order, $billing, $delivery, $user);
+        $fx = new FX('EUR', 0.2462);
+
+        $this->request = new Request($cfg, $this->order, $billing, $delivery, $user, $fx);
 
         $this->request->setCard($card);
     }
@@ -188,6 +190,8 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                     0 => 24,
                     1 => 24,
                 ),
+            'AUTHORIZATION_CURRENCY' => 'EUR',
+            'AUTHORIZATION_EXCHANGE_RATE' => 0.2462,
         );
         $this->assertEquals($result, $this->request->getRequestParams());
     }

@@ -44,6 +44,11 @@ class Request
     private $user;
 
     /**
+     * @var FX
+     */
+    private $fx;
+
+    /**
      * @var array
      */
     private $internalArray;
@@ -54,15 +59,17 @@ class Request
      * @param Billing $billing
      * @param AbstractCommonAddress $delivery
      * @param User $user
+     * @param FX $fx
      */
     public function  __construct(MerchantConfig $merchantConfig, Order $order, Billing $billing,
-                                 AbstractCommonAddress $delivery = null, User $user = null
+                                 AbstractCommonAddress $delivery = null, User $user = null, FX $fx
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;
         $this->billingData = $billing;
         $this->deliveryData = $delivery;
         $this->user = $user;
+        $this->fx = $fx;
     }
 
     /**
@@ -201,6 +208,11 @@ class Request
                 'TRAVEL_AGENCY_NAME' => $this->order->getAirlineInfo()->getTravelAgencyName(),
                 'FLIGHT_SEGMENTS' => $this->order->getAirlineInfo()->getFlightSegments(),
             );
+        }
+
+        if (!empty($this->fx)) {
+            $this->internalArray['AUTHORIZATION_CURRENCY'] = $this->fx->getAuthorizationCurrency();
+            $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $this->fx->getAuthorizationExchangeRate();
         }
 
         if (is_array($this->order->getCustomParams())) {
