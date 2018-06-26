@@ -8,6 +8,7 @@ use PayU\Alu\Billing;
 use PayU\Alu\Card;
 use PayU\Alu\Client;
 use PayU\Alu\Delivery;
+use PayU\Alu\FX;
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Order;
 use PayU\Alu\Product;
@@ -147,7 +148,7 @@ $delivery->withAddressLine1('Address1')
  */
 $card = new Card('4111111111111111', '12', '2025', '123', 'Card Owner Name');
 
-$fx = new \PayU\Alu\FX("EUR", 0.2462);
+$fx = new FX("EUR", 0.2462);
 
 /**
  * Create new Request with params:

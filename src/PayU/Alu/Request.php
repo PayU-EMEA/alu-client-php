@@ -62,7 +62,7 @@ class Request
      * @param FX $fx
      */
     public function  __construct(MerchantConfig $merchantConfig, Order $order, Billing $billing,
-                                 AbstractCommonAddress $delivery = null, User $user = null, FX $fx
+                                 AbstractCommonAddress $delivery = null, User $user = null, FX $fx = null
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;
