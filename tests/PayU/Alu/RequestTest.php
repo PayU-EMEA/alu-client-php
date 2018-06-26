@@ -361,6 +361,8 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                     0 => 24,
                     1 => 24,
                 ),
+            'AUTHORIZATION_CURRENCY' => 'EUR',
+            'AUTHORIZATION_EXCHANGE_RATE' => 0.2462,
         );
         $this->assertEquals($result, $this->request->getRequestParams());
     }
