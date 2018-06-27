@@ -59,17 +59,15 @@ class Request
      * @param Billing $billing
      * @param AbstractCommonAddress $delivery
      * @param User $user
-     * @param FX $fx
      */
     public function  __construct(MerchantConfig $merchantConfig, Order $order, Billing $billing,
-                                 AbstractCommonAddress $delivery = null, User $user = null, FX $fx = null
+                                 AbstractCommonAddress $delivery = null, User $user = null
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;
         $this->billingData = $billing;
         $this->deliveryData = $delivery;
         $this->user = $user;
-        $this->fx = $fx;
     }
 
     /**
@@ -86,6 +84,11 @@ class Request
     public function setCardToken(CardToken $cardToken)
     {
         $this->cardToken = $cardToken;
+    }
+
+    public function setFx(FX $fx)
+    {
+        $this->fx = $fx;
     }
 
     /**
@@ -210,7 +213,7 @@ class Request
             );
         }
 
-        if ($this->fx !== null) {
+        if (isset($this->fx)) {
             $this->internalArray['AUTHORIZATION_CURRENCY'] = $this->fx->getAuthorizationCurrency();
             $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $this->fx->getAuthorizationExchangeRate();
         }
