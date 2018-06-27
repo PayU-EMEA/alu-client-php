@@ -15,12 +15,37 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     private $order;
 
+    /**
+     * @var FX
+     */
+    private $fx;
+
+    /**
+     * @var MerchantConfig
+     */
+    private $cfg;
+
+    /**
+     * @var Billing
+     */
+    private $billing;
+
+    /**
+     * @var Delivery
+     */
+    private $delivery;
+
+    /**
+     * @var User
+     */
+    private $user;
+
     public function setUp()
     {
 
-        $cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
+        $this->cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
 
-        $user = new User('127.0.0.1');
+        $this->user = new User('127.0.0.1');
 
         $this->order = new Order();
 
@@ -51,9 +76,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->order->addProduct($product);
 
-        $billing = new Billing();
+        $this->billing = new Billing();
 
-        $billing->withAddressLine1('ADDRESS1')
+        $this->billing->withAddressLine1('ADDRESS1')
             ->withAddressLine2('ADDRESS2')
             ->withCity('Bucuresti')
             ->withCountryCode('RO')
@@ -63,8 +88,8 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             ->withPhoneNumber('0755167887')
             ->withIdentityCardNumber('324322');
 
-        $delivery = new Delivery();
-        $delivery->withAddressLine1('ADDRESS1')
+        $this->delivery = new Delivery();
+        $this->delivery->withAddressLine1('ADDRESS1')
             ->withAddressLine2('ADDRESS2')
             ->withCity('Istanbul')
             ->withCountryCode('RO')
@@ -72,127 +97,28 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             ->withFirstName('John')
             ->withLastName('Doe')
             ->withPhoneNumber('0755167887');
-
-
-        $card = new Card('5431210111111111', '11', 2016, 123, 'test');
-
-        $fx = new FX('EUR', 0.2462);
-
-        $this->request = new Request($cfg, $this->order, $billing, $delivery, $user, $fx);
-
-        $this->request->setCard($card);
     }
 
     public function testGetParams()
     {
-        $result = array(
-            'ALIAS' => NULL,
-            'BACK_REF' => 'http://path/to/your/returnUrlScript',
-            'BILL_ADDRESS' => 'ADDRESS1',
-            'BILL_ADDRESS2' => 'ADDRESS2',
-            'BILL_BANK' => NULL,
-            'BILL_BANKACCOUNT' => NULL,
-            'BILL_CIISSUER' => NULL,
-            'BILL_CINUMBER' => '324322',
-            'BILL_CISERIAL' => NULL,
-            'BILL_CITYPE' => NULL,
-            'BILL_CITY' => 'Bucuresti',
-            'BILL_CNP' => NULL,
-            'BILL_COMPANY' => NULL,
-            'BILL_COUNTRYCODE' => 'RO',
-            'BILL_EMAIL' => 'john.doe@mail.com',
-            'BILL_FAX' => NULL,
-            'BILL_FISCALCODE' => NULL,
-            'BILL_FNAME' => 'John',
-            'BILL_LNAME' => 'Doe',
-            'BILL_PHONE' => '0755167887',
-            'BILL_REGNUMBER' => NULL,
-            'BILL_STATE' => NULL,
-            'BILL_ZIPCODE' => NULL,
-            'CARD_PROGRAM_NAME' => NULL,
-            'CC_CVV' => 123,
-            'CC_NUMBER' => '5431210111111111',
-            'CC_NUMBER_RECIPIENT' => NULL,
-            'CC_OWNER' => 'test',
-            'CLIENT_IP' => '127.0.0.1',
-            'CLIENT_TIME' => '',
-            'DELIVERY_ADDRESS' => 'ADDRESS1',
-            'DELIVERY_ADDRESS2' => 'ADDRESS2',
-            'DELIVERY_CITY' => 'Istanbul',
-            'DELIVERY_COMPANY' => NULL,
-            'DELIVERY_COUNTRYCODE' => 'RO',
-            'DELIVERY_EMAIL' => 'john.doe@mail.com',
-            'DELIVERY_FNAME' => 'John',
-            'DELIVERY_LNAME' => 'Doe',
-            'DELIVERY_PHONE' => '0755167887',
-            'DELIVERY_STATE' => NULL,
-            'DELIVERY_ZIPCODE' => NULL,
-            'DISCOUNT' => NULL,
-            'EXP_MONTH' => '11',
-            'EXP_YEAR' => 2016,
-            'MERCHANT' => 'MERCHANT_CODE',
-            'ORDER_DATE' => '2014-09-19 10:00:00',
-            'ORDER_MPLACE_MERCHANT' =>
-                array (
-                    0 => NULL,
-                    1 => NULL,
-                ),
-            'ORDER_PCODE' =>
-                array (
-                    0 => 'PCODE01',
-                    1 => 'PCODE02',
-                ),
-            'ORDER_PGROUP' =>
-                array (
-                    0 => NULL,
-                    1 => NULL,
-                ),
-            'ORDER_PINFO' =>
-                array (
-                    0 => NULL,
-                    1 => NULL,
-                ),
-            'ORDER_PNAME' =>
-                array (
-                    0 => 'PNAME01',
-                    1 => 'PNAME02',
-                ),
-            'ORDER_PRICE' =>
-                array (
-                    0 => 100,
-                    1 => 200,
-                ),
-            'ORDER_QTY' =>
-                array (
-                    0 => 1,
-                    1 => 1,
-                ),
-            'ORDER_REF' => 'MerchantOrderRef',
-            'ORDER_SHIPPING' => NULL,
-            'ORDER_VER' =>
-                array (
-                    0 => NULL,
-                    1 => NULL,
-                ),
-            'PAY_METHOD' => 'CCVISAMC',
-            'PRICES_CURRENCY' => 'RON',
-            'SELECTED_INSTALLMENTS_NUMBER' => '2',
-            'USE_LOYALTY_POINTS' => NULL,
-            'LOYALTY_POINTS_AMOUNT' => NULL,
-            'CAMPAIGN_TYPE' => 'EXTRA_INSTALLMENTS',
-            'ORDER_PRICE_TYPE' =>
-                array(
-                    0 => 'NET',
-                    1 => 'NET',
-                ),
-            'ORDER_VAT' =>
-                array(
-                    0 => 24,
-                    1 => 24,
-                ),
-            'AUTHORIZATION_CURRENCY' => 'EUR',
-            'AUTHORIZATION_EXCHANGE_RATE' => 0.2462,
-        );
+        $result = $this->getParamsArray();
+
+        $this->makeNewRequest();
+
+        $this->assertEquals($result, $this->request->getRequestParams());
+    }
+
+    public function testGetParamsWithFx()
+    {
+        $this->fx = new FX('EUR', 0.2462);
+
+        $result = $this->getParamsArray();
+
+        $result['AUTHORIZATION_CURRENCY'] = 'EUR';
+        $result['AUTHORIZATION_EXCHANGE_RATE'] = 0.2462;
+
+        $this->makeNewRequest(true);
+
         $this->assertEquals($result, $this->request->getRequestParams());
     }
 
@@ -225,8 +151,8 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'F5512'
         );
         $this->order->withAirlineInfo($airlineInfo);
-        
-        $result = array(
+
+        $airlineInfo = [
             'AIRLINE_INFO' => array(
                 'PASSENGER_NAME' => 'John Doe',
                 'TICKET_NUMBER' => 'TICKET_1234',
@@ -257,6 +183,38 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+        ];
+
+        $params = $this->getParamsArray();
+
+        $result = array_merge($airlineInfo, $params);
+
+        $this->makeNewRequest();
+
+        $this->assertEquals($result, $this->request->getRequestParams());
+    }
+
+    /**
+     * @param bool $isWithFx
+     */
+    private function makeNewRequest($isWithFx = false)
+    {
+        if ($isWithFx) {
+            $this->request = new Request($this->cfg, $this->order, $this->billing, $this->delivery, $this->user, $this->fx);
+        } else {
+            $this->request = new Request($this->cfg, $this->order, $this->billing, $this->delivery, $this->user);
+        }
+
+        $card = new Card('5431210111111111', '11', 2016, 123, 'test');
+        $this->request->setCard($card);
+    }
+
+    /**
+     * @return array
+     */
+    private function getParamsArray()
+    {
+        return array(
             'ALIAS' => NULL,
             'BACK_REF' => 'http://path/to/your/returnUrlScript',
             'BILL_ADDRESS' => 'ADDRESS1',
@@ -347,7 +305,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                 ),
             'PAY_METHOD' => 'CCVISAMC',
             'PRICES_CURRENCY' => 'RON',
-            'SELECTED_INSTALLMENTS_NUMBER' => '2',
+            'SELECTED_INSTALLMENTS_NUMBER' => 2,
             'USE_LOYALTY_POINTS' => NULL,
             'LOYALTY_POINTS_AMOUNT' => NULL,
             'CAMPAIGN_TYPE' => 'EXTRA_INSTALLMENTS',
@@ -361,9 +319,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                     0 => 24,
                     1 => 24,
                 ),
-            'AUTHORIZATION_CURRENCY' => 'EUR',
-            'AUTHORIZATION_EXCHANGE_RATE' => 0.2462,
         );
-        $this->assertEquals($result, $this->request->getRequestParams());
     }
 }

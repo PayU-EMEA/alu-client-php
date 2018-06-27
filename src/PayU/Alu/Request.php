@@ -210,7 +210,7 @@ class Request
             );
         }
 
-        if (isset($this->fx)) {
+        if ($this->fx !== null) {
             $this->internalArray['AUTHORIZATION_CURRENCY'] = $this->fx->getAuthorizationCurrency();
             $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $this->fx->getAuthorizationExchangeRate();
         }
