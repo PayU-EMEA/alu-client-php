@@ -44,6 +44,11 @@ class Request
     private $user;
 
     /**
+     * @var FX
+     */
+    private $fx;
+
+    /**
      * @var array
      */
     private $internalArray;
@@ -79,6 +84,11 @@ class Request
     public function setCardToken(CardToken $cardToken)
     {
         $this->cardToken = $cardToken;
+    }
+
+    public function setFx(FX $fx)
+    {
+        $this->fx = $fx;
     }
 
     /**
@@ -201,6 +211,11 @@ class Request
                 'TRAVEL_AGENCY_NAME' => $this->order->getAirlineInfo()->getTravelAgencyName(),
                 'FLIGHT_SEGMENTS' => $this->order->getAirlineInfo()->getFlightSegments(),
             );
+        }
+
+        if (isset($this->fx)) {
+            $this->internalArray['AUTHORIZATION_CURRENCY'] = $this->fx->getAuthorizationCurrency();
+            $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $this->fx->getAuthorizationExchangeRate();
         }
 
         if (is_array($this->order->getCustomParams())) {
