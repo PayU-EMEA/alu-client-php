@@ -4,16 +4,16 @@
  */
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
-use PayU\Alu\Billing;
+use PayU\Alu\Component\Billing;
 use PayU\Alu\Client;
-use PayU\Alu\Delivery;
+use PayU\Alu\Component\Delivery;
 use PayU\Alu\MerchantConfig;
-use PayU\Alu\Order;
-use PayU\Alu\Product;
+use PayU\Alu\Component\Order;
+use PayU\Alu\Component\Product;
 use PayU\Alu\Request;
-use PayU\Alu\User;
-use PayU\Alu\Exceptions\ConnectionException;
-use PayU\Alu\Exceptions\ClientException;
+use PayU\Alu\Component\User;
+use PayU\Alu\Exception\ConnectionException;
+use PayU\Alu\Exception\ClientException;
 
 /**
  * Create configuration with params:

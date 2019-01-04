@@ -6,8 +6,8 @@ require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
 use PayU\Alu\Client;
 use PayU\Alu\MerchantConfig;
-use PayU\Alu\Exceptions\ConnectionException;
-use PayU\Alu\Exceptions\ClientException;
+use PayU\Alu\Exception\ConnectionException;
+use PayU\Alu\Exception\ClientException;
 
 /**
  * Create configuration with params:

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<EPAYMENT>
+    <REFNO>12022985</REFNO>
+    <ALIAS/>
+    <STATUS>FAILED</STATUS>
+    <RETURN_CODE>ALREADY_AUTHORIZED</RETURN_CODE>
+    <RETURN_MESSAGE>The payment for your order is already authorized.</RETURN_MESSAGE>
+    <DATE>2014-09-22 11:08:23</DATE>
+    <ORDER_REF>90003</ORDER_REF>
+    <AUTH_CODE/>
+    <RRN/>
+    <HASH>1ef929de57a17b747c8b8569371f611e</HASH>
+</EPAYMENT>

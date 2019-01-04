@@ -4,18 +4,19 @@
  */
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PayU\Alu\AirlineInfo;
-use PayU\Alu\Billing;
-use PayU\Alu\Card;
+use PayU\Alu\Component\AirlineInfo;
+use PayU\Alu\Component\Billing;
+use PayU\Alu\Component\Card;
 use PayU\Alu\Client;
-use PayU\Alu\Delivery;
+use PayU\Alu\Component\Delivery;
 use PayU\Alu\MerchantConfig;
-use PayU\Alu\Order;
-use PayU\Alu\Product;
-use PayU\Alu\Request;
-use PayU\Alu\User;
-use PayU\Alu\Exceptions\ConnectionException;
-use PayU\Alu\Exceptions\ClientException;
+use PayU\Alu\Component\Order;
+use PayU\Alu\Component\Product;
+use PayU\Alu\Component\Request;
+use PayU\Alu\Component\User;
+use PayU\Alu\Exception\ConnectionException;
+use PayU\Alu\Exception\ClientException;
+use PayU\Alu\Platform;
 
 
 /**
@@ -25,7 +26,7 @@ use PayU\Alu\Exceptions\ClientException;
  * Secret Key - Your PayU Secret Key
  * Platform - RO | RU | UA | TR | HU
  */
-$cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
+$cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', Platform::ROMANIA);
 
 /**
  * Create user with params:
