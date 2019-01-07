@@ -1,7 +1,5 @@
 <?php
-
 namespace PayU\Alu;
-
 
 class MerchantConfig
 {

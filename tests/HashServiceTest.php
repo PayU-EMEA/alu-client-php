@@ -1,13 +1,9 @@
 <?php
 namespace PayU\Alu\Test;
 
-use PayU\Alu\Component\Request;
-use PayU\Alu\Component\Response;
 use PayU\Alu\HashService;
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Platform;
-use Payu\Alu\Transformer\RequestTransformer;
-use PayU\Alu\Transformer\ResponseTransformer;
 use PHPUnit\Framework\TestCase;
 
 class HashServiceTest extends TestCase
@@ -27,55 +23,55 @@ class HashServiceTest extends TestCase
         return array(
             array(
                 array(
-                    'ALIAS' => NULL,
+                    'ALIAS' => null,
                     'BACK_REF' => 'http://path/to/your/returnUrlScript',
                     'BILL_ADDRESS' => 'ADDRESS1',
                     'BILL_ADDRESS2' => 'ADDRESS2',
-                    'BILL_BANK' => NULL,
-                    'BILL_BANKACCOUNT' => NULL,
-                    'BILL_CIISSUER' => NULL,
+                    'BILL_BANK' => null,
+                    'BILL_BANKACCOUNT' => null,
+                    'BILL_CIISSUER' => null,
                     'BILL_CINUMBER' => '324322',
-                    'BILL_CISERIAL' => NULL,
+                    'BILL_CISERIAL' => null,
                     'BILL_CITY' => 'Bucuresti',
-                    'BILL_CNP' => NULL,
-                    'BILL_COMPANY' => NULL,
+                    'BILL_CNP' => null,
+                    'BILL_COMPANY' => null,
                     'BILL_COUNTRYCODE' => 'RO',
                     'BILL_EMAIL' => 'john.doe@mail.com',
-                    'BILL_FAX' => NULL,
-                    'BILL_FISCALCODE' => NULL,
+                    'BILL_FAX' => null,
+                    'BILL_FISCALCODE' => null,
                     'BILL_FNAME' => 'John',
                     'BILL_LNAME' => 'Doe',
                     'BILL_PHONE' => '0751456789',
-                    'BILL_REGNUMBER' => NULL,
-                    'BILL_STATE' => NULL,
-                    'BILL_ZIPCODE' => NULL,
-                    'CARD_PROGRAM_NAME' => NULL,
+                    'BILL_REGNUMBER' => null,
+                    'BILL_STATE' => null,
+                    'BILL_ZIPCODE' => null,
+                    'CARD_PROGRAM_NAME' => null,
                     'CC_CVV' => 123,
                     'CC_NUMBER' => '5431210111111111',
-                    'CC_NUMBER_RECIPIENT' => NULL,
+                    'CC_NUMBER_RECIPIENT' => null,
                     'CC_OWNER' => 'test',
                     'CLIENT_IP' => '127.0.0.1',
                     'CLIENT_TIME' => '',
                     'DELIVERY_ADDRESS' => 'ADDRESS1',
                     'DELIVERY_ADDRESS2' => 'ADDRESS2',
-                    'DELIVERY_CITY' => NULL,
-                    'DELIVERY_COMPANY' => NULL,
+                    'DELIVERY_CITY' => null,
+                    'DELIVERY_COMPANY' => null,
                     'DELIVERY_COUNTRYCODE' => 'RO',
                     'DELIVERY_EMAIL' => 'john.doe@mail.com',
                     'DELIVERY_FNAME' => 'John',
                     'DELIVERY_LNAME' => 'Doe',
                     'DELIVERY_PHONE' => '0751456789',
-                    'DELIVERY_STATE' => NULL,
-                    'DELIVERY_ZIPCODE' => NULL,
-                    'DISCOUNT' => NULL,
+                    'DELIVERY_STATE' => null,
+                    'DELIVERY_ZIPCODE' => null,
+                    'DISCOUNT' => null,
                     'EXP_MONTH' => '11',
                     'EXP_YEAR' => 2016,
                     'MERCHANT' => 'MERCHANT_CODE',
                     'ORDER_DATE' => '2014-09-19 08:07:57',
                     'ORDER_MPLACE_MERCHANT' =>
                         array (
-                            0 => NULL,
-                            1 => NULL,
+                            0 => null,
+                            1 => null,
                         ),
                     'ORDER_PCODE' =>
                         array (
@@ -84,13 +80,13 @@ class HashServiceTest extends TestCase
                         ),
                     'ORDER_PGROUP' =>
                         array (
-                            0 => NULL,
-                            1 => NULL,
+                            0 => null,
+                            1 => null,
                         ),
                     'ORDER_PINFO' =>
                         array (
-                            0 => NULL,
-                            1 => NULL,
+                            0 => null,
+                            1 => null,
                         ),
                     'ORDER_PNAME' =>
                         array (
@@ -108,18 +104,18 @@ class HashServiceTest extends TestCase
                             1 => 1,
                         ),
                     'ORDER_REF' => '90000',
-                    'ORDER_SHIPPING' => NULL,
+                    'ORDER_SHIPPING' => null,
                     'ORDER_VER' =>
                         array (
-                            0 => NULL,
-                            1 => NULL,
+                            0 => null,
+                            1 => null,
                         ),
                     'PAY_METHOD' => 'CCVISAMC',
                     'PRICES_CURRENCY' => 'RON',
-                    'SELECTED_INSTALLMENTS_NUMBER' => NULL,
+                    'SELECTED_INSTALLMENTS_NUMBER' => null,
                     'USE_LOYALTY_POINTS' => 'YES',
                     'LOYALTY_POINTS_AMOUNT' => 50,
-                    'CAMPAIGN_TYPE' => NULL,
+                    'CAMPAIGN_TYPE' => null,
                 ),
                 'a302862d9d9f883c95e2cb8351d1f3bb',
             )
@@ -226,7 +222,7 @@ class HashServiceTest extends TestCase
     public function testSign($requestData, $hash)
     {
 
-        $requestTransformerMock = $this->getMockBuilder(RequestTransformer::class)
+        $requestTransformerMock = $this->getMockBuilder('\PayU\Alu\Transformer\RequestTransformer')
             ->setConstructorArgs(array($this->config))
             ->getMock();
 
@@ -234,7 +230,7 @@ class HashServiceTest extends TestCase
             ->method('transform')
             ->willReturn($requestData);
 
-        $requestMock = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->getMock();
+        $requestMock = $this->getMockBuilder('PayU\Alu\Component\Request')->disableOriginalConstructor()->getMock();
 
         $reflectionHashService = new \ReflectionObject($this->hashService);
 
@@ -256,7 +252,7 @@ class HashServiceTest extends TestCase
      */
     public function testValidateResponseSucces($responseData, $hash)
     {
-        $responseTransformerMock = $this->getMockBuilder(ResponseTransformer::class)
+        $responseTransformerMock = $this->getMockBuilder('\PayU\Alu\Transformer\ResponseTransformer')
             ->setConstructorArgs(array($this->config))
             ->getMock();
 
@@ -264,7 +260,7 @@ class HashServiceTest extends TestCase
             ->method("transform")
             ->willReturn($responseData);
 
-        $responseMock = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->getMock();
+        $responseMock = $this->getMockBuilder('\PayU\Alu\Component\Response')->disableOriginalConstructor()->getMock();
         $responseMock->expects($this->once())
             ->method("getHash")
             ->willReturn($hash);
@@ -287,7 +283,7 @@ class HashServiceTest extends TestCase
      */
     public function testValidateResponseFail($responseData, $hash)
     {
-        $responseTransformerMock = $this->getMockBuilder(ResponseTransformer::class)
+        $responseTransformerMock = $this->getMockBuilder('\PayU\Alu\Transformer\ResponseTransformer')
             ->setConstructorArgs(array($this->config))
             ->getMock();
 
@@ -295,7 +291,7 @@ class HashServiceTest extends TestCase
             ->method("transform")
             ->willReturn($responseData);
 
-        $responseMock = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->getMock();
+        $responseMock = $this->getMockBuilder('\PayU\Alu\Component\Response')->disableOriginalConstructor()->getMock();
         $responseMock->expects($this->once())
             ->method("getHash")
             ->willReturn($hash . "BREAK_THE_HASH");

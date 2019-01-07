@@ -174,7 +174,6 @@ try {
     }
 
     echo $response->getReturnMessage() . ' ' . $response->getRefno();
-
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {

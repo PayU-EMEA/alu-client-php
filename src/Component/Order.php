@@ -242,7 +242,8 @@ class Order implements Component
     }
 
     /**
-     * @deprecated This method will be removed in a later version. You should use Card::enableTokenCreation() to enable token creation.
+     * @deprecated This method will be removed in a later version.
+     * You should use Card::enableTokenCreation() to enable token creation.
      * @param boolean $luEnabledToken
      * @return $this
      */
@@ -496,5 +497,4 @@ class Order implements Component
     {
         return $this->airlineInfo;
     }
-
 }

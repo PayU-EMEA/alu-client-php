@@ -10,7 +10,8 @@ class BaseTransformerTestCase extends TestCase
     /** @var MerchantConfig */
     protected $config;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->config = new MerchantConfig('CC5857', 'SECRET_KEY', Platform::ROMANIA);
     }
 }

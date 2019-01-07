@@ -13,7 +13,7 @@ class ThreeDSecureResponseParserTest extends TestCase
 
     public function setUp()
     {
-        $this->hashServiceMock = $this->getMockBuilder(HashService::class)
+        $this->hashServiceMock = $this->getMockBuilder('\PayU\Alu\HashService')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -107,11 +107,12 @@ class ThreeDSecureResponseParserTest extends TestCase
      * @dataProvider handleThreeDSReturnResponseProvider
      * @param $data
      */
-    public function testPArseSuccess(array $data) {
+    public function testPArseSuccess(array $data)
+    {
         $this->hashServiceMock->expects($this->any())->method("validateResponse")->willReturn(true);
         $parser = new ThreeDSecureResponseParser($this->hashServiceMock);
         $response = $parser->parse($data);
-        $this->assertInstanceOf(Response::class, $response);
+        $this->assertInstanceOf('\PayU\Alu\Component\Response', $response);
         $this->assertEquals($data['REFNO'], $response->getRefno());
         $this->assertEquals($data['ALIAS'], $response->getAlias());
         $this->assertEquals($data['STATUS'], $response->getStatus());
@@ -122,17 +123,41 @@ class ThreeDSecureResponseParserTest extends TestCase
         $this->assertEquals($data['AUTH_CODE'], $response->getAuthCode());
         $this->assertEquals($data['RRN'], $response->getRrn());
         $this->assertEquals($data['HASH'], $response->getHash());
-        $this->assertEquals(count($data['WIRE_ACCOUNTS']), count($response->getWireAccounts()));
-        if(!empty($response->getWireAccounts())) {
+        if (!empty($data['WIRE_ACCOUNTS'])) {
+            $this->assertEquals(count($data['WIRE_ACCOUNTS']), count($response->getWireAccounts()));
+        }
+        $wireAccount = $response->getWireAccounts();
+        if (!empty($wireAccount)) {
             foreach ($data['WIRE_ACCOUNTS'] as $index => $account) {
-                $this->assertEquals($account['BANK_IDENTIFIER'], $response->getWireAccounts()[$index]->getBankIdentifier());
-                $this->assertEquals($account['BANK_ACCOUNT'], $response->getWireAccounts()[$index]->getBankAccount());
-                $this->assertEquals($account['ROUTING_NUMBER'], $response->getWireAccounts()[$index]->getRoutingNumber());
-                $this->assertEquals($account['IBAN_ACCOUNT'], $response->getWireAccounts()[$index]->getIbanAccount());
-                $this->assertEquals($account['BANK_SWIFT'], $response->getWireAccounts()[$index]->getBankSwift());
+                $this->assertEquals(
+                    $account['BANK_IDENTIFIER'],
+                    $response->getWireAccounts()[$index]->getBankIdentifier()
+                );
+                $this->assertEquals(
+                    $account['BANK_ACCOUNT'],
+                    $response->getWireAccounts()[$index]->getBankAccount()
+                );
+                $this->assertEquals(
+                    $account['ROUTING_NUMBER'],
+                    $response->getWireAccounts()[$index]->getRoutingNumber()
+                );
+                $this->assertEquals(
+                    $account['IBAN_ACCOUNT'],
+                    $response->getWireAccounts()[$index]->getIbanAccount()
+                );
+                $this->assertEquals(
+                    $account['BANK_SWIFT'],
+                    $response->getWireAccounts()[$index]->getBankSwift()
+                );
                 $this->assertEquals($account['COUNTRY'], $response->getWireAccounts()[$index]->getCountry());
-                $this->assertEquals($account['WIRE_RECIPIENT_NAME'], $response->getWireAccounts()[$index]->getWireRecipientName());
-                $this->assertEquals($account['WIRE_RECIPIENT_VAT_ID'], $response->getWireAccounts()[$index]->getWireRecipientVatId());
+                $this->assertEquals(
+                    $account['WIRE_RECIPIENT_NAME'],
+                    $response->getWireAccounts()[$index]->getWireRecipientName()
+                );
+                $this->assertEquals(
+                    $account['WIRE_RECIPIENT_VAT_ID'],
+                    $response->getWireAccounts()[$index]->getWireRecipientVatId()
+                );
             }
         }
     }

@@ -5,13 +5,13 @@
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
 use PayU\Alu\Component\Billing;
-use PayU\Alu\CardToken;
+use PayU\Alu\Component\CardToken;
 use PayU\Alu\Client;
 use PayU\Alu\Component\Delivery;
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Component\Order;
 use PayU\Alu\Component\Product;
-use PayU\Alu\Request;
+use PayU\Alu\Component\Request;
 use PayU\Alu\Component\User;
 use PayU\Alu\Exception\ConnectionException;
 use PayU\Alu\Exception\ClientException;
@@ -140,7 +140,10 @@ $delivery->withAddressLine1('Address1')
  *
  * Token
  */
-$cardToken = new CardToken('g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==', '123');
+$cardToken = new CardToken(
+    'g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==',
+    '123'
+);
 
 /**
  * Create new Request with params:
@@ -184,9 +187,7 @@ try {
         header("Location:" . $response->getThreeDsUrl());
         die();
     }
-
     echo $response->getReturnMessage() . ' ' . $response->getRefno();
-
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {

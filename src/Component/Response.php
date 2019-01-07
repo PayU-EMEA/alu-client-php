@@ -2,8 +2,6 @@
 
 namespace PayU\Alu\Component;
 
-use PayU\Alu\Component\ResponseWireAccount;
-
 /**
  * Class Response
  * @package PayU\Alu

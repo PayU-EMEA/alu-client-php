@@ -50,9 +50,8 @@ class Request implements Component
      * @param Delivery|null $delivery
      * @param User|null $user
      */
-    public function  __construct(Order $order, Billing $billing,
-                                 Delivery $delivery = null, User $user = null
-    ) {
+    public function __construct(Order $order, Billing $billing, Delivery $delivery = null, User $user = null)
+    {
         $this->order = $order;
         $this->billingData = $billing;
         $this->deliveryData = $delivery;

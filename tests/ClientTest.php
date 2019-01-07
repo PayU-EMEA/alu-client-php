@@ -31,18 +31,19 @@ class ClientTest extends TestCase
         $this->config = new MerchantConfig('CC5857', 'SECRET_KEY', Platform::ROMANIA);
         $this->client = new Client($this->config);
 
-        $this->requestMock = $this->getMockBuilder(Request::class)
+        $this->requestMock = $this->getMockBuilder('\PayU\Alu\Component\Request')
             ->disableOriginalConstructor()
             ->getMock();
 
 
-        $this->hashServiceMock = $this->getMockBuilder(HashService::class)
+        $this->hashServiceMock = $this->getMockBuilder('\PayU\Alu\HashService')
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    public function testPay() {
-        $httpClientMock = $this->getMockBuilder(HTTPClient::class)
+    public function testPay()
+    {
+        $httpClientMock = $this->getMockBuilder('\PayU\Alu\HTTPClient')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -54,11 +55,11 @@ class ClientTest extends TestCase
             ->method('sign')
             ->willReturn(array());
 
-        $responseMock = $this->getMockBuilder(Response::class)
+        $responseMock = $this->getMockBuilder('\PayU\Alu\Component\Response')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $paymentResponseParserMock = $this->getMockBuilder(PaymentResponseParser::class)
+        $paymentResponseParserMock = $this->getMockBuilder('\PayU\Alu\Parser\PaymentResponseParser')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -81,16 +82,18 @@ class ClientTest extends TestCase
         $paymentResponseParserProperty->setValue($this->client, $paymentResponseParserMock);
 
         $payMethod = $reflectionClient->getMethod("pay");
-        $this->assertInstanceOf(Response::class, $payMethod->invokeArgs($this->client, array($this->requestMock)));
+        $this->assertInstanceOf(
+            '\PayU\Alu\Component\Response',
+            $payMethod->invokeArgs($this->client, array($this->requestMock))
+        );
     }
 
     public function testHandleThreeDSReturnResponse()
     {
-        $threeDSecureResponseParserMock = $this->getMockBuilder(ThreeDSecureResponseParser::class)
+        $threeDSecureResponseParserMock = $this->getMockBuilder('\PayU\Alu\Parser\ThreeDSecureResponseParser')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $responseMock = $this->getMockBuilder(Response::class)
+        $responseMock = $this->getMockBuilder('\PayU\Alu\Component\Response')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -105,8 +108,5 @@ class ClientTest extends TestCase
 
         $handleThreeDSReturnResponse = $reflectionClient->getMethod("handleThreeDSReturnResponse");
         $handleThreeDSReturnResponse->invokeArgs($this->client, array(array()));
-
     }
-
-
 }

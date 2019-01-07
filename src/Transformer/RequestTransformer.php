@@ -58,10 +58,8 @@ class RequestTransformer extends Transformer
         /** @var Request $request */
         $request = $component;
 
-        if (
-            (!is_null($request->getCard()) && !is_null($request->getCardToken())) ||
-            (is_null($request->getCard()) && is_null($request->getCardToken()))
-        ) {
+        if ((!is_null($request->getCard()) && !is_null($request->getCardToken())) ||
+                (is_null($request->getCard()) && is_null($request->getCardToken()))) {
             throw new InvalidArgumentException("You must choose either card or card token for payment.");
         }
 

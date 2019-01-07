@@ -53,7 +53,7 @@ class OrderTransformer extends Transformer
             }
         }
 
-        if($order->getAirlineInfo()) {
+        if ($order->getAirlineInfo()) {
             $data["AIRLINE_INFO"] = $this->airlineInfoTransformer->transform($order->getAirlineInfo());
         }
 

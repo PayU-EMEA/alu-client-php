@@ -1,10 +1,9 @@
 <?php
 namespace PayU\Alu\Parser;
 
-use PayU\Alu\Exception\ClientException;
 use PayU\Alu\Component\Response;
-use PayU\Alu\Component\ResponseWireAccount;
-use \SimpleXMLElement;
+use PayU\Alu\Exception\ClientException;
+use SimpleXMLElement;
 
 /**
  * Class PaymentResponseParser
@@ -27,8 +26,8 @@ class PaymentResponseParser extends AbstractParser
         }
 
         $response = $this->prepareResponse($xmlObject);
-
-        if (!empty($response->getHash())) {
+        $hash = $response->getHash();
+        if (!empty($hash)) {
             $this->hashService->validateResponse($response);
         }
 
@@ -50,56 +49,60 @@ class PaymentResponseParser extends AbstractParser
         $response->setReturnMessage((string) $xmlObject->RETURN_MESSAGE);
         $response->setDate((string) $xmlObject->DATE);
 
-        if (property_exists($xmlObject, 'HASH')) {
+        //NOTE: HHVM can't cover functional expectations of some functions like get_object_vars or property_exists
+        // although they have different behaviour on standard php versions. So we needed to replace property_exists
+        // usages with isset.
+
+        if (isset($xmlObject->HASH)) {
             $response->setHash((string)$xmlObject->HASH);
         }
 
         // for 3D secure handling flow
-        if (property_exists($xmlObject, 'URL_3DS')) {
+        if (isset($xmlObject->URL_3DS)) {
             $response->setThreeDsUrl((string)$xmlObject->URL_3DS);
         }
 
+        $threeDsUrl = $response->getThreeDsUrl();
         $response->setIsThreeDs($response->getStatus() == 'SUCCESS' &&
             $response->getReturnCode() == '3DS_ENROLLED' &&
-            !empty($response->getThreeDsUrl()));
+            !empty($threeDsUrl));
 
         // 4 parameters used only on TR platform for ALU v1, v2 and v3
-        if (property_exists($xmlObject, 'AMOUNT')) {
+        if (isset($xmlObject->AMOUNT)) {
             $response->setAmount((string)$xmlObject->AMOUNT);
         }
-        if (property_exists($xmlObject, 'CURRENCY')) {
+        if (isset($xmlObject->CURRENCY)) {
             $response->setCurrency((string)$xmlObject->CURRENCY);
         }
-        if (property_exists($xmlObject, 'INSTALLMENTS_NO')) {
+        if (isset($xmlObject->INSTALLMENTS_NO)) {
             $response->setInstallmentsNo((string)$xmlObject->INSTALLMENTS_NO);
         }
-        if (property_exists($xmlObject, 'CARD_PROGRAM_NAME')) {
+        if (isset($xmlObject->CARD_PROGRAM_NAME)) {
             $response->setCardProgramName((string)$xmlObject->CARD_PROGRAM_NAME);
         }
-
         // parameters used on ALU v2 and v3
-        if (property_exists($xmlObject, 'ORDER_REF')) {
+        if (isset($xmlObject->ORDER_REF)) {
             $response->setOrderRef((string) $xmlObject->ORDER_REF);
         }
-        if (property_exists($xmlObject, 'AUTH_CODE')) {
+        if (isset($xmlObject->AUTH_CODE)) {
             $response->setAuthCode((string)$xmlObject->AUTH_CODE);
         }
-        if (property_exists($xmlObject, 'RRN')) {
+        if (isset($xmlObject->RRN)) {
             $response->setRrn((string)$xmlObject->RRN);
         }
 
-        if (property_exists($xmlObject, 'URL_REDIRECT')) {
+        if (isset($xmlObject->URL_REDIRECT)) {
             $response->setUrlRedirect((string)$xmlObject->URL_REDIRECT);
         }
 
         $response->setAdditionalResponseParameters($this->parseAdditionalParameters((array) $xmlObject));
 
-        if (property_exists($xmlObject, 'TOKEN_HASH')) {
+        if (isset($xmlObject->TOKEN_HASH)) {
             $response->setTokenHash((string)$xmlObject->TOKEN_HASH);
         }
 
         // parameters used for wire payments on ALU v3
-        if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
+        if (isset($xmlObject->WIRE_ACCOUNTS) && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
             foreach ($xmlObject->WIRE_ACCOUNTS->ITEM as $account) {
                 $response->addWireAccount($this->createWiredAccount((array) $account));
             }

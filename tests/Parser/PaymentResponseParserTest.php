@@ -13,7 +13,7 @@ class PaymentResponseParserTest extends TestCase
 
     public function setUp()
     {
-        $this->hashServiceMock = $this->getMockBuilder(HashService::class)
+        $this->hashServiceMock = $this->getMockBuilder('\PayU\Alu\HashService')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -27,7 +27,7 @@ class PaymentResponseParserTest extends TestCase
         $parser = new PaymentResponseParser($this->hashServiceMock);
 
         $response = $parser->parse(file_get_contents(__DIR__ . '/../given/FailedPaymentResponseWithWiredAccount.xml'));
-        $this->assertInstanceOf(Response::class, $response);
+        $this->assertInstanceOf('\PayU\Alu\Component\Response', $response);
         $this->assertEquals("12022985", $response->getRefno());
         $this->assertEquals("FAILED", $response->getStatus());
         $this->assertEquals("The payment for your order is already authorized.", $response->getReturnMessage());
@@ -36,7 +36,10 @@ class PaymentResponseParserTest extends TestCase
         $this->assertEquals("BANCA AGRICOLA-RAIFFEISEN S.A.", $response->getWireAccounts()[0]->getBankIdentifier());
         $this->assertEquals("a12c8c196b11afb9beb8fe6221540a4f", $response->getWireAccounts()[0]->getBankAccount());
         $this->assertEquals("Romania", $response->getWireAccounts()[0]->getCountry());
-        $this->assertEquals("GECAD ePayment International SA SRL", $response->getWireAccounts()[0]->getWireRecipientName());
+        $this->assertEquals(
+            "GECAD ePayment International SA SRL",
+            $response->getWireAccounts()[0]->getWireRecipientName()
+        );
         $this->assertEquals("RO16490162", $response->getWireAccounts()[0]->getWireRecipientVatId());
         $this->assertEquals("1ef929de57a17b747c8b8569371f611e", $response->getHash());
     }

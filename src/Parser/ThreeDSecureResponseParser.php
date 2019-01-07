@@ -4,14 +4,12 @@ namespace PayU\Alu\Parser;
 use PayU\Alu\Component\Response;
 use PayU\Alu\Exception\ClientException;
 
-
 /**
  * Class ThreeDSecureResponseParser
  * @package Payu\Alu\Parser
  */
 class ThreeDSecureResponseParser extends AbstractParser
 {
-
     /**
      * @param $data
      * @return \PayU\Alu\Component\Response
@@ -74,10 +72,7 @@ class ThreeDSecureResponseParser extends AbstractParser
             $response->setTokenHash($returnData['TOKEN_HASH']);
         }
 
-        if (
-            array_key_exists('WIRE_ACCOUNTS', $returnData) &&
-            is_array($returnData['WIRE_ACCOUNTS'])
-        ) {
+        if (array_key_exists('WIRE_ACCOUNTS', $returnData) && is_array($returnData['WIRE_ACCOUNTS'])) {
             foreach ($returnData['WIRE_ACCOUNTS'] as $wireAccount) {
                 $response->addWireAccount($this->createWiredAccount($wireAccount));
             }

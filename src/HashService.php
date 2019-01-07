@@ -1,6 +1,6 @@
 <?php
-
 namespace PayU\Alu;
+
 use PayU\Alu\Component\Request;
 use PayU\Alu\Component\Response;
 use PayU\Alu\Exception\ClientException;
@@ -45,7 +45,7 @@ class HashService
                 if (is_array($val) && count($val) > 0) {
                     $return .= $this->serialize($val);
                 } else {
-                    $return .= mb_strlen($val, 'UTF-8') . $val;
+                    $return .= \mb_strlen($val, 'UTF-8') . $val;
                 }
             }
         }

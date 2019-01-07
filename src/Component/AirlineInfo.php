@@ -1,11 +1,9 @@
 <?php
-
 namespace PayU\Alu\Component;
 
 /**
- * AirlineInfo Class for AIRLINE_INFO parameter
- * 
- * @package PayU\Alu
+ * Class AirlineInfo
+ * @package PayU\Alu\Component
  */
 class AirlineInfo implements Component
 {
@@ -120,7 +118,8 @@ class AirlineInfo implements Component
      * @param string $destinationAirport Destination airport code (max. 3 chars)
      * @param string $airlineCode Airline 2-letters code
      * @param string $serviceClass Ticket type (class) (economy, business class, etc.) (1 char)
-     * @param int $stopover Displays the possibility of stop-over for the given ticket; 1 = Stop-over is permitted, 0 otherwise
+     * @param int $stopover Displays the possibility of stop-over for the given ticket; 1 = Stop-over
+     * is permitted, 0 otherwise
      * @param string $fareCode Tariff code (max. 6 chars)
      * @param string $flightNumber Flight number (max. 5 chars)
      *

@@ -16,15 +16,7 @@
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <blacklist>
-            <directory>tests/old/</directory>
-        </blacklist>
-    </filter>
-
     <php>
         <ini name="memory_limit" value="256M"/>
     </php>
-
 </phpunit>

@@ -4,16 +4,16 @@
  */
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
-use PayU\Alu\Component\Billing;
 use PayU\Alu\Client;
+use PayU\Alu\Component\Billing;
 use PayU\Alu\Component\Delivery;
-use PayU\Alu\MerchantConfig;
 use PayU\Alu\Component\Order;
 use PayU\Alu\Component\Product;
-use PayU\Alu\Request;
+use PayU\Alu\Component\Request;
 use PayU\Alu\Component\User;
-use PayU\Alu\Exception\ConnectionException;
 use PayU\Alu\Exception\ClientException;
+use PayU\Alu\Exception\ConnectionException;
+use PayU\Alu\MerchantConfig;
 
 /**
  * Create configuration with params:
@@ -141,7 +141,6 @@ try {
     $response = $client->pay($request);
 
     echo $response->getReturnMessage() . ' ' . $response->getRefno() . ' ' . $response->getUrlRedirect();
-
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {

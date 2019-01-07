@@ -1,7 +1,6 @@
 <?php
 namespace PayU\Alu\Test\Transformer;
 
-
 use PayU\Alu\Component\AirlineInfo;
 use PayU\Alu\Component\Billing;
 use PayU\Alu\Transformer\AirlineInfoTransformer;

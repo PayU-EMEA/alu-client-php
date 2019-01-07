@@ -1,7 +1,5 @@
 <?php
-
 namespace PayU\Alu\Component;
-
 
 class Product implements Component
 {
@@ -125,7 +123,7 @@ class Product implements Component
      */
     public function withPriceType($priceType = self::PRICE_TYPE_NET)
     {
-        if(!in_array($priceType, array(self::PRICE_TYPE_NET, self::PRICE_TYPE_GROSS))){
+        if (!in_array($priceType, array(self::PRICE_TYPE_NET, self::PRICE_TYPE_GROSS))) {
             throw new \Exception("Price type is not valid.");
         }
 
@@ -174,7 +172,8 @@ class Product implements Component
     /**
      * @return string
      */
-    public function getPriceType(){
+    public function getPriceType()
+    {
         return $this->priceType;
     }
 
@@ -241,6 +240,4 @@ class Product implements Component
     {
         return $this->productVersion;
     }
-
-
 }
