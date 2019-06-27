@@ -17,7 +17,6 @@ use PayU\Alu\User;
 use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Exceptions\ClientException;
 
-
 /**
  * Create configuration with params:
  *
@@ -194,10 +193,8 @@ try {
     }
 
     echo $response->getStatus(). ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
-
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }
-

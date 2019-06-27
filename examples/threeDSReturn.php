@@ -35,14 +35,12 @@ try {
     $threeDSResponse = $client->handleThreeDSReturnResponse($_POST);
 
     if ($threeDSResponse->getStatus() == 'SUCCESS') {
-
         echo $threeDSResponse->getReturnMessage();
         die('Success. PAYU RefNo =' . $threeDSResponse->getRefno());
     } else {
         echo $threeDSResponse->getReturnMessage();
         die('FAIL. PAYU RefNo =' . $threeDSResponse->getRefno());
     }
-
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {

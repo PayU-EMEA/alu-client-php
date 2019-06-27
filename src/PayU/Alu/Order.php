@@ -515,5 +515,4 @@ class Order
     {
         $this->storedCredentials = $storedCredentials;
     }
-
 }

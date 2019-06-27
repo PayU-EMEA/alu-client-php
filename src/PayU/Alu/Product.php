@@ -2,7 +2,6 @@
 
 namespace PayU\Alu;
 
-
 class Product
 {
     const PRICE_TYPE_NET = 'NET';
@@ -125,7 +124,7 @@ class Product
      */
     public function withPriceType($priceType = self::PRICE_TYPE_NET)
     {
-        if(!in_array($priceType, array(self::PRICE_TYPE_NET, self::PRICE_TYPE_GROSS))){
+        if (!in_array($priceType, array(self::PRICE_TYPE_NET, self::PRICE_TYPE_GROSS))) {
             throw new \Exception("Price type is not valid.");
         }
 
@@ -174,7 +173,8 @@ class Product
     /**
      * @return string
      */
-    public function getPriceType(){
+    public function getPriceType()
+    {
         return $this->priceType;
     }
 
@@ -241,6 +241,4 @@ class Product
     {
         return $this->productVersion;
     }
-
-
 }

@@ -141,7 +141,6 @@ try {
     $response = $client->pay($request);
 
     echo $response->getReturnMessage() . ' ' . $response->getRefno() . ' ' . $response->getUrlRedirect();
-
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {

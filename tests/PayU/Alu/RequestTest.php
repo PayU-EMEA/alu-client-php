@@ -2,7 +2,6 @@
 
 namespace PayU\Alu;
 
-
 class RequestTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -209,7 +208,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $this->request->getRequestParams());
         $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_USE_TYPE, $this->request->getRequestParams());
-
     }
 
     public function testWhenStoredCredentialsRecurringSubsequentTransaction()
@@ -229,7 +227,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($result, $this->request->getRequestParams());
         $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE, $this->request->getRequestParams());
-
     }
 
     public function testWhenStoredCredentialsCardOnFileCardholderInitiatedTransaction()

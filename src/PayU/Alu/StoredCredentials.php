@@ -75,6 +75,4 @@ class StoredCredentials
     {
         $this->storedCredentialsUseId = $storedCredentialsUseId;
     }
-
-
 }

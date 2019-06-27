@@ -1,6 +1,7 @@
 <?php
 
 namespace PayU\Alu;
+
 use PayU\Alu\Exceptions\ClientException;
 
 /**

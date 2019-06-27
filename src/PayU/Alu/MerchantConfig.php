@@ -2,7 +2,6 @@
 
 namespace PayU\Alu;
 
-
 class MerchantConfig
 {
     /**

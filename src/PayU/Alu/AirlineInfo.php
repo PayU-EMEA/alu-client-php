@@ -4,7 +4,7 @@ namespace PayU\Alu;
 
 /**
  * AirlineInfo Class for AIRLINE_INFO parameter
- * 
+ *
  * @package PayU\Alu
  */
 class AirlineInfo
