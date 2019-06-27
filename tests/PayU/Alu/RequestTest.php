@@ -226,8 +226,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
         $this->assertEquals($result, $this->request->getRequestParams());
-        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
-            $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(
+            StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
+            $this->request->getRequestParams()
+        );
     }
 
     public function testWhenStoredCredentialsCardOnFileCardholderInitiatedTransaction()
@@ -246,8 +248,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
         $this->assertEquals($result, $this->request->getRequestParams());
-        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
-            $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(
+            StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
+            $this->request->getRequestParams()
+        );
     }
 
     public function testWhenStoredCredentialsCardOnFileMerchantInitiatedTransaction()
@@ -266,8 +270,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
         $this->assertEquals($result, $this->request->getRequestParams());
-        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
-            $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(
+            StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
+            $this->request->getRequestParams()
+        );
     }
 
     /**

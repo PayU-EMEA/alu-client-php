@@ -140,8 +140,10 @@ $delivery->withAddressLine1('Address1')
  *
  * Token
  */
-$cardToken = new CardToken('g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==',
-    '123');
+$cardToken = new CardToken(
+    'g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==',
+    '123'
+);
 
 /**
  * Create new Request with params:
