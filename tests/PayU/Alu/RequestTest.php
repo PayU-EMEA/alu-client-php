@@ -132,7 +132,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         );
         $this->order->withAirlineInfo($airlineInfo);
 
-        $airlineInfoResult = [
+        $airlineInfoResult = array(
             'AIRLINE_INFO' => array(
                 'PASSENGER_NAME' => 'John Doe',
                 'TICKET_NUMBER' => 'TICKET_1234',
@@ -163,7 +163,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-        ];
+        );
 
         $expectedRequest = $this->createExpectedRequest();
 
@@ -172,62 +172,160 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result, $this->request->getRequestParams());
     }
 
+    public function testWhenStoredCredentialsConsentTransaction()
+    {
+
+        $storedCredentials = new StoredCredentials();
+        $storedCredentials->setStoredCredentialsConsentType(StoredCredentials::CONSENT_TYPE_ON_DEMAND);
+
+        $this->order->setStoredCredentials($storedCredentials);
+
+        $storedCredentialsResult = array(
+            StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE => $storedCredentials->getStoredCredentialsConsentType()
+        );
+
+        $expectedRequest = $this->createExpectedRequest();
+
+        $result = array_merge($storedCredentialsResult, $expectedRequest);
+
+        $this->assertEquals($result, $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_USE_TYPE, $this->request->getRequestParams());
+    }
+
+    public function testWhenStoredCredentialsRecurringConsentTransaction()
+    {
+        $storedCredentials = new StoredCredentials();
+        $storedCredentials->setStoredCredentialsConsentType(StoredCredentials::CONSENT_TYPE_RECURRING);
+
+        $this->order->setStoredCredentials($storedCredentials);
+
+        $storedCredentialsResult = array(
+            StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE => $storedCredentials->getStoredCredentialsConsentType()
+        );
+
+        $expectedRequest = $this->createExpectedRequest();
+
+        $result = array_merge($storedCredentialsResult, $expectedRequest);
+
+        $this->assertEquals($result, $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_USE_TYPE, $this->request->getRequestParams());
+
+    }
+
+    public function testWhenStoredCredentialsRecurringSubsequentTransaction()
+    {
+        $storedCredentials = new StoredCredentials();
+        $storedCredentials->setStoredCredentialsUseType(StoredCredentials::USE_TYPE_RECURRING);
+
+        $this->order->setStoredCredentials($storedCredentials);
+
+        $storedCredentialsResult = array(
+            StoredCredentials::STORED_CREDENTIALS_USE_TYPE => $storedCredentials->getStoredCredentialsUseType()
+        );
+
+        $expectedRequest = $this->createExpectedRequest();
+
+        $result = array_merge($storedCredentialsResult, $expectedRequest);
+
+        $this->assertEquals($result, $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE, $this->request->getRequestParams());
+
+    }
+
+    public function testWhenStoredCredentialsCardOnFileCardholderInitiatedTransaction()
+    {
+        $storedCredentials = new StoredCredentials();
+        $storedCredentials->setStoredCredentialsUseType(StoredCredentials::USE_TYPE_CARDHOLDER);
+
+        $this->order->setStoredCredentials($storedCredentials);
+
+        $storedCredentialsResult = array(
+            StoredCredentials::STORED_CREDENTIALS_USE_TYPE => $storedCredentials->getStoredCredentialsUseType()
+        );
+
+        $expectedRequest = $this->createExpectedRequest();
+
+        $result = array_merge($storedCredentialsResult, $expectedRequest);
+
+        $this->assertEquals($result, $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE, $this->request->getRequestParams());
+    }
+
+    public function testWhenStoredCredentialsCardOnFileMerchantInitiatedTransaction()
+    {
+        $storedCredentials = new StoredCredentials();
+        $storedCredentials->setStoredCredentialsUseType(StoredCredentials::USE_TYPE_MERCHANT);
+
+        $this->order->setStoredCredentials($storedCredentials);
+
+        $storedCredentialsResult = array(
+            StoredCredentials::STORED_CREDENTIALS_USE_TYPE => $storedCredentials->getStoredCredentialsUseType()
+        );
+
+        $expectedRequest = $this->createExpectedRequest();
+
+        $result = array_merge($storedCredentialsResult, $expectedRequest);
+
+        $this->assertEquals($result, $this->request->getRequestParams());
+        $this->assertArrayNotHasKey(StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE, $this->request->getRequestParams());
+    }
+
     /**
      * @return array
      */
     public function createExpectedRequest()
     {
         $result = array(
-            'ALIAS' => NULL,
+            'ALIAS' => null,
             'BACK_REF' => 'http://path/to/your/returnUrlScript',
             'BILL_ADDRESS' => 'ADDRESS1',
             'BILL_ADDRESS2' => 'ADDRESS2',
-            'BILL_BANK' => NULL,
-            'BILL_BANKACCOUNT' => NULL,
-            'BILL_CIISSUER' => NULL,
+            'BILL_BANK' => null,
+            'BILL_BANKACCOUNT' => null,
+            'BILL_CIISSUER' => null,
             'BILL_CINUMBER' => '324322',
-            'BILL_CISERIAL' => NULL,
-            'BILL_CITYPE' => NULL,
+            'BILL_CISERIAL' => null,
+            'BILL_CITYPE' => null,
             'BILL_CITY' => 'Bucuresti',
-            'BILL_CNP' => NULL,
-            'BILL_COMPANY' => NULL,
+            'BILL_CNP' => null,
+            'BILL_COMPANY' => null,
             'BILL_COUNTRYCODE' => 'RO',
             'BILL_EMAIL' => 'john.doe@mail.com',
-            'BILL_FAX' => NULL,
-            'BILL_FISCALCODE' => NULL,
+            'BILL_FAX' => null,
+            'BILL_FISCALCODE' => null,
             'BILL_FNAME' => 'John',
             'BILL_LNAME' => 'Doe',
             'BILL_PHONE' => '0755167887',
-            'BILL_REGNUMBER' => NULL,
-            'BILL_STATE' => NULL,
-            'BILL_ZIPCODE' => NULL,
-            'CARD_PROGRAM_NAME' => NULL,
+            'BILL_REGNUMBER' => null,
+            'BILL_STATE' => null,
+            'BILL_ZIPCODE' => null,
+            'CARD_PROGRAM_NAME' => null,
             'CC_CVV' => 123,
             'CC_NUMBER' => '5431210111111111',
-            'CC_NUMBER_RECIPIENT' => NULL,
+            'CC_NUMBER_RECIPIENT' => null,
             'CC_OWNER' => 'test',
             'CLIENT_IP' => '127.0.0.1',
             'CLIENT_TIME' => '',
             'DELIVERY_ADDRESS' => 'ADDRESS1',
             'DELIVERY_ADDRESS2' => 'ADDRESS2',
             'DELIVERY_CITY' => 'Istanbul',
-            'DELIVERY_COMPANY' => NULL,
+            'DELIVERY_COMPANY' => null,
             'DELIVERY_COUNTRYCODE' => 'RO',
             'DELIVERY_EMAIL' => 'john.doe@mail.com',
             'DELIVERY_FNAME' => 'John',
             'DELIVERY_LNAME' => 'Doe',
             'DELIVERY_PHONE' => '0755167887',
-            'DELIVERY_STATE' => NULL,
-            'DELIVERY_ZIPCODE' => NULL,
-            'DISCOUNT' => NULL,
+            'DELIVERY_STATE' => null,
+            'DELIVERY_ZIPCODE' => null,
+            'DISCOUNT' => null,
             'EXP_MONTH' => '11',
             'EXP_YEAR' => 2016,
             'MERCHANT' => 'MERCHANT_CODE',
             'ORDER_DATE' => '2014-09-19 10:00:00',
             'ORDER_MPLACE_MERCHANT' =>
                 array(
-                    0 => NULL,
-                    1 => NULL,
+                    0 => null,
+                    1 => null,
                 ),
             'ORDER_PCODE' =>
                 array(
@@ -236,13 +334,13 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                 ),
             'ORDER_PGROUP' =>
                 array(
-                    0 => NULL,
-                    1 => NULL,
+                    0 => null,
+                    1 => null,
                 ),
             'ORDER_PINFO' =>
                 array(
-                    0 => NULL,
-                    1 => NULL,
+                    0 => null,
+                    1 => null,
                 ),
             'ORDER_PNAME' =>
                 array(
@@ -260,17 +358,17 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                     1 => 1,
                 ),
             'ORDER_REF' => 'MerchantOrderRef',
-            'ORDER_SHIPPING' => NULL,
+            'ORDER_SHIPPING' => null,
             'ORDER_VER' =>
                 array(
-                    0 => NULL,
-                    1 => NULL,
+                    0 => null,
+                    1 => null,
                 ),
             'PAY_METHOD' => 'CCVISAMC',
             'PRICES_CURRENCY' => 'RON',
             'SELECTED_INSTALLMENTS_NUMBER' => '2',
-            'USE_LOYALTY_POINTS' => NULL,
-            'LOYALTY_POINTS_AMOUNT' => NULL,
+            'USE_LOYALTY_POINTS' => null,
+            'LOYALTY_POINTS_AMOUNT' => null,
             'CAMPAIGN_TYPE' => 'EXTRA_INSTALLMENTS',
             'ORDER_PRICE_TYPE' =>
                 array(

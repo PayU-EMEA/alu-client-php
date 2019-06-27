@@ -60,8 +60,12 @@ class Request
      * @param AbstractCommonAddress $delivery
      * @param User $user
      */
-    public function  __construct(MerchantConfig $merchantConfig, Order $order, Billing $billing,
-                                 AbstractCommonAddress $delivery = null, User $user = null
+    public function __construct(
+        MerchantConfig $merchantConfig,
+        Order $order,
+        Billing $billing,
+        AbstractCommonAddress $delivery = null,
+        User $user = null
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;
@@ -211,6 +215,19 @@ class Request
                 'TRAVEL_AGENCY_NAME' => $this->order->getAirlineInfo()->getTravelAgencyName(),
                 'FLIGHT_SEGMENTS' => $this->order->getAirlineInfo()->getFlightSegments(),
             );
+        }
+
+        $storedCredentials = $this->order->getStoredCredentials();
+        if ($storedCredentials instanceof StoredCredentials) {
+            if (!is_null($storedCredentials->getStoredCredentialsConsentType())) {
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] = $storedCredentials->getStoredCredentialsConsentType();
+            }
+            if (!is_null($storedCredentials->getStoredCredentialsUseType())) {
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] = $storedCredentials->getStoredCredentialsUseType();
+            }
+            if (!is_null($storedCredentials->getStoredCredentialsUseId())) {
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] = $storedCredentials->getStoredCredentialsUseId();
+            }
         }
 
         if (isset($this->fx)) {

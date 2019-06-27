@@ -104,6 +104,9 @@ class Order
      */
     private $airlineInfo;
 
+    /** @var StoredCredentials */
+    private $storedCredentials;
+
     /**
      * @param string $name
      * @param string $value
@@ -495,6 +498,22 @@ class Order
     public function getAirlineInfo()
     {
         return $this->airlineInfo;
+    }
+
+    /**
+     * @return StoredCredentials
+     */
+    public function getStoredCredentials()
+    {
+        return $this->storedCredentials;
+    }
+
+    /**
+     * @param StoredCredentials $storedCredentials
+     */
+    public function setStoredCredentials(StoredCredentials $storedCredentials)
+    {
+        $this->storedCredentials = $storedCredentials;
     }
 
 }
