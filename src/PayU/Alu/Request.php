@@ -220,13 +220,16 @@ class Request
         $storedCredentials = $this->order->getStoredCredentials();
         if ($storedCredentials instanceof StoredCredentials) {
             if (!is_null($storedCredentials->getStoredCredentialsConsentType())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] = $storedCredentials->getStoredCredentialsConsentType();
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
+                    $storedCredentials->getStoredCredentialsConsentType();
             }
             if (!is_null($storedCredentials->getStoredCredentialsUseType())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] = $storedCredentials->getStoredCredentialsUseType();
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
+                    $storedCredentials->getStoredCredentialsUseType();
             }
             if (!is_null($storedCredentials->getStoredCredentialsUseId())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] = $storedCredentials->getStoredCredentialsUseId();
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
+                    $storedCredentials->getStoredCredentialsUseId();
             }
         }
 

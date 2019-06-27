@@ -245,7 +245,8 @@ class Order
     }
 
     /**
-     * @deprecated This method will be removed in a later version. You should use Card::enableTokenCreation() to enable token creation.
+     * @deprecated This method will be removed in a later version.
+     * @deprecated You should use Card::enableTokenCreation() to enable token creation.
      * @param boolean $luEnabledToken
      * @return $this
      */
