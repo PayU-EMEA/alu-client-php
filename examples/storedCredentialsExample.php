@@ -145,10 +145,35 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '12', '2020', '123', 'Card Owner Name');
+$card = new Card(
+    '4111111111111111',
+    '12',
+    '2020',
+    '123',
+    'Card Owner Name'
+);
 
+
+/**
+ *  Add stored credentials data.
+ *
+ *  consentType - onDemand : The initial transaction in which the customer agrees to using stored card information
+ * for subsequent transactions
+ *
+ *  consentType - recurring : The initial transaction in which the customer agrees to using stored card information
+ * for subsequent scheduled (recurring) transactions
+ *
+ *  useType - recurring : A transaction in a series of transactions that use stored card information and that are
+ * processed at fixed, regular intervals
+ *
+ *  useType - cardholder : Used for card-on-file transactions, initiated by the customer.
+ *  useType - merchant : Used for unscheduled card-on-file transactions, initiated by the merchant.
+ *
+ */
 
 $storedCredentials = new StoredCredentials();
+
+// consentType = onDemand
 $storedCredentials->setStoredCredentialsConsentType(StoredCredentials::CONSENT_TYPE_ON_DEMAND);
 
 $order->setStoredCredentials($storedCredentials);
@@ -196,7 +221,7 @@ try {
         die();
     }
 
-    echo $response->getStatus(). ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {
