@@ -497,5 +497,4 @@ class Order
     {
         return $this->airlineInfo;
     }
-
 }

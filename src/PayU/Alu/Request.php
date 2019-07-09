@@ -98,7 +98,8 @@ class Request
     /**
      * @param StoredCredentials $storedCredentials
      */
-    public function setStoredCredentials(StoredCredentials $storedCredentials) {
+    public function setStoredCredentials(StoredCredentials $storedCredentials)
+    {
         $this->storedCredentials = $storedCredentials;
     }
 
@@ -153,7 +154,6 @@ class Request
         }
 
         if (!is_null($this->storedCredentials)) {
-
             if (!is_null($this->storedCredentials->getStoredCredentialsConsentType())) {
                 $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
                     $this->storedCredentials->getStoredCredentialsConsentType();
