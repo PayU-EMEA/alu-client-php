@@ -29,6 +29,11 @@ class Request
     private $cardToken = null;
 
     /**
+     * @var StoredCredentials
+     */
+    private $storedCredentials = null;
+
+    /**
      * @var Billing
      */
     private $billingData;
@@ -90,6 +95,13 @@ class Request
         $this->cardToken = $cardToken;
     }
 
+    /**
+     * @param StoredCredentials $storedCredentials
+     */
+    public function setStoredCredentials(StoredCredentials $storedCredentials) {
+        $this->storedCredentials = $storedCredentials;
+    }
+
     public function setFx(FX $fx)
     {
         $this->fx = $fx;
@@ -137,6 +149,24 @@ class Request
             $this->internalArray['CC_OWNER'] = $this->card->getCardOwnerName();
             if ($this->card->isEnableTokenCreation()) {
                 $this->internalArray['LU_ENABLE_TOKEN'] = '1';
+            }
+        }
+
+        if (!is_null($this->storedCredentials)) {
+
+            if (!is_null($this->storedCredentials->getStoredCredentialsConsentType())) {
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
+                    $this->storedCredentials->getStoredCredentialsConsentType();
+            }
+
+            if (!is_null($this->storedCredentials->getStoredCredentialsUseType())) {
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
+                    $this->storedCredentials->getStoredCredentialsUseType();
+
+                if (!is_null($this->storedCredentials->getStoredCredentialsUseId())) {
+                    $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
+                        $this->storedCredentials->getStoredCredentialsUseId();
+                }
             }
         }
 
@@ -215,22 +245,6 @@ class Request
                 'TRAVEL_AGENCY_NAME' => $this->order->getAirlineInfo()->getTravelAgencyName(),
                 'FLIGHT_SEGMENTS' => $this->order->getAirlineInfo()->getFlightSegments(),
             );
-        }
-
-        $storedCredentials = $this->order->getStoredCredentials();
-        if ($storedCredentials instanceof StoredCredentials) {
-            if (!is_null($storedCredentials->getStoredCredentialsConsentType())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
-                    $storedCredentials->getStoredCredentialsConsentType();
-            }
-            if (!is_null($storedCredentials->getStoredCredentialsUseType())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
-                    $storedCredentials->getStoredCredentialsUseType();
-            }
-            if (!is_null($storedCredentials->getStoredCredentialsUseId())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
-                    $storedCredentials->getStoredCredentialsUseId();
-            }
         }
 
         if (isset($this->fx)) {

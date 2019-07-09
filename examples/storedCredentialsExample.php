@@ -155,6 +155,23 @@ $card = new Card(
 
 
 /**
+ * Create new Request with params:
+ *
+ * Config object
+ * Order object
+ * Billing object
+ * Delivery (or Billing object again, if you want to have the delivery address the same as the billing address)
+ * User object
+ */
+$request = new Request($cfg, $order, $billing, $delivery, $user);
+
+/**
+ * Add the Credit Card to the Request
+ */
+$request->setCard($card);
+
+
+/**
  *  Add stored credentials data.
  *
  *  consentType - onDemand : The initial transaction in which the customer agrees to using stored card information
@@ -170,29 +187,14 @@ $card = new Card(
  *  useType - merchant : Used for unscheduled card-on-file transactions, initiated by the merchant.
  *
  */
-
 $storedCredentials = new StoredCredentials();
-
-// consentType = onDemand
 $storedCredentials->setStoredCredentialsConsentType(StoredCredentials::CONSENT_TYPE_ON_DEMAND);
 
-$order->setStoredCredentials($storedCredentials);
-
 /**
- * Create new Request with params:
- *
- * Config object
- * Order object
- * Billing object
- * Delivery (or Billing object again, if you want to have the delivery address the same as the billing address)
- * User object
+ * Add Stored Credentials to the Request
  */
-$request = new Request($cfg, $order, $billing, $delivery, $user);
+$request->setStoredCredentials($storedCredentials);
 
-/**
- * Add the Credit Card to the Request
- */
-$request->setCard($card);
 
 /**
  * Create new API Client, passing the Config object as parameter
