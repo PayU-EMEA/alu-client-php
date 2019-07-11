@@ -177,7 +177,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $storedCredentials = new StoredCredentials();
         $storedCredentials->setStoredCredentialsConsentType(StoredCredentials::CONSENT_TYPE_ON_DEMAND);
 
-        $this->order->setStoredCredentials($storedCredentials);
+        $this->request->setStoredCredentials($storedCredentials);
 
         $storedCredentialsResult = array(
             StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE => $storedCredentials->getStoredCredentialsConsentType()
@@ -196,7 +196,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $storedCredentials = new StoredCredentials();
         $storedCredentials->setStoredCredentialsConsentType(StoredCredentials::CONSENT_TYPE_RECURRING);
 
-        $this->order->setStoredCredentials($storedCredentials);
+        $this->request->setStoredCredentials($storedCredentials);
 
         $storedCredentialsResult = array(
             StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE => $storedCredentials->getStoredCredentialsConsentType()
@@ -215,7 +215,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $storedCredentials = new StoredCredentials();
         $storedCredentials->setStoredCredentialsUseType(StoredCredentials::USE_TYPE_RECURRING);
 
-        $this->order->setStoredCredentials($storedCredentials);
+        $this->request->setStoredCredentials($storedCredentials);
 
         $storedCredentialsResult = array(
             StoredCredentials::STORED_CREDENTIALS_USE_TYPE => $storedCredentials->getStoredCredentialsUseType()
@@ -237,7 +237,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $storedCredentials = new StoredCredentials();
         $storedCredentials->setStoredCredentialsUseType(StoredCredentials::USE_TYPE_CARDHOLDER);
 
-        $this->order->setStoredCredentials($storedCredentials);
+        $this->request->setStoredCredentials($storedCredentials);
 
         $storedCredentialsResult = array(
             StoredCredentials::STORED_CREDENTIALS_USE_TYPE => $storedCredentials->getStoredCredentialsUseType()
@@ -259,7 +259,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $storedCredentials = new StoredCredentials();
         $storedCredentials->setStoredCredentialsUseType(StoredCredentials::USE_TYPE_MERCHANT);
 
-        $this->order->setStoredCredentials($storedCredentials);
+        $this->request->setStoredCredentials($storedCredentials);
 
         $storedCredentialsResult = array(
             StoredCredentials::STORED_CREDENTIALS_USE_TYPE => $storedCredentials->getStoredCredentialsUseType()
