@@ -2,17 +2,17 @@
 /**
  * Include composer class autoloader
  */
-require_once dirname(__FILE__) . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use PayU\Alu\Billing;
 use PayU\Alu\Card;
 use PayU\Alu\Client;
 use PayU\Alu\Delivery;
-use PayU\Alu\FX;
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Order;
 use PayU\Alu\Product;
 use PayU\Alu\Request;
+use PayU\Alu\StoredCredentials;
 use PayU\Alu\User;
 use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Exceptions\ClientException;
@@ -145,9 +145,14 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '12', '2025', '123', 'Card Owner Name');
+$card = new Card(
+    '4111111111111111',
+    '12',
+    '2020',
+    '123',
+    'Card Owner Name'
+);
 
-$fx = new FX("EUR", 0.2462);
 
 /**
  * Create new Request with params:
@@ -158,12 +163,38 @@ $fx = new FX("EUR", 0.2462);
  * Delivery (or Billing object again, if you want to have the delivery address the same as the billing address)
  * User object
  */
-$request = new Request($cfg, $order, $billing, $delivery, $user, $fx);
+$request = new Request($cfg, $order, $billing, $delivery, $user);
 
 /**
  * Add the Credit Card to the Request
  */
 $request->setCard($card);
+
+
+/**
+ *  Add stored credentials data.
+ *
+ *  consentType - onDemand : The initial transaction in which the customer agrees to using stored card information
+ * for subsequent transactions
+ *
+ *  consentType - recurring : The initial transaction in which the customer agrees to using stored card information
+ * for subsequent scheduled (recurring) transactions
+ *
+ *  useType - recurring : A transaction in a series of transactions that use stored card information and that are
+ * processed at fixed, regular intervals
+ *
+ *  useType - cardholder : Used for card-on-file transactions, initiated by the customer.
+ *  useType - merchant : Used for unscheduled card-on-file transactions, initiated by the merchant.
+ *
+ */
+$storedCredentials = new StoredCredentials();
+$storedCredentials->setStoredCredentialsConsentType(StoredCredentials::CONSENT_TYPE_ON_DEMAND);
+
+/**
+ * Add Stored Credentials to the Request
+ */
+$request->setStoredCredentials($storedCredentials);
+
 
 /**
  * Create new API Client, passing the Config object as parameter
@@ -192,7 +223,7 @@ try {
         die();
     }
 
-    echo $response->getStatus(). ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {

@@ -50,7 +50,11 @@ class HTTPClient
 
         $result = curl_exec($this->handler);
         if (curl_errno($this->handler) > 0) {
-            throw new ConnectionException(sprintf('Curl error "%s" when accessing url: "%s"', curl_error($this->handler), $url));
+            throw new ConnectionException(sprintf(
+                'Curl error "%s" when accessing url: "%s"',
+                curl_error($this->handler),
+                $url
+            ));
         }
         return $result;
     }

@@ -451,8 +451,7 @@ class Response
      */
     public function isThreeDs()
     {
-        if (
-            $this->status == 'SUCCESS' &&
+        if ($this->status == 'SUCCESS' &&
             $this->returnCode == '3DS_ENROLLED' &&
             !empty($this->threeDsUrl)
         ) {

@@ -29,6 +29,11 @@ class Request
     private $cardToken = null;
 
     /**
+     * @var StoredCredentials
+     */
+    private $storedCredentials = null;
+
+    /**
      * @var Billing
      */
     private $billingData;
@@ -60,8 +65,12 @@ class Request
      * @param AbstractCommonAddress $delivery
      * @param User $user
      */
-    public function  __construct(MerchantConfig $merchantConfig, Order $order, Billing $billing,
-                                 AbstractCommonAddress $delivery = null, User $user = null
+    public function __construct(
+        MerchantConfig $merchantConfig,
+        Order $order,
+        Billing $billing,
+        AbstractCommonAddress $delivery = null,
+        User $user = null
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;
@@ -84,6 +93,14 @@ class Request
     public function setCardToken(CardToken $cardToken)
     {
         $this->cardToken = $cardToken;
+    }
+
+    /**
+     * @param StoredCredentials $storedCredentials
+     */
+    public function setStoredCredentials(StoredCredentials $storedCredentials)
+    {
+        $this->storedCredentials = $storedCredentials;
     }
 
     public function setFx(FX $fx)
@@ -133,6 +150,23 @@ class Request
             $this->internalArray['CC_OWNER'] = $this->card->getCardOwnerName();
             if ($this->card->isEnableTokenCreation()) {
                 $this->internalArray['LU_ENABLE_TOKEN'] = '1';
+            }
+        }
+
+        if (!is_null($this->storedCredentials)) {
+            if (!is_null($this->storedCredentials->getStoredCredentialsConsentType())) {
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
+                    $this->storedCredentials->getStoredCredentialsConsentType();
+            }
+
+            if (!is_null($this->storedCredentials->getStoredCredentialsUseType())) {
+                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
+                    $this->storedCredentials->getStoredCredentialsUseType();
+
+                if (!is_null($this->storedCredentials->getStoredCredentialsUseId())) {
+                    $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
+                        $this->storedCredentials->getStoredCredentialsUseId();
+                }
             }
         }
 

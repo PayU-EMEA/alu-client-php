@@ -40,7 +40,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->mockHTTPClient = $this->getMockBuilder('PayU\Alu\HTTPClient')
             ->disableOriginalConstructor()
             ->getMock();
-
     }
 
     public function handleThreeDSReturnResponseProvider()

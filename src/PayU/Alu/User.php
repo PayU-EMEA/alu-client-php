@@ -39,8 +39,8 @@ class User
     /**
      * @return string
      */
-    public function getClientTime(){
+    public function getClientTime()
+    {
         return $this->clientTime;
     }
 }
-
