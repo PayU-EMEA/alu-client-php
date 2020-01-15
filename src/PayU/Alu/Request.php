@@ -33,6 +33,10 @@ class Request
      */
     private $storedCredentials = null;
 
+
+    /** @var $threeDSTwoZero StrongCustomerAuthentication */
+    private $strongCustomerAuthentication;
+
     /**
      * @var Billing
      */
@@ -103,6 +107,14 @@ class Request
         $this->storedCredentials = $storedCredentials;
     }
 
+    /**
+     * @param StrongCustomerAuthentication $strongCustomerAuthentication
+     */
+    public function setStrongCustomerAuthentication(StrongCustomerAuthentication $strongCustomerAuthentication)
+    {
+        $this->strongCustomerAuthentication = $strongCustomerAuthentication;
+    }
+
     public function setFx(FX $fx)
     {
         $this->fx = $fx;
@@ -170,6 +182,7 @@ class Request
             }
         }
 
+
         $this->internalArray['SELECTED_INSTALLMENTS_NUMBER'] = $this->order->getInstallmentsNumber();
         $this->internalArray['CARD_PROGRAM_NAME'] = $this->order->getCardProgramName();
 
@@ -226,6 +239,7 @@ class Request
             $this->internalArray['DELIVERY_EMAIL'] = $this->deliveryData->getEmail();
         }
 
+
         $this->internalArray['CC_NUMBER_RECIPIENT'] = $this->order->getCcNumberRecipient();
 
         $this->internalArray['USE_LOYALTY_POINTS'] = $this->order->getUseLoyaltyPoints();
@@ -252,14 +266,95 @@ class Request
             $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $this->fx->getAuthorizationExchangeRate();
         }
 
+
         if (is_array($this->order->getCustomParams())) {
             foreach ($this->order->getCustomParams() as $paramName => $paramValue) {
                 $this->internalArray[$paramName] = $paramValue;
             }
         }
 
+        $threeDsTwoZeroParams = $this->strongCustomerAuthentication;
+        if ($threeDsTwoZeroParams instanceof StrongCustomerAuthentication) {
+            $this->internalArray = array_merge($this->internalArray, $this->threeDsTwoParams());
+        }
+
         ksort($this->internalArray);
         return $this->internalArray;
+    }
+
+    private function threeDsTwoParams()
+    {
+        return array(
+            'STRONG_CUSTOMER_AUTHENTICATION' => $this->strongCustomerAuthentication->getStrongCustomerAuthentication(),
+            'ADDRESS_MATCH' => $this->strongCustomerAuthentication->getAddressMatch(),
+            'BROWSER_ACCEPT_HEADER' => $this->strongCustomerAuthentication->getBrowserAcceptHeaders(),
+            'BROWSER_IP' => $this->strongCustomerAuthentication->getBrowserIP(),
+            'BROWSER_JAVA_ENABLED' => $this->strongCustomerAuthentication->getBrowserJavaEnabled(),
+            'BROWSER_LANGUAGE' => $this->strongCustomerAuthentication->getBrowserLanguage(),
+            'BROWSER_COLOR_DEPTH' => $this->strongCustomerAuthentication->getBrowserColorDepth(),
+            'BROWSER_SCREEN_HEIGHT' => $this->strongCustomerAuthentication->getBrowserScreenHeight(),
+            'BROWSER_SCREEN_WIDTH' => $this->strongCustomerAuthentication->getBrowserScreenWidth(),
+            'BROWSER_TIMEZONE' => $this->strongCustomerAuthentication->getBrowserTimezone(),
+            'BROWSER_USER_AGENT' => $this->strongCustomerAuthentication->getBrowserUserAgent(),
+            'BILL_ADDRESS3' => $this->strongCustomerAuthentication->getBillAddress3(),
+            'BILL_STATE_CODE' => $this->strongCustomerAuthentication->getBillStateCode(),
+            'HOME_PHONE_COUNTRY_PREFIX' => $this->strongCustomerAuthentication->getHomePhoneCountryPrefix(),
+            'HOME_PHONE_SUBSCRIBER' => $this->strongCustomerAuthentication->getHomePhoneSubscriber(),
+            'MOBILE_PHONE_COUNTRY_PREFIX' => $this->strongCustomerAuthentication->getMobilePhoneCountryPrefix(),
+            'MOBILE_PHONE_SUBSCRIBER' => $this->strongCustomerAuthentication->getMobilePhoneSubscriber(),
+            'WORK_PHONE_COUNTRY_PREFIX' => $this->strongCustomerAuthentication->getWorkPhoneCountryPrefix(),
+            'WORK_PHONE_SUBSCRIBER' => $this->strongCustomerAuthentication->getWorkPhoneSubscriber(),
+            'DELIVERY_ADDRESS3' => $this->strongCustomerAuthentication->getDeliveryAddress3(),
+            'DELIVERY_STATE_CODE' => $this->strongCustomerAuthentication->getDeliveryStateCode(),
+            'CARDHOLDER_FRAUD_ACTIVITY' => $this->strongCustomerAuthentication->getCardHolderFraudActivity(),
+            'DEVICE_CHANNEL' => $this->strongCustomerAuthentication->getDeviceChannel(),
+            'CHALLENGE_INDICATOR' => $this->strongCustomerAuthentication->getChallengeIndicator(),
+            'CHALLENGE_WINDOW_SIZE' => $this->strongCustomerAuthentication->getChallengeWindowSize(),
+            'ACCOUNT_ADDITIONAL_INFORMATION' => $this->strongCustomerAuthentication->getAccountAdditionalInformation(),
+            'SDK_REFERENCE_NUMBER' => $this->strongCustomerAuthentication->getSdkReferenceNumber(),
+            'SDK_MAXIMUM_TIMEOUT' => $this->strongCustomerAuthentication->getSdkMaximumTimeout(),
+            'SDK_APPLICATION_ID' => $this->strongCustomerAuthentication->getSdkApplicationId(),
+            'SDK_ENC_DATA' => $this->strongCustomerAuthentication->getSdkEncData(),
+            'SDK_TRANS_ID' => $this->strongCustomerAuthentication->getSdkTransId(),
+            'SDK_EPHEMERAL_PUB_KEY' => $this->strongCustomerAuthentication->getSdkEphemeralPubKey(),
+            'SDK_UI_TYPE' => $this->strongCustomerAuthentication->getSdkUiType(),
+            'SDK_INTERFACE' => $this->strongCustomerAuthentication->getSdkInterface(),
+            'TRANSACTION_TYPE' => $this->strongCustomerAuthentication->getTransactionType(),
+            'SHIPPING_INDICATOR' => $this->strongCustomerAuthentication->getShippingIndicator(),
+            'PREORDER_INDICATOR' => $this->strongCustomerAuthentication->getPreOrderIndicator(),
+            'PREORDER_DATE' => $this->strongCustomerAuthentication->getPreOrderDate(),
+            'DELIVERY_TIME_FRAME' => $this->strongCustomerAuthentication->getDeliveryTimeFrame(),
+            'REORDER_INDICATOR' => $this->strongCustomerAuthentication->getReOrderIndicator(),
+            'MERCHANT_FUNDS_AMOUNT' => $this->strongCustomerAuthentication->getMerchantFundsAmount(),
+            'MERCHANT_FUNDS_CURRENCY' => $this->strongCustomerAuthentication->getMerchantFundsCurrency(),
+            'RECURRING_FREQUENCY_DAYS' => $this->strongCustomerAuthentication->getRecurringFrequencyDays(),
+            'RECURRING_EXPIRY_DATE' => $this->strongCustomerAuthentication->getRecurringExpiryDate(),
+            'ACCOUNT_CREATE_DATE' => $this->strongCustomerAuthentication->getAccountCreateDate(),
+            'ACCOUNT_DELIVERY_ADDRESS_FIRST_USED_DATE' =>
+                $this->strongCustomerAuthentication->getAccountCreateDate(),
+            'ACCOUNT_DELIVERY_ADDRESS_USAGE_INDICATOR' =>
+                $this->strongCustomerAuthentication->getAccountDeliveryAddressUsageIndicator(),
+            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_YEAR' =>
+                $this->strongCustomerAuthentication->getAccountNumberOfTransactionsLastYear(),
+            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_DAY' =>
+                $this->strongCustomerAuthentication->getAccountNumberOfTransactionsLastDay(),
+            'ACCOUNT_NUMBER_OF_PURCHASES_LAST_SIX_MONTHS' =>
+                $this->strongCustomerAuthentication->getAccountNumberOfPurchasesLastSixMonths(),
+            'ACCOUNT_CHANGE_DATE' => $this->strongCustomerAuthentication->getAccountChangeDate(),
+            'ACCOUNT_CHANGE_INDICATOR' =>
+                $this->strongCustomerAuthentication->getAccountChangeIndicator(),
+            'ACCOUNT_AGE_INDICATOR' => $this->strongCustomerAuthentication->getAccountAgeIndicator(),
+            'ACCOUNT_PASSWORD_CHANGED_DATE' => $this->strongCustomerAuthentication->getAccountPasswordChangedDate(),
+            'ACCOUNT_PASSWORD_CHANGED_INDICATOR' =>
+                $this->strongCustomerAuthentication->getAccountPasswordChangedIndicator(),
+            'ACCOUNT_NAME_TO_RECIPIENT_MATCH' => $this->strongCustomerAuthentication->getAccountNameToRecipientMatch(),
+            'ACCOUNT_ADD_CARD_ATTEMPTS_DAY' => $this->strongCustomerAuthentication->getAccountAddCardAttemptsDay(),
+            'ACCOUNT_AUTH_METHOD' => $this->strongCustomerAuthentication->getAccountAuthMethod(),
+            'ACCOUNT_AUTH_DATETIME' => $this->strongCustomerAuthentication->getAccountAuthDateTime(),
+            'REQUESTOR_AUTHENTICATION_DATA' => $this->strongCustomerAuthentication->getRequestorAuthenticationData(),
+            'ACCOUNT_CARD_ADDED_INDICATOR' => $this->strongCustomerAuthentication->getAccountCardAddedIndicator(),
+            'ACCOUNT_CARD_ADDED_DATE' => $this->strongCustomerAuthentication->getAccountCardAddedDate()
+        );
     }
 
     /**
