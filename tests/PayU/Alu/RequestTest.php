@@ -466,7 +466,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         return $result;
     }
 
-    private function strongCustomerAuthenticationParams(StrongCustomerAuthentication $strongCustomerAuthentication )
+    private function strongCustomerAuthenticationParams(StrongCustomerAuthentication $strongCustomerAuthentication)
     {
         return array(
             'STRONG_CUSTOMER_AUTHENTICATION' => $strongCustomerAuthentication->getStrongCustomerAuthentication(),
@@ -514,11 +514,16 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'RECURRING_FREQUENCY_DAYS' => $strongCustomerAuthentication->getRecurringFrequencyDays(),
             'RECURRING_EXPIRY_DATE' => $strongCustomerAuthentication->getRecurringExpiryDate(),
             'ACCOUNT_CREATE_DATE' => $strongCustomerAuthentication->getAccountCreateDate(),
-            'ACCOUNT_DELIVERY_ADDRESS_FIRST_USED_DATE' => $strongCustomerAuthentication->getAccountCreateDate(),
-            'ACCOUNT_DELIVERY_ADDRESS_USAGE_INDICATOR' => $strongCustomerAuthentication->getAccountDeliveryAddressUsageIndicator(),
-            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_YEAR' => $strongCustomerAuthentication->getAccountNumberOfTransactionsLastYear(),
-            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_DAY' => $strongCustomerAuthentication->getAccountNumberOfTransactionsLastDay(),
-            'ACCOUNT_NUMBER_OF_PURCHASES_LAST_SIX_MONTHS' => $strongCustomerAuthentication->getAccountNumberOfPurchasesLastSixMonths(),
+            'ACCOUNT_DELIVERY_ADDRESS_FIRST_USED_DATE' =>
+                $strongCustomerAuthentication->getAccountCreateDate(),
+            'ACCOUNT_DELIVERY_ADDRESS_USAGE_INDICATOR' =>
+                $strongCustomerAuthentication->getAccountDeliveryAddressUsageIndicator(),
+            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_YEAR' =>
+                $strongCustomerAuthentication->getAccountNumberOfTransactionsLastYear(),
+            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_DAY' =>
+                $strongCustomerAuthentication->getAccountNumberOfTransactionsLastDay(),
+            'ACCOUNT_NUMBER_OF_PURCHASES_LAST_SIX_MONTHS' =>
+                $strongCustomerAuthentication->getAccountNumberOfPurchasesLastSixMonths(),
             'ACCOUNT_CHANGE_DATE' => $strongCustomerAuthentication->getAccountChangeDate(),
             'ACCOUNT_CHANGE_INDICATOR' => $strongCustomerAuthentication->getAccountChangeIndicator(),
             'ACCOUNT_AGE_INDICATOR' => $strongCustomerAuthentication->getAccountAgeIndicator(),
@@ -533,8 +538,4 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'ACCOUNT_CARD_ADDED_DATE' => $strongCustomerAuthentication->getAccountCardAddedDate()
         );
     }
-
-
-
-
 }

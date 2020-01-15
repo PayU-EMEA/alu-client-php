@@ -330,16 +330,23 @@ class Request
             'RECURRING_FREQUENCY_DAYS' => $this->strongCustomerAuthentication->getRecurringFrequencyDays(),
             'RECURRING_EXPIRY_DATE' => $this->strongCustomerAuthentication->getRecurringExpiryDate(),
             'ACCOUNT_CREATE_DATE' => $this->strongCustomerAuthentication->getAccountCreateDate(),
-            'ACCOUNT_DELIVERY_ADDRESS_FIRST_USED_DATE' => $this->strongCustomerAuthentication->getAccountCreateDate(),
-            'ACCOUNT_DELIVERY_ADDRESS_USAGE_INDICATOR' => $this->strongCustomerAuthentication->getAccountDeliveryAddressUsageIndicator(),
-            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_YEAR' => $this->strongCustomerAuthentication->getAccountNumberOfTransactionsLastYear(),
-            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_DAY' => $this->strongCustomerAuthentication->getAccountNumberOfTransactionsLastDay(),
-            'ACCOUNT_NUMBER_OF_PURCHASES_LAST_SIX_MONTHS' => $this->strongCustomerAuthentication->getAccountNumberOfPurchasesLastSixMonths(),
+            'ACCOUNT_DELIVERY_ADDRESS_FIRST_USED_DATE' =>
+                $this->strongCustomerAuthentication->getAccountCreateDate(),
+            'ACCOUNT_DELIVERY_ADDRESS_USAGE_INDICATOR' =>
+                $this->strongCustomerAuthentication->getAccountDeliveryAddressUsageIndicator(),
+            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_YEAR' =>
+                $this->strongCustomerAuthentication->getAccountNumberOfTransactionsLastYear(),
+            'ACCOUNT_NUMBER_OF_TRANSACTIONS_LAST_DAY' =>
+                $this->strongCustomerAuthentication->getAccountNumberOfTransactionsLastDay(),
+            'ACCOUNT_NUMBER_OF_PURCHASES_LAST_SIX_MONTHS' =>
+                $this->strongCustomerAuthentication->getAccountNumberOfPurchasesLastSixMonths(),
             'ACCOUNT_CHANGE_DATE' => $this->strongCustomerAuthentication->getAccountChangeDate(),
-            'ACCOUNT_CHANGE_INDICATOR' => $this->strongCustomerAuthentication->getAccountChangeIndicator(),
+            'ACCOUNT_CHANGE_INDICATOR' =>
+                $this->strongCustomerAuthentication->getAccountChangeIndicator(),
             'ACCOUNT_AGE_INDICATOR' => $this->strongCustomerAuthentication->getAccountAgeIndicator(),
             'ACCOUNT_PASSWORD_CHANGED_DATE' => $this->strongCustomerAuthentication->getAccountPasswordChangedDate(),
-            'ACCOUNT_PASSWORD_CHANGED_INDICATOR' => $this->strongCustomerAuthentication->getAccountPasswordChangedIndicator(),
+            'ACCOUNT_PASSWORD_CHANGED_INDICATOR' =>
+                $this->strongCustomerAuthentication->getAccountPasswordChangedIndicator(),
             'ACCOUNT_NAME_TO_RECIPIENT_MATCH' => $this->strongCustomerAuthentication->getAccountNameToRecipientMatch(),
             'ACCOUNT_ADD_CARD_ATTEMPTS_DAY' => $this->strongCustomerAuthentication->getAccountAddCardAttemptsDay(),
             'ACCOUNT_AUTH_METHOD' => $this->strongCustomerAuthentication->getAccountAuthMethod(),

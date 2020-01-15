@@ -1219,7 +1219,6 @@ class StrongCustomerAuthentication
         $this->accountChangeDate = $accountChangeDate;
 
         return $this;
-
     }
 
     /**
@@ -1430,5 +1429,4 @@ class StrongCustomerAuthentication
 
         return $this;
     }
-
 }
