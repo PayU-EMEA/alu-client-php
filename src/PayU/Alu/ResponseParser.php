@@ -56,7 +56,6 @@ class ResponseParser
         }
 
         if (isset($responseArray['paymentResult'])) {
-
             // paymentResponse object in AluV4
 
             if (isset($responseArray['paymentResult']['payuResponseCode'])) {
@@ -187,7 +186,6 @@ class ResponseParser
                 if (isset($threeDsDetails['url'])) {
                     $response->setThreeDsUrl($responseArray['paymentResult']['url']);
                 }
-
             }
 
             // wireAccounts object in paymentResult
