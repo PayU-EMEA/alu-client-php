@@ -16,19 +16,19 @@ class ResponseParser
         switch ($responseArray['code']) {
             case 200:
             case 202:
-                return $this->parseSuccessResponse($responseArray);
+                return $this->buildSuccessResponse($responseArray);
             case 400:
             case 401:
             case 403:
             case 409:
             case 412:
             case 404:
-                return $this->parseInvalidParametersResponse($responseArray);
+                return $this->buildInvalidParametersResponse($responseArray);
             case 429:
-                return $this->parseTooManyRequestsResponse($responseArray);
+                return $this->buildTooManyRequestsResponse($responseArray);
             case 500:
             case 502:
-                return $this->parseInternalErrorResponse($responseArray);
+                return $this->buildInternalErrorResponse($responseArray);
         }
     }
 
@@ -36,10 +36,11 @@ class ResponseParser
      * @param array $responseArray
      * @return Response
      */
-    private function parseSuccessResponse($responseArray)
+    private function buildSuccessResponse($responseArray)
     {
         $response = new Response();
-
+        //todo remove after code is tested
+        var_dump($responseArray);
         $response->setCode($responseArray['code']);
         $response->setReturnMessage($responseArray['message']);
         $response->setRefno($responseArray['payuPaymentReference']);
@@ -57,51 +58,136 @@ class ResponseParser
         if (isset($responseArray['paymentResult'])) {
 
             // paymentResponse object in AluV4
-            $response->setReturnCode($responseArray['paymentResult']['payuResponseCode']);
-            $response->setAuthCode($responseArray['paymentResult']['authCode']);
-            $response->setRrn($responseArray['paymentResult']['rrn']);
-            $response->setInstallmentsNo($responseArray['paymentResult']['installmentsNumber']);
-            $response->setCardProgramName($responseArray['paymentResult']['cardProgramName']);
-            $response->setType($responseArray['paymentResult']['type']);
-            $response->setUrlRedirect($responseArray['paymentResult']['url']);
+
+            if (isset($responseArray['paymentResult']['payuResponseCode'])) {
+                $response->setReturnCode($responseArray['paymentResult']['payuResponseCode']);
+            }
+
+            if (isset($responseArray['paymentResult']['authCode'])) {
+                $response->setAuthCode($responseArray['paymentResult']['authCode']);
+            }
+
+            if (isset($responseArray['paymentResult']['rrn'])) {
+                $response->setRrn($responseArray['paymentResult']['rrn']);
+            }
+
+            if (isset($responseArray['paymentResult']['installmentsNumber'])) {
+                $response->setInstallmentsNo($responseArray['paymentResult']['installmentsNumber']);
+            }
+
+            if (isset($responseArray['paymentResult']['cardProgramName'])) {
+                $response->setCardProgramName($responseArray['paymentResult']['cardProgramName']);
+            }
+
+            if (isset($responseArray['paymentResult']['type'])) {
+                $response->setType($responseArray['paymentResult']['type']);
+            }
+
+            if (isset($responseArray['paymentResult']['url'])) {
+                $response->setUrlRedirect($responseArray['paymentResult']['url']);
+            }
 
             $additionalResponseParameters = [];
 
             // bankResponseDetails object in paymentResult
             if (isset($responseArray['paymentResult']['bankResponseDetails'])) {
-                $additionalResponseParameters['CLIENTID'] = $responseArray['paymentResult']['bankResponseDetails']['terminalId'];
+                $bankResponseDetails = $responseArray['paymentResult']['bankResponseDetails'];
+
+                if (isset($bankResponseDetails['terminalId'])) {
+                    $additionalResponseParameters['CLIENTID'] = $bankResponseDetails['terminalId'];
+                }
 
                 // response object in bankResponseDetails
                 if (isset($responseArray['paymentResult']['bankResponseDetails']['response'])) {
-                    $additionalResponseParameters['PROCRETURNCODE'] = $responseArray['paymentResult']['bankResponseDetails']['response']['code'];
-                    $additionalResponseParameters['ERRORMESSAGE'] = $responseArray['paymentResult']['bankResponseDetails']['response']['message'];
-                    $additionalResponseParameters['RESPONSE'] = $responseArray['paymentResult']['bankResponseDetails']['response']['status'];
+                    $bankResponse = $responseArray['paymentResult']['bankResponseDetails']['response'];
+
+                    if (isset($bankResponse['code'])) {
+                        $additionalResponseParameters['PROCRETURNCODE'] = $bankResponse['code'];
+                    }
+
+                    if (isset($bankResponse['message'])) {
+                        $additionalResponseParameters['ERRORMESSAGE'] = $bankResponse['message'];
+                    }
+
+                    if (isset($bankResponse['status'])) {
+                        $additionalResponseParameters['RESPONSE'] = $bankResponse['status'];
+                    }
                 }
 
-                $additionalResponseParameters['HOSTREFNUM'] = $responseArray['paymentResult']['bankResponseDetails']['hostRefNum'];
-                $additionalResponseParameters['BANK_MERCHANT_ID'] = $responseArray['paymentResult']['bankResponseDetails']['merchantId'];
-                $additionalResponseParameters['TERMINAL_BANK'] = $responseArray['paymentResult']['bankResponseDetails']['shortName'];
-                $additionalResponseParameters['TX_REFNO'] = $responseArray['paymentResult']['bankResponseDetails']['txRefNo'];
-                $additionalResponseParameters['OID'] = $responseArray['paymentResult']['bankResponseDetails']['oid'];
-                $additionalResponseParameters['TRANSID'] = $responseArray['paymentResult']['bankResponseDetails']['transId'];
+                if (isset($bankResponseDetails['hostRefNum'])) {
+                    $additionalResponseParameters['HOSTREFNUM'] = $bankResponseDetails['hostRefNum'];
+                }
+
+                if (isset($bankResponseDetails['merchantId'])) {
+                    $additionalResponseParameters['BANK_MERCHANT_ID'] = $bankResponseDetails['merchantId'];
+                }
+
+                if (isset($bankResponseDetails['shortName'])) {
+                    $additionalResponseParameters['TERMINAL_BANK'] = $bankResponseDetails['shortName'];
+                }
+
+                if (isset($bankResponseDetails['txRefNo'])) {
+                    $additionalResponseParameters['TX_REFNO'] = $bankResponseDetails['txRefNo'];
+                }
+
+                if (isset($bankResponseDetails['oid'])) {
+                    $additionalResponseParameters['OID'] = $bankResponseDetails['oid'];
+                }
+
+                if (isset($bankResponseDetails['transId'])) {
+                    $additionalResponseParameters['TRANSID'] = $bankResponseDetails['transId'];
+                }
             }
 
             // cardDetails object in paymentResult
             if (isset($responseArray['paymentResult']['cardDetails'])) {
-                $additionalResponseParameters['PAN'] = $responseArray['paymentResult']['cardDetails']['pan'];
-                $additionalResponseParameters['EXPYEAR'] = $responseArray['paymentResult']['cardDetails']['expiryYear'];
-                $additionalResponseParameters['EXPMONTH'] = $responseArray['paymentResult']['cardDetails']['expiryMonth'];
+                $cardDetails = $responseArray['paymentResult']['cardDetails'];
+
+                if (isset($cardDetails['pan'])) {
+                    $additionalResponseParameters['PAN'] = $cardDetails['pan'];
+                }
+
+                if (isset($cardDetails['expiryYear'])) {
+                    $additionalResponseParameters['EXPYEAR'] = $cardDetails['expiryYear'];
+                }
+
+                if (isset($cardDetails['expiryMonth'])) {
+                    $additionalResponseParameters['EXPMONTH'] = $cardDetails['expiryMonth'];
+                }
             }
 
             // 3dsDetails object in paymentResult
             if (isset($responseArray['paymentResult']['3dsDetails'])) {
-                $additionalResponseParameters['MDSTATUS'] = $responseArray['paymentResult']['3dsDetails']['mdStatus'];
-                $additionalResponseParameters['MDERRORMSG'] = $responseArray['paymentResult']['3dsDetails']['errorMessage'];
-                $additionalResponseParameters['TXSTATUS'] = $responseArray['paymentResult']['3dsDetails']['txStatus'];
-                $additionalResponseParameters['XID'] = $responseArray['paymentResult']['3dsDetails']['xid'];
-                $additionalResponseParameters['ECI'] = $responseArray['paymentResult']['3dsDetails']['eci'];
-                $additionalResponseParameters['CAVV'] = $responseArray['paymentResult']['3dsDetails']['cavv'];
-                $response->setThreeDsUrl($responseArray['paymentResult']['url']);
+                $threeDsDetails = $responseArray['paymentResult']['3dsDetails'];
+
+                if (isset($threeDsDetails['mdStatus'])) {
+                    $additionalResponseParameters['MDSTATUS'] = $threeDsDetails['mdStatus'];
+                }
+
+                if (isset($threeDsDetails['errorMessage'])) {
+                    $additionalResponseParameters['MDERRORMSG'] = $threeDsDetails['errorMessage'];
+                }
+
+                if (isset($threeDsDetails['txStatus'])) {
+                    $additionalResponseParameters['TXSTATUS'] = $threeDsDetails['txStatus'];
+                }
+
+                if (isset($threeDsDetails['xid'])) {
+                    $additionalResponseParameters['XID'] = $threeDsDetails['xid'];
+                }
+
+                if (isset($threeDsDetails['eci'])) {
+                    $additionalResponseParameters['ECI'] = $threeDsDetails['eci'];
+                }
+
+                if (isset($threeDsDetails['cavv'])) {
+                    $additionalResponseParameters['CAVV'] = $threeDsDetails['cavv'];
+                }
+
+                if (isset($threeDsDetails['url'])) {
+                    $response->setThreeDsUrl($responseArray['paymentResult']['url']);
+                }
+
             }
 
             // wireAccounts object in paymentResult
@@ -111,14 +197,37 @@ class ResponseParser
                 foreach ($responseArray['paymentResult']['wireAccounts'] as $account) {
                     $wireAccount = new ResponseWireAccount();
 
-                    $wireAccount->setBankIdentifier($account['bankIdentifier']);
-                    $wireAccount->setBankAccount($account['bankAccount']);
-                    $wireAccount->setRoutingNumber($account['routingNumber']);
-                    $wireAccount->setIbanAccount($account['ibanAccount']);
-                    $wireAccount->setBankSwift($account['bankSwift']);
-                    $wireAccount->setCountry($account['country']);
-                    $wireAccount->setWireRecipientName($account['recipientName']);
-                    $wireAccount->setWireRecipientVatId($account['recipientVatId']);
+                    if (isset($account['bankIdentifier'])) {
+                        $wireAccount->setBankIdentifier($account['bankIdentifier']);
+                    }
+
+                    if (isset($account['bankAccount'])) {
+                        $wireAccount->setBankAccount($account['bankAccount']);
+                    }
+
+                    if (isset($account['routingNumber'])) {
+                        $wireAccount->setRoutingNumber($account['routingNumber']);
+                    }
+
+                    if (isset($account['ibanAccount'])) {
+                        $wireAccount->setIbanAccount($account['ibanAccount']);
+                    }
+
+                    if (isset($account['bankSwift'])) {
+                        $wireAccount->setBankSwift($account['bankSwift']);
+                    }
+
+                    if (isset($account['country'])) {
+                        $wireAccount->setCountry($account['country']);
+                    }
+
+                    if (isset($account['recipientName'])) {
+                        $wireAccount->setWireRecipientName($account['recipientName']);
+                    }
+
+                    if (isset($account['recipientVatId'])) {
+                        $wireAccount->setWireRecipientVatId($account['recipientVatId']);
+                    }
 
                     $wireAccounts[$cnt++] = $wireAccount;
                 }
@@ -134,13 +243,21 @@ class ResponseParser
      * @param array $responseArray
      * @return Response
      */
-    private function parseTooManyRequestsResponse($responseArray)
+    private function buildTooManyRequestsResponse($responseArray)
     {
         $response = new Response();
 
-        $response->setCode($responseArray['code']);
-        $response->setReturnMessage($responseArray['message']);
-        $response->setStatus($responseArray['status']);
+        if (isset($responseArray['code'])) {
+            $response->setCode($responseArray['code']);
+        }
+
+        if (isset($responseArray['message'])) {
+            $response->setReturnMessage($responseArray['message']);
+        }
+
+        if (isset($responseArray['status'])) {
+            $response->setStatus($responseArray['status']);
+        }
 
         return $response;
     }
@@ -149,12 +266,17 @@ class ResponseParser
      * @param array $responseArray
      * @return Response
      */
-    private function parseInvalidParametersResponse($responseArray)
+    private function buildInvalidParametersResponse($responseArray)
     {
         $response = new Response();
 
-        $response->setCode($responseArray['code']);
-        $response->setReturnMessage($responseArray['message']);
+        if (isset($responseArray['code'])) {
+            $response->setCode($responseArray['code']);
+        }
+
+        if (isset($responseArray['message'])) {
+            $response->setReturnMessage($responseArray['message']);
+        }
 
         return $response;
     }
@@ -163,13 +285,21 @@ class ResponseParser
      * @param $responseArray
      * @return Response
      */
-    private function parseInternalErrorResponse($responseArray)
+    private function buildInternalErrorResponse($responseArray)
     {
         $response = new Response();
 
-        $response->setCode($responseArray['code']);
-        $response->setReturnMessage($responseArray['message']);
-        $response->setRefno($responseArray['payuPaymentReference']);
+        if (isset($responseArray['code'])) {
+            $response->setCode($responseArray['code']);
+        }
+
+        if (isset($responseArray['message'])) {
+            $response->setReturnMessage($responseArray['message']);
+        }
+
+        if (isset($responseArray['payuPaymentReference'])) {
+            $response->setRefno($responseArray['payuPaymentReference']);
+        }
 
         return $response;
     }
