@@ -24,6 +24,7 @@ use PayU\Alu\Exceptions\ClientException;
  * Secret Key - Your PayU Secret Key
  * Platform - RO | RU | UA | TR | HU
  */
+//todo modify merchantCode back to MERCHANT_CODE
 $cfg = new MerchantConfig('PAYU_2', 'SECRET_KEY', 'RO');
 
 /**
@@ -45,6 +46,12 @@ $order = new Order();
  *
  * Full params available in the documentation
  */
+
+/**
+ * todo remove $merchantOrderRef when pushing to master
+ * also date format has been modified
+ */
+
 $merchantOrderRef = strval(rand(1000, 9999));
 $order->withBackRef('http://path/to/your/returnUrlScript')
     ->withOrderRef($merchantOrderRef)
