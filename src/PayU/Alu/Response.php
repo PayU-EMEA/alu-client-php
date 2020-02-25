@@ -10,11 +10,13 @@ class Response
 {
     /**
      * @var string
+     * merchantPaymentReference in apiV4
      */
     private $refno;
 
     /**
      * @var string
+     * not set in alu V4 response
      */
     private $alias;
 
@@ -35,6 +37,7 @@ class Response
 
     /**
      * @var string
+     * not set in alu V4 response
      */
     private $date;
 
@@ -45,6 +48,7 @@ class Response
 
     /**
      * @var string
+     *  not set in alu V4 response
      */
     private $hash;
 
@@ -70,6 +74,7 @@ class Response
 
     /**
      * @var string
+     * merchantPaymentReference
      */
     private $orderRef;
 
@@ -85,11 +90,13 @@ class Response
 
     /**
      * @var string[]
+     * ??
      */
     private $additionalResponseParameters = array();
 
     /**
      * @var array
+     * ??
      */
     private $internalArray = array();
 
@@ -100,6 +107,7 @@ class Response
 
     /**
      * @var string
+     * not set in alu V4 response (it s complicated )
      */
     private $tokenHash;
 
@@ -107,6 +115,40 @@ class Response
      * @var string
      */
     private $urlRedirect;
+
+    /**
+     * @var int
+     */
+    private $code;
+
+    /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
 
     /**
      * @return ResponseWireAccount[]
@@ -306,6 +348,14 @@ class Response
     public function getInstallmentsNo()
     {
         return $this->installmentsNo;
+    }
+
+    /**
+     * @param string[] $additionalResponseParameters
+     */
+    public function setAdditionalResponseParameters($additionalResponseParameters)
+    {
+        $this->additionalResponseParameters = $additionalResponseParameters;
     }
 
     /**
@@ -532,5 +582,10 @@ class Response
             return $this->computeInternalArray();
         }
         return $this->internalArray;
+    }
+
+    public function setCode($code)
+    {
+        $this->code = $code;
     }
 }
