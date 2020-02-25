@@ -96,12 +96,12 @@ class Client
     private function getResponse(SimpleXMLElement $xmlObject)
     {
         $response = new Response();
-        $response->setRefno((string) $xmlObject->REFNO);
-        $response->setAlias((string) $xmlObject->ALIAS);
-        $response->setStatus((string) $xmlObject->STATUS);
-        $response->setReturnCode((string) $xmlObject->RETURN_CODE);
-        $response->setReturnMessage((string) $xmlObject->RETURN_MESSAGE);
-        $response->setDate((string) $xmlObject->DATE);
+        $response->setRefno((string)$xmlObject->REFNO);
+        $response->setAlias((string)$xmlObject->ALIAS);
+        $response->setStatus((string)$xmlObject->STATUS);
+        $response->setReturnCode((string)$xmlObject->RETURN_CODE);
+        $response->setReturnMessage((string)$xmlObject->RETURN_MESSAGE);
+        $response->setDate((string)$xmlObject->DATE);
 
         if (property_exists($xmlObject, 'HASH')) {
             $response->setHash((string)$xmlObject->HASH);
@@ -128,7 +128,7 @@ class Client
 
         // parameters used on ALU v2 and v3
         if (property_exists($xmlObject, 'ORDER_REF')) {
-            $response->setOrderRef((string) $xmlObject->ORDER_REF);
+            $response->setOrderRef((string)$xmlObject->ORDER_REF);
         }
         if (property_exists($xmlObject, 'AUTH_CODE')) {
             $response->setAuthCode((string)$xmlObject->AUTH_CODE);
@@ -194,7 +194,7 @@ class Client
             $httpClient = new HTTPClient();
         }
 
-        if ($request->getPaymentsApiVersion() === 'v3'){
+        if ($request->getPaymentsApiVersion() === 'v3') {
             return $this->authorizeV3($request, $httpClient, $hashService);
         }
 
@@ -245,9 +245,9 @@ class Client
         try {
             $responseJson = $httpClient->postV4($this->getAluV4Url(), $jsonRequest, $headers);
         } catch (ClientException $e) {
-            echo ($e->getMessage().' '.$e->getCode());
+            echo($e->getMessage() . ' ' . $e->getCode());
         } catch (ConnectionException $e) {
-            echo ($e->getMessage().' '.$e->getCode());
+            echo($e->getMessage() . ' ' . $e->getCode());
         }
 
         $responseParser = new ResponseParser();

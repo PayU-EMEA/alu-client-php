@@ -45,7 +45,7 @@ $order = new Order();
  *
  * Full params available in the documentation
  */
-$merchantOrderRef = strval(rand(1000,9999));
+$merchantOrderRef = strval(rand(1000, 9999));
 $order->withBackRef('http://path/to/your/returnUrlScript')
     ->withOrderRef($merchantOrderRef)
     //->withOrderRef('MerchantOrderRef')
@@ -194,7 +194,7 @@ try {
         die();
     }
 
-    echo $response->getCode(). ' ' .$response->getStatus(). ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo $response->getCode() . ' ' . $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {
