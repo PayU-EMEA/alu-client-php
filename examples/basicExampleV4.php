@@ -201,7 +201,11 @@ try {
         die();
     }
 
-    echo $response->getCode() . ' ' . $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo $response->getCode()
+        . ' ' . $response->getStatus()
+        . ' ' . $response->getReturnCode()
+        . ' ' . $response->getReturnMessage();
+
 } catch (ConnectionException $exception) {
     echo $exception->getMessage();
 } catch (ClientException $exception) {
