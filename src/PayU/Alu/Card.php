@@ -45,15 +45,22 @@ class Card
      * @param int|null $timeSpentTypingNumber
      * @param int|null $timeSpentTypingOwner
      */
-    public function __construct($cardNumber, $cardExpirationMonth, $cardExpirationYear, $cardCVV, $cardOwnerName, $timeSpentTypingNumber = null, $timeSpentTypingOwner = null)
+    public function __construct(
+        $cardNumber,
+        $cardExpirationMonth,
+        $cardExpirationYear,
+        $cardCVV,
+        $cardOwnerName,
+        $timeSpentTypingNumber = null,
+        $timeSpentTypingOwner = null)
     {
-        $this->cardNumber           = $cardNumber;
-        $this->cardExpirationMonth  = $cardExpirationMonth;
-        $this->cardExpirationYear   = $cardExpirationYear;
-        $this->cardCVV              = $cardCVV;
-        $this->cardOwnerName        = $cardOwnerName;
+        $this->cardNumber = $cardNumber;
+        $this->cardExpirationMonth = $cardExpirationMonth;
+        $this->cardExpirationYear = $cardExpirationYear;
+        $this->cardCVV = $cardCVV;
+        $this->cardOwnerName = $cardOwnerName;
         $this->timeSpentTypingNumber = $timeSpentTypingNumber;
-        $this->timeSpentTypingOwner  = $timeSpentTypingOwner;
+        $this->timeSpentTypingOwner = $timeSpentTypingOwner;
     }
 
     /**

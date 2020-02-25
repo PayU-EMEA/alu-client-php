@@ -18,7 +18,7 @@ class CardToken
      * @param string $cvv
      * @param string $owner
      */
-    public function __construct($token, $cvv = '', $owner ='')
+    public function __construct($token, $cvv = '', $owner = '')
     {
         $this->token = $token;
         $this->cvv = $cvv;

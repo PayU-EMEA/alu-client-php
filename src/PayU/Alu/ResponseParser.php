@@ -3,7 +3,6 @@
 
 namespace PayU\Alu;
 
-
 class ResponseParser
 {
     /**
@@ -45,13 +44,15 @@ class ResponseParser
         $response->setReturnMessage($responseArray['message']);
         $response->setRefno($responseArray['payuPaymentReference']);
 
-        if (isset($responseArray['merchantPaymentReference']))
+        if (isset($responseArray['merchantPaymentReference'])) {
             $response->setOrderRef($responseArray['merchantPaymentReference']);
+        }
 
         $response->setAmount($responseArray['amount']);
 
-        if (isset($responseArray['currency']))
+        if (isset($responseArray['currency'])) {
             $response->setCurrency($responseArray['currency']);
+        }
 
         if (isset($responseArray['paymentResult'])) {
 
@@ -172,5 +173,4 @@ class ResponseParser
 
         return $response;
     }
-
 }

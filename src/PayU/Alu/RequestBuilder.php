@@ -3,7 +3,6 @@
 
 namespace PayU\Alu;
 
-
 class RequestBuilder
 {
     /**
@@ -40,11 +39,13 @@ class RequestBuilder
                 "owner" => $requestV3->getCard()->getCardOwnerName()
             ];
 
-            if ($requestV3->getCard()->hasTimeSpentTypingNumber())
-                $internalArray["authorization"]["cardDetails"]["timeSpentTypingNumber"] =  $requestV3->getCard()->getTimeSpentTypingNumber();
+            if ($requestV3->getCard()->hasTimeSpentTypingNumber()) {
+                $internalArray["authorization"]["cardDetails"]["timeSpentTypingNumber"] = $requestV3->getCard()->getTimeSpentTypingNumber();
+            }
 
-            if ($requestV3->getCard()->hasTimeSpentTypingOwner())
+            if ($requestV3->getCard()->hasTimeSpentTypingOwner()) {
                 $internalArray["authorization"]["cardDetails"]["timeSpentTypingOwner"] = $requestV3->getCard()->getTimeSpentTypingOwner();
+            }
         }
 
         if (!is_null($requestV3->getFx())) {
