@@ -7,6 +7,8 @@ use PayU\Alu\Exceptions\ConnectionException;
 
 class HTTPClient
 {
+    const POST_METHOD = "POST";
+
     /**
      * @var resource
      */
@@ -46,6 +48,26 @@ class HTTPClient
             CURLOPT_URL => $url,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query($postParams),
+        ));
+
+        $result = curl_exec($this->handler);
+        if (curl_errno($this->handler) > 0) {
+            throw new ConnectionException(sprintf(
+                'Curl error "%s" when accessing url: "%s"',
+                curl_error($this->handler),
+                $url
+            ));
+        }
+        return $result;
+    }
+
+    public function postV4($url, $requestBody, $requestHeaders)
+    {
+        curl_setopt_array($this->handler, array(
+            CURLOPT_URL => $url,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $requestBody,
+            CURLOPT_HTTPHEADER => $requestHeaders,
         ));
 
         $result = curl_exec($this->handler);
