@@ -19,11 +19,7 @@ class RequestBuilder
         $internalArray["authorization"] = [
             "paymentMethod" => $requestV3->getOrder()->getPayMethod(),
             "installmentsNumber" => $requestV3->getOrder()->getInstallmentsNumber(),
-            /*"merchantToken" => [
-                "tokenHash" =>
-                "cvv" =>
-                "owner" =>
-            ]
+            /*
             "usePaymentPage"
             "loyaltyPointsAmount"
             "campaignType"
@@ -45,6 +41,20 @@ class RequestBuilder
 
             if ($requestV3->getCard()->hasTimeSpentTypingOwner()) {
                 $internalArray["authorization"]["cardDetails"]["timeSpentTypingOwner"] = $requestV3->getCard()->getTimeSpentTypingOwner();
+            }
+        }
+
+        if (is_null($requestV3->getCard()) && !is_null($requestV3->getCardToken())) {
+            $internalArray["authorization"]["merchantToken"] = [
+                "tokenHash" => $requestV3->getCardToken()->getToken()
+            ];
+
+            if ($requestV3->getCardToken()->hasCvv()) {
+                $internalArray["authorization"]["merchantToken"]["cvv"] = $requestV3->getCardToken()->getCvv();
+            }
+
+            if ($requestV3->getCardToken()->hasOwner()) {
+                $internalArray["authorization"]["merchantToken"]["owner"] = $requestV3->getCardToken()->getOwner();
             }
         }
 
