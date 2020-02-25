@@ -52,8 +52,8 @@ class Card
         $cardCVV,
         $cardOwnerName,
         $timeSpentTypingNumber = null,
-        $timeSpentTypingOwner = null)
-    {
+        $timeSpentTypingOwner = null
+    ) {
         $this->cardNumber = $cardNumber;
         $this->cardExpirationMonth = $cardExpirationMonth;
         $this->cardExpirationYear = $cardExpirationYear;
