@@ -9,6 +9,78 @@ namespace PayU\Alu;
 class Request
 {
     /**
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @return Card
+     */
+    public function getCard()
+    {
+        return $this->card;
+    }
+
+    /**
+     * @return CardToken
+     */
+    public function getCardToken()
+    {
+        return $this->cardToken;
+    }
+
+    /**
+     * @return StoredCredentials
+     */
+    public function getStoredCredentials()
+    {
+        return $this->storedCredentials;
+    }
+
+    /**
+     * @return StrongCustomerAuthentication
+     */
+    public function getStrongCustomerAuthentication()
+    {
+        return $this->strongCustomerAuthentication;
+    }
+
+    /**
+     * @return Billing
+     */
+    public function getBillingData()
+    {
+        return $this->billingData;
+    }
+
+    /**
+     * @return AbstractCommonAddress
+     */
+    public function getDeliveryData()
+    {
+        return $this->deliveryData;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return FX
+     */
+    public function getFx()
+    {
+        return $this->fx;
+    }
+
+    /**
      * @var MerchantConfig
      */
     private $merchantConfig;
@@ -61,6 +133,10 @@ class Request
      * @var array
      */
     private $internalArray;
+    /**
+     * @var String
+     */
+    private $paymentsApiVersion;
 
     /**
      * @param MerchantConfig $merchantConfig
@@ -68,19 +144,38 @@ class Request
      * @param Billing $billing
      * @param AbstractCommonAddress $delivery
      * @param User $user
+     * @param String $paymentsApiVersion
      */
     public function __construct(
         MerchantConfig $merchantConfig,
         Order $order,
         Billing $billing,
         AbstractCommonAddress $delivery = null,
-        User $user = null
+        User $user = null,
+        $paymentsApiVersion = 'v3'
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;
         $this->billingData = $billing;
         $this->deliveryData = $delivery;
         $this->user = $user;
+        $this->paymentsApiVersion = $paymentsApiVersion;
+    }
+
+    /**
+     * @return MerchantConfig
+     */
+    public function getMerchantConfig()
+    {
+        return $this->merchantConfig;
+    }
+
+    /**
+     * @return String
+     */
+    public function getPaymentsApiVersion()
+    {
+        return $this->paymentsApiVersion;
     }
 
     /**
@@ -143,14 +238,18 @@ class Request
             $this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
             $this->internalArray['ORDER_PRICE_TYPE'][$cnt] = $product->getPriceType();
             $this->internalArray['ORDER_QTY'][$cnt] = $product->getQuantity();
-            $this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
+            //duplicated line ??
+            //$this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
             $this->internalArray['ORDER_MPLACE_MERCHANT'][$cnt] = $product->getMarketPlaceMerchantCode();
+            //removed
             $this->internalArray['ORDER_VER'][$cnt] = $product->getProductVersion();
             $cnt++;
         }
 
+        // removed
         $this->internalArray['ORDER_SHIPPING'] = $this->order->getShippingCost();
         $this->internalArray['PRICES_CURRENCY'] = $this->order->getCurrency();
+        //removed
         $this->internalArray['DISCOUNT'] = $this->order->getDiscount();
         $this->internalArray['PAY_METHOD'] = $this->order->getPayMethod();
 
@@ -184,6 +283,7 @@ class Request
 
 
         $this->internalArray['SELECTED_INSTALLMENTS_NUMBER'] = $this->order->getInstallmentsNumber();
+        //remove
         $this->internalArray['CARD_PROGRAM_NAME'] = $this->order->getCardProgramName();
 
         if (is_null($this->card) && !is_null($this->cardToken)) {
@@ -196,6 +296,7 @@ class Request
         }
 
         $this->internalArray['BACK_REF'] = $this->order->getBackRef();
+        //removed
         $this->internalArray['ALIAS'] = $this->order->getAlias();
 
         if (!empty($this->user)) {
@@ -205,18 +306,27 @@ class Request
 
         $this->internalArray['BILL_LNAME'] = $this->billingData->getLastName();
         $this->internalArray['BILL_FNAME'] = $this->billingData->getFirstName();
+        //removed
         $this->internalArray['BILL_CISERIAL'] = $this->billingData->getIdentityCardSeries();
+        //removed
         $this->internalArray['BILL_CINUMBER'] = $this->billingData->getIdentityCardNumber();
+        //removed
         $this->internalArray['BILL_CIISSUER'] = $this->billingData->getIdentityCardIssuer();
+        //removed
         $this->internalArray['BILL_CITYPE'] = $this->billingData->getIdentityCardType();
+        //removed
         $this->internalArray['BILL_CNP'] = $this->billingData->getPersonalNumericCode();
         $this->internalArray['BILL_COMPANY'] = $this->billingData->getCompany();
         $this->internalArray['BILL_FISCALCODE'] = $this->billingData->getCompanyFiscalCode();
+        //removed
         $this->internalArray['BILL_REGNUMBER'] = $this->billingData->getCompanyRegistrationNumber();
+        //removed
         $this->internalArray['BILL_BANK'] = $this->billingData->getCompanyBank();
+        //removed
         $this->internalArray['BILL_BANKACCOUNT'] = $this->billingData->getCompanyBankAccountNumber();
         $this->internalArray['BILL_EMAIL'] = $this->billingData->getEmail();
         $this->internalArray['BILL_PHONE'] = $this->billingData->getPhoneNumber();
+        //removed
         $this->internalArray['BILL_FAX'] = $this->billingData->getFaxNumber();
         $this->internalArray['BILL_ADDRESS'] = $this->billingData->getAddressLine1();
         $this->internalArray['BILL_ADDRESS2'] = $this->billingData->getAddressLine2();

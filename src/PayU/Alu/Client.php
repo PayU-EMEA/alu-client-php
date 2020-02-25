@@ -12,6 +12,9 @@ use SimpleXMLElement;
  */
 class Client
 {
+
+    const ALU_V4_AUTHORIZE_PATH = '/api/v4/payments/authorize';
+
     /**
      * @var MerchantConfig
      */
@@ -61,6 +64,20 @@ class Client
         }
         return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . $this->aluUrlPath;
     }
+
+    private function getAluV4Url()
+    {
+        if (!empty($this->customUrl)) {
+            return $this->customUrl;
+        }
+
+        if (!isset($this->aluUrlHostname[$this->merchantConfig->getPlatform()])) {
+            throw new ClientException('Invalid platform');
+        }
+
+        return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . self::ALU_V4_AUTHORIZE_PATH;
+    }
+
 
     /**
      * @param $fullUrl
@@ -161,13 +178,13 @@ class Client
 
     /**
      * @param Request $request
-     * @param HTTPClient $httpClient
+     * @param HTTPClient|\HttpClient $httpClient
      * @param HashService $hashService
-     * @throws ClientException
-     * @throws ConnectionException
      * @return Response
+     * @throws ConnectionException
+     * @throws ClientException
      */
-    public function pay(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
+    public function pay(Request $request, $httpClient = null, HashService $hashService = null)
     {
         if (null === $hashService) {
             $hashService = new HashService($this->merchantConfig->getSecretKey());
@@ -177,6 +194,23 @@ class Client
             $httpClient = new HTTPClient();
         }
 
+        if ($request->getPaymentsApiVersion() === 'v3'){
+            return $this->authorizeV3($request, $httpClient, $hashService);
+        }
+
+        return $this->authorizeV4($request, $httpClient, $hashService);
+    }
+
+    /**
+     * @param Request $request
+     * @param HTTPClient|null $httpClient
+     * @param HashService|null $hashService
+     * @return Response
+     * @throws ClientException
+     * @throws ConnectionException
+     */
+    private function authorizeV3(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
+    {
         $requestHash = $hashService->makeRequestHash($request);
         $request->setOrderHash($requestHash);
 
@@ -192,6 +226,32 @@ class Client
             $hashService->validateResponseHash($response);
         }
         return $response;
+    }
+
+    /**
+     * @param Request $requestV3
+     * @param HTTPClient $httpClient
+     * @param HashService $hashService
+     * @return Response
+     */
+    private function authorizeV4(Request $requestV3, HTTPClient $httpClient, HashService $hashService)
+    {
+        $requestBuilder = new RequestBuilder();
+
+        $jsonRequest = $requestBuilder->buildAuthorizationRequestAsJson($requestV3);
+        $apiSignature = $hashService->generateSignatureV4($requestV3, $jsonRequest);
+        $headers = $requestBuilder->buildRequestHeaders($requestV3, $apiSignature);
+
+        try {
+            $responseJson = $httpClient->postV4($this->getAluV4Url(), $jsonRequest, $headers);
+        } catch (ClientException $e) {
+            echo ($e->getMessage().' '.$e->getCode());
+        } catch (ConnectionException $e) {
+            echo ($e->getMessage().' '.$e->getCode());
+        }
+
+        $responseParser = new ResponseParser();
+        return $responseParser->parseJsonResponse($responseJson);
     }
 
     /**

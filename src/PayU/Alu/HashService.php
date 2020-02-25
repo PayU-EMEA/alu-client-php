@@ -66,4 +66,22 @@ class HashService
             throw new ClientException('Response HASH mismatch');
         }
     }
+
+    /**
+     * @param Request $request
+     * @param string $jsonRequest
+     * @return string
+     */
+    public function generateSignatureV4(Request $request, $jsonRequest)
+    {
+        $stringToBeHashed =
+            $request->getMerchantConfig()->getMerchantCode().
+            $request->getOrder()->getOrderDate().
+            HTTPClient::POST_METHOD.
+            Client::ALU_V4_AUTHORIZE_PATH.
+            ''.
+            md5($jsonRequest);
+
+        return hash_hmac("sha256", $stringToBeHashed, $this->secretKey);
+    }
 }
