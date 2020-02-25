@@ -22,9 +22,11 @@ class Client
 
     /**
      * @var array
+     * todo set ro to original value
      */
     private $aluUrlHostname = array(
-        'ro' => 'https://secure.payu.ro',
+        //'ro' => 'https://secure.payu.ro',
+        'ro' => 'http://ro.payu.local',
         'ru' => 'https://secure.payu.ru',
         'ua' => 'https://secure.payu.ua',
         'hu' => 'https://secure.payu.hu',
