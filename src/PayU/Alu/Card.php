@@ -42,14 +42,18 @@ class Card
      * @param int $cardExpirationYear
      * @param int $cardCVV
      * @param string $cardOwnerName
+     * @param int|null $timeSpentTypingNumber
+     * @param int|null $timeSpentTypingOwner
      */
-    public function __construct($cardNumber, $cardExpirationMonth, $cardExpirationYear, $cardCVV, $cardOwnerName)
+    public function __construct($cardNumber, $cardExpirationMonth, $cardExpirationYear, $cardCVV, $cardOwnerName, $timeSpentTypingNumber = null, $timeSpentTypingOwner = null)
     {
         $this->cardNumber           = $cardNumber;
         $this->cardExpirationMonth  = $cardExpirationMonth;
         $this->cardExpirationYear   = $cardExpirationYear;
         $this->cardCVV              = $cardCVV;
         $this->cardOwnerName        = $cardOwnerName;
+        $this->timeSpentTypingNumber = $timeSpentTypingNumber;
+        $this->timeSpentTypingOwner  = $timeSpentTypingOwner;
     }
 
     /**
@@ -75,6 +79,22 @@ class Card
     public function getCardExpirationYear()
     {
         return $this->cardExpirationYear;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTimeSpentTypingNumber()
+    {
+        return $this->timeSpentTypingNumber;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTimeSpentTypingOwner()
+    {
+        return $this->timeSpentTypingOwner;
     }
 
 
@@ -107,5 +127,21 @@ class Card
     public function isEnableTokenCreation()
     {
         return $this->enableTokenCreation;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTimeSpentTypingOwner()
+    {
+        return !empty($this->timeSpentTypingOwner);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTimeSpentTypingNumber()
+    {
+        return !empty($this->timeSpentTypingNumber);
     }
 }

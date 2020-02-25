@@ -16,11 +16,13 @@ class CardToken
     /**
      * @param string $token
      * @param string $cvv
+     * @param string $owner
      */
-    public function __construct($token, $cvv = '')
+    public function __construct($token, $cvv = '', $owner ='')
     {
         $this->token = $token;
         $this->cvv = $cvv;
+        $this->owner = $owner;
     }
 
     /**
@@ -40,10 +42,26 @@ class CardToken
     }
 
     /**
+     * @return string
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
      * @return boolean
      */
     public function hasCvv()
     {
         return !empty($this->cvv);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOwner()
+    {
+        return !empty($this->owner);
     }
 }
