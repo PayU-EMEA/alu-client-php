@@ -61,6 +61,39 @@ class HTTPClient
         return $result;
     }
 
+    /**
+     * @param $url
+     * @param array $postParams
+     * @throws ConnectionException
+     * @return string
+     */
+    public function postTokenCreationRequest($url, array $postParams)
+    {
+        curl_setopt_array($this->handler, array(
+            CURLOPT_URL => $url,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($postParams),
+            CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded')
+        ));
+
+        $result = curl_exec($this->handler);
+        if (curl_errno($this->handler) > 0) {
+            throw new ConnectionException(sprintf(
+                'Curl error "%s" when accessing url: "%s"',
+                curl_error($this->handler),
+                $url
+            ));
+        }
+        return $result;
+    }
+
+    /**
+     * @param $url
+     * @param $requestBody
+     * @param $requestHeaders
+     * @return bool|string
+     * @throws ConnectionException
+     */
     public function postV4($url, $requestBody, $requestHeaders)
     {
         curl_setopt_array($this->handler, array(
@@ -85,4 +118,5 @@ class HTTPClient
     {
         curl_close($this->handler);
     }
+
 }
