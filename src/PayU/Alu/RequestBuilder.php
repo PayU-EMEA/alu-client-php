@@ -3,6 +3,8 @@
 
 namespace PayU\Alu;
 
+use DateTime;
+
 class RequestBuilder
 {
     /**
@@ -159,6 +161,23 @@ class RequestBuilder
             "X-Header-Merchant:" . $requestV3->getMerchantConfig()->getMerchantCode(),
             "X-Header-Date:" . $requestV3->getOrder()->getOrderDate(),
             "Content-Type: application/json;charset=utf-8"
+        ];
+    }
+
+    /**
+     * @param Request $requestV3
+     * @param $payuPaymentReference
+     * @return array
+     * @throws \Exception
+     */
+    public function buildTokenRequestBody(Request $requestV3, $payuPaymentReference)
+    {
+        $date = new DateTime();
+
+        return [
+            'merchant' => $requestV3->getMerchantConfig()->getMerchantCode(),
+            'refNo' => $payuPaymentReference,
+            'timestamp' => strval($date->getTimestamp())
         ];
     }
 }

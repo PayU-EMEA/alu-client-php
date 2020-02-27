@@ -15,6 +15,8 @@ class Client
 
     const ALU_V4_AUTHORIZE_PATH = '/api/v4/payments/authorize';
 
+    const BASE_CREATE_TOKEN_PATH = '/order/token/v2/merchantToken';
+
     /**
      * @var MerchantConfig
      */
@@ -67,6 +69,10 @@ class Client
         return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . $this->aluUrlPath;
     }
 
+    /**
+     * @return string
+     * @throws ClientException
+     */
     private function getAluV4Url()
     {
         if (!empty($this->customUrl)) {
@@ -78,6 +84,22 @@ class Client
         }
 
         return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . self::ALU_V4_AUTHORIZE_PATH;
+    }
+
+
+    /**
+     * @return string
+     * @throws ClientException
+     */
+    private function getTokenUrl()
+    {
+        //TODO do we need/have a custom url here ??
+
+        if (!isset($this->aluUrlHostname[$this->merchantConfig->getPlatform()])) {
+            throw new ClientException('Invalid platform');
+        }
+
+        return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . self::BASE_CREATE_TOKEN_PATH;
     }
 
 
@@ -235,6 +257,7 @@ class Client
      * @param HTTPClient $httpClient
      * @param HashService $hashService
      * @return Response
+     * @throws \Exception
      */
     private function authorizeV4(Request $requestV3, HTTPClient $httpClient, HashService $hashService)
     {
@@ -253,7 +276,52 @@ class Client
         }
 
         $responseParser = new ResponseParser();
-        return $responseParser->parseJsonResponse($responseJson);
+        $response = $responseParser->parseJsonResponse($responseJson);
+
+        // enable the token only if authorization was successful
+        if (($response->getCode() === 200 || $response->getCode() === 202)
+            && !is_null($requestV3->getCard())
+            && $requestV3->getCard()->isEnableTokenCreation()
+        ) {
+            return $this->createTokenRequest($requestV3, $response, $httpClient, $hashService);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param Request $requestV3
+     * @param Response $response
+     * @param HTTPClient $httpClient
+     * @param HashService $hashService
+     * @return Response
+     */
+    private function createTokenRequest(Request $requestV3, Response $response, HTTPClient $httpClient, HashService $hashService)
+    {
+        $requestBuilder = new RequestBuilder();
+
+        try {
+            $tokenRequest = $requestBuilder->buildTokenRequestBody($requestV3, $response->getRefno());
+        } catch (\Exception $e) {
+            echo($e->getMessage() . ' ' . $e->getCode());
+        }
+
+        $apiSignature = $hashService->generateTokenSignature($tokenRequest, $requestV3->getMerchantConfig()->getSecretKey());
+        $tokenRequest['signature'] = $apiSignature;
+
+        try {
+            $responseToken = $httpClient->postTokenCreationRequest($this->getTokenUrl(), $tokenRequest);
+        } catch (ClientException $e) {
+            echo($e->getMessage() . ' ' . $e->getCode());
+        } catch (ConnectionException $e) {
+            echo($e->getMessage() . ' ' . $e->getCode());
+        }
+
+        $responseParser = new ResponseParser();
+        $token = $responseParser->parseJsonTokenResponse($responseToken);
+        $response->setTokenHash($token);
+
+        return $response;
     }
 
     /**
