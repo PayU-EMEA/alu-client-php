@@ -301,4 +301,20 @@ class ResponseParser
 
         return $response;
     }
+
+    /**
+     * @param string $responseJson
+     * @return string
+     */
+    public function parseJsonTokenResponse($responseJson)
+    {
+        $responseArray = json_decode($responseJson, true);
+
+        if ($responseArray["meta"]["status"]["code"] === 0) {
+            return $responseArray["response"]["token"];
+        }
+
+        //todo parse 40x and 500 error codes (how ?)
+        return '';
+    }
 }
