@@ -84,4 +84,22 @@ class HashService
 
         return hash_hmac("sha256", $stringToBeHashed, $this->secretKey);
     }
+
+    /**
+     * @param array $requestBody
+     * @param string $secretKey
+     * @return string
+     */
+    public function generateTokenSignature(array $requestBody, $secretKey)
+    {
+        ksort($requestBody);
+        $stringToBeHashed = '';
+        foreach ($requestBody as $key => $val) {
+            if ($key !== 'timestamp')
+                $stringToBeHashed = $stringToBeHashed . $val;
+        }
+        $stringToBeHashed = $stringToBeHashed . $requestBody['timestamp'];
+
+        return hash_hmac("sha256", $stringToBeHashed, $secretKey);
+    }
 }
