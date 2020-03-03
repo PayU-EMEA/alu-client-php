@@ -12,7 +12,7 @@ class ResponseParser
     public function parseJsonResponse($jsonResponse)
     {
         $responseArray = json_decode($jsonResponse, true);
-        // todo rename from parse to build
+
         switch ($responseArray['code']) {
             case 200:
             case 202:
