@@ -2,7 +2,7 @@
 
 namespace PayU\Payments\Gateways\PaymentsApi;
 
-use PayU\Payments\Gateways\PaymentsApi\Services\ResponseParserJson;
+use PayU\Payments\Gateways\PaymentsApi\Services\ResponseParser;
 use PayU\Payments\Interfaces\GatewayInterface;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
@@ -12,7 +12,7 @@ use PayU\Alu\Request;
 use PayU\Payments\Gateways\PaymentsApi\Services\HashService;
 use PayU\Payments\Gateways\PaymentsApi\Services\HTTPClient;
 use PayU\Payments\Gateways\PaymentsApi\Services\RequestBuilder;
-use PayU\Payments\Gateways\PaymentsApi\Services\ResponseParser;
+use PayU\Payments\Gateways\PaymentsApi\Services\ResponseBuilder;
 
 
 class PaymentsApiGateway implements GatewayInterface
@@ -64,9 +64,9 @@ class PaymentsApiGateway implements GatewayInterface
     private $merchantConfig;
 
     /**
-     * @var ResponseParserJson
+     * @var ResponseBuilder
      */
-    private $responseParserJson;
+    private $responseBuilder;
 
     /**
      * PaymentsApiGateway constructor.
@@ -77,8 +77,8 @@ class PaymentsApiGateway implements GatewayInterface
         $this->httpClient = new HTTPClient();
         $this->hashService = new HashService();
         $this->requestBuilder = new RequestBuilder();
-        $this->responseParserJson = new ResponseParserJson();
         $this->responseParser = new ResponseParser();
+        $this->responseBuilder = new ResponseBuilder();
     }
 
     /**
@@ -128,9 +128,9 @@ class PaymentsApiGateway implements GatewayInterface
             echo($e->getMessage() . ' ' . $e->getCode());
         }
 
-        $this->responseParserJson->parseJsonResponse($responseJson);
+        $authorizationResponse = $this->responseParser->parseJsonResponse($responseJson);
 
-        return $this->responseParser->parseResponse($this->responseParserJson->getResponse());
+        return $this->responseBuilder->buildResponse($authorizationResponse);
 
         //todo token payment (another task)
 //        // enable the token only if authorization was successful
