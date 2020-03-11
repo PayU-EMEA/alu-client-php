@@ -1,164 +1,191 @@
 <?php
 
 
-namespace PayU\Alu;
+namespace PayU\Payments\Gateways\PaymentsApi\Services;
+
+
+use PayU\Alu\Request;
+use PayU\Payments\Gateways\PaymentsApi\Entities\AuthorizationData;
+use PayU\Payments\Gateways\PaymentsApi\Entities\AuthorizationRequest;
+use PayU\Payments\Gateways\PaymentsApi\Entities\BillingData;
+use PayU\Payments\Gateways\PaymentsApi\Entities\CardDetails;
+use PayU\Payments\Gateways\PaymentsApi\Entities\ClientData;
+use PayU\Payments\Gateways\PaymentsApi\Entities\DeliveryData;
+use PayU\Payments\Gateways\PaymentsApi\Entities\FxData;
+use PayU\Payments\Gateways\PaymentsApi\Entities\IdentityDocumentData;
+use PayU\Payments\Gateways\PaymentsApi\Entities\MerchantTokenData;
+use PayU\Payments\Gateways\PaymentsApi\Entities\ProductData;
 
 class RequestBuilder
 {
     /**
-     * @param Request $requestV3
+     * @param Request $request
      * @return false|string
      */
-    public function buildAuthorizationRequestAsJson($requestV3)
+    public function buildAuthorizationRequest($request)
     {
-        $internalArray = [];
-        $internalArray["merchantPaymentReference"] = $requestV3->getOrder()->getOrderRef();
-        $internalArray["currency"] = $requestV3->getOrder()->getCurrency();
-        $internalArray["returnUrl"] = $requestV3->getOrder()->getBackRef();
 
-        $internalArray["authorization"] = [
-            "paymentMethod" => $requestV3->getOrder()->getPayMethod(),
-            "installmentsNumber" => $requestV3->getOrder()->getInstallmentsNumber(),
-            /*
-            "usePaymentPage"
-            "loyaltyPointsAmount"
-            "campaignType"
-            */
-        ];
+        $authorizationData = new AuthorizationData($request->getOrder()->getPayMethod());
+        $authorizationData->setInstallmentsNumber($request->getOrder()->getInstallmentsNumber());
+        /*
+         *      applePayToken object
+                "usePaymentPage"
+                "loyaltyPointsAmount"
+                "campaignType"
+         */
 
-        if (!is_null($requestV3->getCard()) && is_null($requestV3->getCardToken())) {
-            $internalArray["authorization"]["cardDetails"] = [
-                "number" => $requestV3->getCard()->getCardNumber(),
-                "expiryMonth" => $requestV3->getCard()->getCardExpirationMonth(),
-                "expiryYear" => $requestV3->getCard()->getCardExpirationYear(),
-                "cvv" => $requestV3->getCard()->getCardCVV(),
-                "owner" => $requestV3->getCard()->getCardOwnerName()
-            ];
+        if (!is_null($request->getCard()) && is_null($request->getCardToken())) {
+            $cardDetails = new CardDetails(
+                $request->getCard()->getCardNumber(),
+                $request->getCard()->getCardExpirationMonth(),
+                $request->getCard()->getCardExpirationYear()
+            );
 
-            if ($requestV3->getCard()->hasTimeSpentTypingNumber()) {
-                $internalArray["authorization"]["cardDetails"]["timeSpentTypingNumber"] = $requestV3->getCard()->getTimeSpentTypingNumber();
+            $cardDetails->setCvv($request->getCard()->getCardCVV());
+            $cardDetails->setOwner($request->getCard()->getCardOwnerName());
+
+            if ($request->getCard()->hasTimeSpentTypingNumber()) {
+                $cardDetails->setTimeSpentTypingNumber($request->getCard()->getTimeSpentTypingNumber());
             }
 
-            if ($requestV3->getCard()->hasTimeSpentTypingOwner()) {
-                $internalArray["authorization"]["cardDetails"]["timeSpentTypingOwner"] = $requestV3->getCard()->getTimeSpentTypingOwner();
-            }
-        }
-
-        if (is_null($requestV3->getCard()) && !is_null($requestV3->getCardToken())) {
-            $internalArray["authorization"]["merchantToken"] = [
-                "tokenHash" => $requestV3->getCardToken()->getToken()
-            ];
-
-            if ($requestV3->getCardToken()->hasCvv()) {
-                $internalArray["authorization"]["merchantToken"]["cvv"] = $requestV3->getCardToken()->getCvv();
+            if ($request->getCard()->hasTimeSpentTypingOwner()) {
+                $cardDetails->setTimeSpentTypingOwner($request->getCard()->getTimeSpentTypingOwner());
             }
 
-            if ($requestV3->getCardToken()->hasOwner()) {
-                $internalArray["authorization"]["merchantToken"]["owner"] = $requestV3->getCardToken()->getOwner();
+            $authorizationData->setCardDetails($cardDetails);
+        }
+
+
+        if (is_null($request->getCard()) && !is_null($request->getCardToken())) {
+            $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
+
+            if ($request->getCardToken()->hasCvv()) {
+                $merchantToken->setCvv($request->getCardToken()->getCvv());
             }
+
+            if ($request->getCardToken()->hasOwner()) {
+                $merchantToken->setOwner($request->getCardToken()->getOwner());
+            }
+
+            $authorizationData->setMerchantToken($merchantToken);
         }
 
-        if (!is_null($requestV3->getFx())) {
-            $internalArray["authorization"]["fx"] = $requestV3->getFx()->getAuthorizationCurrency();
-            $internalArray["authorization"]["fx"] = $requestV3->getFx()->getAuthorizationExchangeRate();
+        if (!is_null($request->getFx())) {
+            $fxData = new FxData(
+                $request->getFx()->getAuthorizationCurrency(),
+                $request->getFx()->getAuthorizationExchangeRate()
+            );
+
+            $authorizationData->setFx($fxData);
         }
 
-        $internalArray["client"] = [
-            "billing" => [
-                "firstName" => $requestV3->getBillingData()->getFirstName(),
-                "lastName" => $requestV3->getBillingData()->getLastName(),
-                "email" => $requestV3->getBillingData()->getEmail(),
-                "phone" => $requestV3->getBillingData()->getPhoneNumber(),
-                "city" => $requestV3->getBillingData()->getCity(),
-                "countryCode" => $requestV3->getBillingData()->getCountryCode(),
-                "state" => $requestV3->getBillingData()->getState(),
-                "companyName" => $requestV3->getBillingData()->getCompany(),
-                "taxId" => $requestV3->getBillingData()->getCompanyFiscalCode(),
-                "addressLine1" => $requestV3->getBillingData()->getAddressLine1(),
-                "addressLine2" => $requestV3->getBillingData()->getAddressLine2(),
-                "zipCode" => $requestV3->getBillingData()->getZipCode(),
-                "identityDocument" => [
-                    'number' => $requestV3->getBillingData()->getIdentityCardNumber(),
-                    'type' => $requestV3->getBillingData()->getIdentityCardType()
-                ]
-            ]
-        ];
+        $billingData = new BillingData(
+            $request->getBillingData()->getFirstName(),
+            $request->getBillingData()->getLastName(),
+            $request->getBillingData()->getEmail(),
+            $request->getBillingData()->getPhoneNumber(),
+            $request->getBillingData()->getCity(),
+            $request->getBillingData()->getCountryCode()
+        );
 
-        if (!empty($requestV3->getDeliveryData())) {
-            $internalArray["client"]["delivery"] = [
-                "firstName" => $requestV3->getDeliveryData()->getFirstName(),
-                "lastName" => $requestV3->getDeliveryData()->getLastName(),
-                "phone" => $requestV3->getDeliveryData()->getPhoneNumber(),
-                "addressLine1" => $requestV3->getDeliveryData()->getAddressLine1(),
-                "addressLine2" => $requestV3->getDeliveryData()->getAddressLine2(),
-                "zipCode" => $requestV3->getDeliveryData()->getZipCode(),
-                "city" => $requestV3->getDeliveryData()->getCity(),
-                "state" => $requestV3->getDeliveryData()->getState(),
-                "countryCode" => $requestV3->getDeliveryData()->getCountryCode(),
-                "email" => $requestV3->getDeliveryData()->getEmail()
-            ];
+        $billingData->setState($request->getBillingData()->getState());
+        $billingData->setCompanyName($request->getBillingData()->getCompany());
+        $billingData->setTaxId($request->getBillingData()->getCompanyFiscalCode());
+        $billingData->setAddressLine1($request->getBillingData()->getAddressLine1());
+        $billingData->setAddressLine2($request->getBillingData()->getAddressLine2());
+        $billingData->setZipCode($request->getBillingData()->getZipCode());
+
+        if ($request->getBillingData()->getIdentityCardNumber() != null ||
+            $request->getBillingData()->getIdentityCardType() != null
+        ) {
+            $identityDocumentData = new IdentityDocumentData();
+
+            $identityDocumentData->setNumber($request->getBillingData()->getIdentityCardNumber());
+            $identityDocumentData->setType($request->getBillingData()->getIdentityCardType());
+
+            $billingData->setIdentityDocument($identityDocumentData);
         }
 
-        if (!empty($requestV3->getUser())) {
-            $internalArray["client"]["ip"] = $requestV3->getUser()->getUserIPAddress();
-            $internalArray["client"]["time"] = $requestV3->getUser()->getClientTime();
+
+        $clientData = new ClientData($billingData);
+
+        if (!empty($request->getDeliveryData())) {
+            $deliveryData = new DeliveryData();
+
+            $deliveryData->setFirstName($request->getDeliveryData()->getFirstName());
+            $deliveryData->setLastName($request->getDeliveryData()->getLastName());
+            $deliveryData->setPhone($request->getDeliveryData()->getPhoneNumber());
+            $deliveryData->setAddressLine1($request->getDeliveryData()->getAddressLine1());
+            $deliveryData->setAddressLine2($request->getDeliveryData()->getAddressLine2());
+            $deliveryData->setZipCode($request->getDeliveryData()->getZipCode());
+            $deliveryData->setCity($request->getDeliveryData()->getCity());
+            $deliveryData->setState($request->getDeliveryData()->getState());
+            $deliveryData->setCountryCode($request->getDeliveryData()->getCountryCode());
+            $deliveryData->setEmail($request->getDeliveryData()->getEmail());
+
+            $clientData->setDeliveryData($deliveryData);
+        }
+
+        if (!empty($request->getUser())) {
+            $clientData->setIp($request->getUser()->getUserIPAddress());
+            $clientData->setTime($request->getUser()->getClientTime());
             //"communicationLanguage"
         }
 
+        $authorizationRequest = new AuthorizationRequest(
+            $request->getOrder()->getOrderRef(),
+            $request->getOrder()->getCurrency(),
+            $request->getOrder()->getBackRef(),
+            $authorizationData,
+            $clientData,
+            $this->getProductArray($request)
+        );
+
         /*
-        if (!empty($requestV3->getMerchant())) {
-            $internalArray["merchant"] = $requestV3->getMerchant->getPosCode();
+         * no PosCode object in Request
+        if (!empty($request->getMerchant())){
+            $merchantData = new MerchantData($request->getMerchant());
+
+            $authorizationRequest->setMerchant($merchantData);
         }
         */
 
-        $internalArray["products"] = $this->getProductArray($requestV3);
 //        if (airlineInfo){}
 //        if (threeDSecure){}
 //        if (storedCredentials){}
 
-        return json_encode($internalArray);
+        return json_encode($authorizationRequest);
     }
 
     /**
-     * @param $requestV3
-     * @return array
+     * @param Request $request
+     * @return ProductData[]
      */
-    private function getProductArray($requestV3)
+    private function getProductArray($request)
     {
         $cnt = 0;
         $productsArray = [];
+
         /**
-         * @var Request $requestV3
+         * @var Request $request
          * @var Product $product
          */
-        foreach ($requestV3->getOrder()->getProducts() as $product) {
-            $productsArray[$cnt] =
-                [
-                    "name" => $product->getName(),
-                    "sku" => $product->getCode(),
-                    "unitPrice" => $product->getPrice(),
-                    "quantity" => $product->getQuantity(),
-                    "additionalDetails" => $product->getInfo(),
-                    "vat" => $product->getVAT()
-                ];
-            $cnt++;
+        foreach ($request->getOrder()->getProducts() as $product) {
+            $productData = new ProductData(
+                $product->getName(),
+                $product->getCode(),
+                $product->getPrice(),
+                $product->getQuantity()
+            );
+
+            $productData->setAdditionalDetails($product->getInfo());
+            $productData->setVat($product->getVAT());
+
+            $productsArray[$cnt++] = $productData;
         }
+
         return $productsArray;
     }
 
-    /**
-     * @param Request $requestV3
-     * @param string $apiSignature
-     * @return array
-     */
-    public function buildRequestHeaders(Request $requestV3, $apiSignature)
-    {
-        return [
-            "Accept: application/json",
-            "X-Header-Signature:" . $apiSignature,
-            "X-Header-Merchant:" . $requestV3->getMerchantConfig()->getMerchantCode(),
-            "X-Header-Date:" . $requestV3->getOrder()->getOrderDate(),
-            "Content-Type: application/json;charset=utf-8"
-        ];
-    }
+
 }
