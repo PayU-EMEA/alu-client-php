@@ -35,6 +35,15 @@ class Card
 
     /** @var bool */
     private $enableTokenCreation;
+    /**
+     * @var int|null
+     */
+    private $timeSpentTypingNumber;
+
+    /**
+     * @var int|null
+     */
+    private $timeSpentTypingOwner;
 
     /**
      * @param string $cardNumber
@@ -103,7 +112,6 @@ class Card
     {
         return $this->timeSpentTypingOwner;
     }
-
 
     /**
      * @return string
