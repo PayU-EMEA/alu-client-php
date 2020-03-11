@@ -1,18 +1,19 @@
 <?php
 
 
-namespace PayU\Alu;
+namespace PayU\Payments\Gateways\PaymentsApi\Services;
+
+use PayU\Alu\Response;
 
 class ResponseParser
 {
     /**
-     * @param string $jsonResponse
+     * @param array $responseArray
      * @return Response
      */
-    public function parseJsonResponse($jsonResponse)
+    public function parseResponse($responseArray)
     {
-        $responseArray = json_decode($jsonResponse, true);
-        // todo rename from parse to build
+
         switch ($responseArray['code']) {
             case 200:
             case 202:

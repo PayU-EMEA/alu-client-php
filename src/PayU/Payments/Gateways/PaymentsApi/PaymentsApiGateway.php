@@ -2,6 +2,7 @@
 
 namespace PayU\Payments\Gateways\PaymentsApi;
 
+use PayU\Payments\Gateways\PaymentsApi\Services\ResponseParserJson;
 use PayU\Payments\Interfaces\GatewayInterface;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
@@ -63,6 +64,11 @@ class PaymentsApiGateway implements GatewayInterface
     private $merchantConfig;
 
     /**
+     * @var ResponseParserJson
+     */
+    private $responseParserJson;
+
+    /**
      * PaymentsApiGateway constructor.
      * @throws ClientException
      */
@@ -71,6 +77,7 @@ class PaymentsApiGateway implements GatewayInterface
         $this->httpClient = new HTTPClient();
         $this->hashService = new HashService();
         $this->requestBuilder = new RequestBuilder();
+        $this->responseParserJson = new ResponseParserJson();
         $this->responseParser = new ResponseParser();
     }
 
@@ -115,16 +122,15 @@ class PaymentsApiGateway implements GatewayInterface
                 $jsonRequest,
                 $headers);
 
-            var_dump(json_decode($responseJson, true));
-            die ();
-
         } catch (ClientException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         } catch (ConnectionException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         }
 
-        $response = $this->responseParser->parseJsonResponse($responseJson);
+        $this->responseParserJson->parseJsonResponse($responseJson);
+
+        return $this->responseParser->parseResponse($this->responseParserJson->getResponse());
 
         //todo token payment (another task)
 //        // enable the token only if authorization was successful
@@ -134,7 +140,5 @@ class PaymentsApiGateway implements GatewayInterface
 //        ) {
 //            return $this->createTokenRequest($request, $response, $httpClient, $hashService);
 //        }
-
-        return $response;
     }
 }
