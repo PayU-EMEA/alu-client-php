@@ -4,6 +4,7 @@ namespace PayU\Alu;
 
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
+use PayU\Payments\GatewayFactory;
 use SimpleXMLElement;
 
 /**
@@ -12,9 +13,6 @@ use SimpleXMLElement;
  */
 class Client
 {
-
-    const ALU_V4_AUTHORIZE_PATH = '/api/v4/payments/authorize';
-
     /**
      * @var MerchantConfig
      */
@@ -43,12 +41,16 @@ class Client
      */
     private $customUrl = null;
 
+    /** @var GatewayFactory */
+    private $gatewayFactory;
+
     /**
      * @param MerchantConfig $merchantConfig
      */
     public function __construct(MerchantConfig $merchantConfig)
     {
         $this->merchantConfig = $merchantConfig;
+        $this->gatewayFactory = new GatewayFactory();
     }
 
     /**
@@ -66,20 +68,6 @@ class Client
         }
         return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . $this->aluUrlPath;
     }
-
-    private function getAluV4Url()
-    {
-        if (!empty($this->customUrl)) {
-            return $this->customUrl;
-        }
-
-        if (!isset($this->aluUrlHostname[$this->merchantConfig->getPlatform()])) {
-            throw new ClientException('Invalid platform');
-        }
-
-        return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . self::ALU_V4_AUTHORIZE_PATH;
-    }
-
 
     /**
      * @param $fullUrl
@@ -196,11 +184,9 @@ class Client
             $httpClient = new HTTPClient();
         }
 
-        if ($request->getPaymentsApiVersion() === 'v3') {
-            return $this->authorizeV3($request, $httpClient, $hashService);
-        }
+        $gateway = $this->gatewayFactory->create($request->getPaymentsApiVersion(), $httpClient, $hashService);
 
-        return $this->authorizeV4($request, $httpClient, $hashService);
+        return $gateway->authorize($request);
     }
 
     /**
