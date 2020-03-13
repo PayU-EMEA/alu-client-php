@@ -16,7 +16,7 @@ class Response
 
     /**
      * @var string
-     * not set in alu V4 response
+     * not set in alu Payments response
      */
     private $alias;
 
@@ -37,7 +37,7 @@ class Response
 
     /**
      * @var string
-     * not set in alu V4 response
+     * not set in alu Payments response
      */
     private $date;
 
@@ -48,7 +48,7 @@ class Response
 
     /**
      * @var string
-     *  not set in alu V4 response
+     *  not set in alu Payments response
      */
     private $hash;
 
@@ -107,7 +107,7 @@ class Response
 
     /**
      * @var string
-     * not set in alu V4 response (it s complicated )
+     * not set in alu Payments response (it s complicated )
      */
     private $tokenHash;
 
