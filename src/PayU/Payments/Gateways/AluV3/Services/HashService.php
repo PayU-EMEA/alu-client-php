@@ -1,8 +1,11 @@
 <?php
 
-namespace PayU\Alu;
+namespace AluV3\Services;
 
 use PayU\Alu\Exceptions\ClientException;
+use PayU\Alu\MerchantConfig;
+use PayU\Alu\Request;
+use PayU\Alu\Response;
 
 /**
  * Class HashService
@@ -53,10 +56,13 @@ class HashService
         return $hash;
     }
 
-    public function makeRequestHash(Request $request)
+    /**
+     * @param array $requestArray
+     * @return string
+     */
+    public function makeRequestHash($requestArray)
     {
-        $params = $request->getRequestParams();
-        return $this->computeHash($params);
+        return $this->computeHash($requestArray);
     }
 
     public function validateResponseHash(Response $response)

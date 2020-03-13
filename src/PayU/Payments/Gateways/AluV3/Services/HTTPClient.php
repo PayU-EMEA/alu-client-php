@@ -1,6 +1,6 @@
 <?php
 
-namespace PayU\Alu;
+namespace AluV3\Services;
 
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
@@ -58,6 +58,7 @@ class HTTPClient
                 $url
             ));
         }
+        var_dump($result); die();
         return $result;
     }
 
