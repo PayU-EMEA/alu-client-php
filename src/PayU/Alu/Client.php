@@ -168,13 +168,12 @@ class Client
 
     /**
      * @param Request $request
-     * @param HTTPClient|\HttpClient $httpClient
+     * @param HTTPClient $httpClient
      * @param HashService $hashService
      * @return Response
-     * @throws ConnectionException
      * @throws ClientException
      */
-    public function pay(Request $request, $httpClient = null, HashService $hashService = null)
+    public function pay(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
     {
         if (null === $hashService) {
             $hashService = new HashService($this->merchantConfig->getSecretKey());
@@ -214,32 +213,6 @@ class Client
             $hashService->validateResponseHash($response);
         }
         return $response;
-    }
-
-    /**
-     * @param Request $requestV3
-     * @param HTTPClient $httpClient
-     * @param HashService $hashService
-     * @return Response
-     */
-    private function authorizeV4(Request $requestV3, HTTPClient $httpClient, HashService $hashService)
-    {
-        $requestBuilder = new RequestBuilder();
-
-        $jsonRequest = $requestBuilder->buildAuthorizationRequestAsJson($requestV3);
-        $apiSignature = $hashService->generateSignatureV4($requestV3, $jsonRequest);
-        $headers = $requestBuilder->buildRequestHeaders($requestV3, $apiSignature);
-
-        try {
-            $responseJson = $httpClient->postV4($this->getAluV4Url(), $jsonRequest, $headers);
-        } catch (ClientException $e) {
-            echo($e->getMessage() . ' ' . $e->getCode());
-        } catch (ConnectionException $e) {
-            echo($e->getMessage() . ' ' . $e->getCode());
-        }
-
-        $responseParser = new ResponseParser();
-        return $responseParser->parseJsonResponse($responseJson);
     }
 
     /**
