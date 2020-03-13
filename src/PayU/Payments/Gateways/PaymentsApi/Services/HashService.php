@@ -1,13 +1,13 @@
 <?php
 
 
-namespace PayU\Payments\Gateways\PaymentsApi\Services;
+namespace PaymentsApi\Services;
 
 
 use PayU\Alu\Client;
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Request;
-use PayU\Payments\Gateways\PaymentsApi\PaymentsApiGateway;
+use PaymentsApi\PaymentsApiGateway;
 
 
 class HashService

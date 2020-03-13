@@ -1,20 +1,20 @@
 <?php
 
 
-namespace PayU\Payments\Gateways\PaymentsApi\Services;
+namespace PaymentsApi\Services;
 
 
 use PayU\Alu\Request;
-use PayU\Payments\Gateways\PaymentsApi\Entities\AuthorizationData;
-use PayU\Payments\Gateways\PaymentsApi\Entities\AuthorizationRequest;
-use PayU\Payments\Gateways\PaymentsApi\Entities\BillingData;
-use PayU\Payments\Gateways\PaymentsApi\Entities\CardDetails;
-use PayU\Payments\Gateways\PaymentsApi\Entities\ClientData;
-use PayU\Payments\Gateways\PaymentsApi\Entities\DeliveryData;
-use PayU\Payments\Gateways\PaymentsApi\Entities\FxData;
-use PayU\Payments\Gateways\PaymentsApi\Entities\IdentityDocumentData;
-use PayU\Payments\Gateways\PaymentsApi\Entities\MerchantTokenData;
-use PayU\Payments\Gateways\PaymentsApi\Entities\ProductData;
+use PaymentsApi\Entities\AuthorizationData;
+use PaymentsApi\Entities\AuthorizationRequest;
+use PaymentsApi\Entities\BillingData;
+use PaymentsApi\Entities\CardDetails;
+use PaymentsApi\Entities\ClientData;
+use PaymentsApi\Entities\DeliveryData;
+use PaymentsApi\Entities\FxData;
+use PaymentsApi\Entities\IdentityDocumentData;
+use PaymentsApi\Entities\MerchantTokenData;
+use PaymentsApi\Entities\ProductData;
 
 class RequestBuilder
 {

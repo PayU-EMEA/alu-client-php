@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PayU\Payments\Gateways\PaymentsApi\Entities;
+namespace PaymentsApi\Entities;
 
 
 class DeliveryData implements \JsonSerializable

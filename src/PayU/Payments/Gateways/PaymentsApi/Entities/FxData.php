@@ -1,6 +1,6 @@
 <?php
 
-namespace PayU\Payments\Gateways\PaymentsApi\Entities;
+namespace PaymentsApi\Entities;
 
 class FxData implements \JsonSerializable
 {

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace PayU\Payments\Gateways\PaymentsApi\Services;
+namespace PaymentsApi\Services;
 
 
-use PayU\Payments\Gateways\PaymentsApi\Entities\AuthorizationResponse;
+use PaymentsApi\Entities\AuthorizationResponse;
 
 class ResponseParser
 {

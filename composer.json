@@ -20,6 +20,8 @@
         "psr-4": {
             "PayU\\Alu\\": "src/PayU/Alu/",
             "PayU\\Payments\\": "src/PayU/Payments/",
+            "AluV3\\": "src/PayU/Payments/Gateways/AluV3",
+            "PaymentsApi\\": "src/PayU/Payments/Gateways/PaymentsApi",
             "PayU\\Alu\\Exceptions\\": "src/PayU/Alu/Exceptions"
         }
     }

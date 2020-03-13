@@ -1,10 +1,10 @@
 <?php
 
 
-namespace PayU\Payments\Gateways\PaymentsApi\Entities;
+namespace PaymentsApi\Entities;
 
 
-use PayU\Payments\Gateways\PaymentsApi\Entities\IdentityDocumentData;
+use PaymentsApi\Entities\IdentityDocumentData;
 
 class BillingData implements \JsonSerializable
 {

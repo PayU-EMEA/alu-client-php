@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PayU\Payments\Gateways\PaymentsApi\Services;
+namespace PaymentsApi\Services;
 
 
 use PayU\Alu\Exceptions\ClientException;

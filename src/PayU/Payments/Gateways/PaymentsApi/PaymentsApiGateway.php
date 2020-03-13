@@ -1,18 +1,18 @@
 <?php
 
-namespace PayU\Payments\Gateways\PaymentsApi;
+namespace PaymentsApi;
 
-use PayU\Payments\Gateways\PaymentsApi\Services\ResponseParser;
+use PaymentsApi\Services\ResponseParser;
 use PayU\Payments\Interfaces\GatewayInterface;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
 
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Request;
-use PayU\Payments\Gateways\PaymentsApi\Services\HashService;
-use PayU\Payments\Gateways\PaymentsApi\Services\HTTPClient;
-use PayU\Payments\Gateways\PaymentsApi\Services\RequestBuilder;
-use PayU\Payments\Gateways\PaymentsApi\Services\ResponseBuilder;
+use PaymentsApi\Services\HashService;
+use PaymentsApi\Services\HTTPClient;
+use PaymentsApi\Services\RequestBuilder;
+use PaymentsApi\Services\ResponseBuilder;
 
 
 class PaymentsApiGateway implements GatewayInterface

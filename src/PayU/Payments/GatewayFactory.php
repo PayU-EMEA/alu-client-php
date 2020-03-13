@@ -4,10 +4,10 @@
 namespace PayU\Payments;
 
 
+use PaymentsApi\PaymentsApiGateway;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\Alu\MerchantConfig;
-use PayU\Payments\Gateways\PaymentsApi\PaymentsApiGateway;
 
 class GatewayFactory
 {
