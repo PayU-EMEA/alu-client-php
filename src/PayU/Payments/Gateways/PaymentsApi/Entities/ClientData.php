@@ -49,6 +49,7 @@ class ClientData implements \JsonSerializable
 
     /**
      * ClientData constructor.
+     *
      * @param BillingData $billingData
      */
     public function __construct($billingData)

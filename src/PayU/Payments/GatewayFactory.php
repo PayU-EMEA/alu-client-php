@@ -15,8 +15,8 @@ class GatewayFactory
     public function create(
         $apiVersion,
         HTTPClient $httpClient,
-        HashService $hashService)
-    {
+        HashService $hashService
+    ) {
         switch ($apiVersion) {
             case 'v3':
                 return new AluV3Gateway($httpClient, $hashService);

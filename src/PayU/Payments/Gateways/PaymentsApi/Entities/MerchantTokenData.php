@@ -23,6 +23,7 @@ class MerchantTokenData implements \JsonSerializable
 
     /**
      * MerchantTokenData constructor.
+     *
      * @param string $tokenHash
      */
     public function __construct($tokenHash)

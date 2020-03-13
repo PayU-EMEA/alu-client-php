@@ -157,6 +157,7 @@ class AuthorizationRequest implements \JsonSerializable
 
     /**
      * AuthorizationRequest constructor.
+     *
      * @param string $merchantPaymentReference
      * @param string $currency
      * @param string $returnUrl
@@ -171,8 +172,7 @@ class AuthorizationRequest implements \JsonSerializable
         $authorization,
         $client,
         $products
-    )
-    {
+    ) {
         $this->merchantPaymentReference = $merchantPaymentReference;
         $this->currency = $currency;
         $this->returnUrl = $returnUrl;

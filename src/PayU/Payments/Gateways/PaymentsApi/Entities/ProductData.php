@@ -38,6 +38,7 @@ class ProductData implements \JsonSerializable
 
     /**
      * ProductData constructor.
+     *
      * @param string $name
      * @param string $sku
      * @param string $unitPrice
@@ -48,8 +49,7 @@ class ProductData implements \JsonSerializable
         $sku,
         $unitPrice,
         $quantity
-    )
-    {
+    ) {
         $this->name = $name;
         $this->sku = $sku;
         $this->unitPrice = $unitPrice;

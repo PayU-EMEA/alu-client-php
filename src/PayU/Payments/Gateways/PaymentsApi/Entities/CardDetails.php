@@ -43,6 +43,7 @@ class CardDetails implements \JsonSerializable
 
     /**
      * CardDetails constructor.
+     *
      * @param string $number
      * @param int $expiryMonth
      * @param int $expiryYear
@@ -51,8 +52,7 @@ class CardDetails implements \JsonSerializable
         $number,
         $expiryMonth,
         $expiryYear
-    )
-    {
+    ) {
         $this->number = $number;
         $this->expiryMonth = $expiryMonth;
         $this->expiryYear = $expiryYear;

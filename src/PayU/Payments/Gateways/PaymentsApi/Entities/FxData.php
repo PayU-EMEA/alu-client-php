@@ -12,6 +12,7 @@ class FxData implements \JsonSerializable
 
     /**
      * FX constructor.
+     *
      * @param string $currency
      * @param double $exchangeRate
      */

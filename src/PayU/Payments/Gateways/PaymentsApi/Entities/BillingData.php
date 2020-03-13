@@ -75,6 +75,7 @@ class BillingData implements \JsonSerializable
 
     /**
      * BillingData constructor.
+     *
      * @param string $firstName
      * @param string $lastName
      * @param string $email
@@ -89,8 +90,7 @@ class BillingData implements \JsonSerializable
         $phone,
         $city,
         $countryCode
-    )
-    {
+    ) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;

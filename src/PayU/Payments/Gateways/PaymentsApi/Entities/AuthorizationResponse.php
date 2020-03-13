@@ -13,6 +13,7 @@ class AuthorizationResponse
 
     /**
      * AuthorizationResponse constructor.
+     *
      * @param array $response
      */
     public function __construct(array $response)

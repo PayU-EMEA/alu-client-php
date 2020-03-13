@@ -70,6 +70,7 @@ class PaymentsApiGateway implements GatewayInterface
 
     /**
      * PaymentsApiGateway constructor.
+     *
      * @throws ClientException
      */
     public function __construct()

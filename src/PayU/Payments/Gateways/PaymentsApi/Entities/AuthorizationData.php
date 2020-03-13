@@ -53,6 +53,7 @@ class AuthorizationData implements \JsonSerializable
 
     /**
      * AuthorizationData constructor.
+     *
      * @param string $paymentMethod
      */
     public function __construct($paymentMethod)

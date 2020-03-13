@@ -13,6 +13,7 @@ class MerchantData implements \JsonSerializable
 
     /**
      * MerchantData constructor.
+     *
      * @param string $posCode
      */
     public function __construct($posCode)
