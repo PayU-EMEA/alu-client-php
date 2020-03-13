@@ -215,11 +215,4 @@ class Request
         $this->fx = $fx;
     }
 
-    /**
-     * @param string $hash
-     */
-    public function setOrderHash($hash)
-    {
-        $this->internalArray['ORDER_HASH'] = $hash;
-    }
 }

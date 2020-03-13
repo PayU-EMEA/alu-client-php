@@ -2,6 +2,8 @@
 
 namespace PayU\Alu;
 
+use AluV3\Services\HashService;
+use AluV3\Services\HTTPClient;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Payments\GatewayFactory;
@@ -19,24 +21,6 @@ class Client
     private $merchantConfig;
 
     /**
-     * @var array
-     * todo set ro to original value
-     */
-    private $aluUrlHostname = array(
-        //'ro' => 'https://secure.payu.ro',
-        'ro' => 'http://ro.payu.local',
-        'ru' => 'https://secure.payu.ru',
-        'ua' => 'https://secure.payu.ua',
-        'hu' => 'https://secure.payu.hu',
-        'tr' => 'https://secure.payu.com.tr',
-    );
-
-    /**
-     * @var string
-     */
-    private $aluUrlPath = '/order/alu/v3';
-
-    /**
      * @var string
      */
     private $customUrl = null;
@@ -51,22 +35,6 @@ class Client
     {
         $this->merchantConfig = $merchantConfig;
         $this->gatewayFactory = new GatewayFactory();
-    }
-
-    /**
-     * @return string
-     * @throws ClientException
-     */
-    private function getAluUrl()
-    {
-        if (!empty($this->customUrl)) {
-            return $this->customUrl;
-        }
-
-        if (!isset($this->aluUrlHostname[$this->merchantConfig->getPlatform()])) {
-            throw new ClientException('Invalid platform');
-        }
-        return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . $this->aluUrlPath;
     }
 
     /**
@@ -186,33 +154,6 @@ class Client
         $gateway = $this->gatewayFactory->create($request->getPaymentsApiVersion(), $httpClient, $hashService);
 
         return $gateway->authorize($request);
-    }
-
-    /**
-     * @param Request $request
-     * @param HTTPClient|null $httpClient
-     * @param HashService|null $hashService
-     * @return Response
-     * @throws ClientException
-     * @throws ConnectionException
-     */
-    private function authorizeV3(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
-    {
-        $requestHash = $hashService->makeRequestHash($request);
-        $request->setOrderHash($requestHash);
-
-        $requestParams = $request->getRequestParams();
-        $responseXML = $httpClient->post($this->getAluUrl(), $requestParams);
-        try {
-            $xmlObject = new SimpleXMLElement($responseXML);
-        } catch (\Exception $e) {
-            throw new ClientException($e->getMessage(), $e->getCode());
-        }
-        $response = $this->getResponse($xmlObject);
-        if ('' != $response->getHash()) {
-            $hashService->validateResponseHash($response);
-        }
-        return $response;
     }
 
     /**
