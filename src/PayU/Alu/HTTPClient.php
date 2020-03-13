@@ -61,26 +61,6 @@ class HTTPClient
         return $result;
     }
 
-    public function postV4($url, $requestBody, $requestHeaders)
-    {
-        curl_setopt_array($this->handler, array(
-            CURLOPT_URL => $url,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $requestBody,
-            CURLOPT_HTTPHEADER => $requestHeaders,
-        ));
-
-        $result = curl_exec($this->handler);
-        if (curl_errno($this->handler) > 0) {
-            throw new ConnectionException(sprintf(
-                'Curl error "%s" when accessing url: "%s"',
-                curl_error($this->handler),
-                $url
-            ));
-        }
-        return $result;
-    }
-
     public function __destruct()
     {
         curl_close($this->handler);
