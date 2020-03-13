@@ -288,4 +288,12 @@ class RequestBuilder
         }
         return $this->internalArray;
     }
+
+    /**
+     * @param string $hash
+     */
+    public function setOrderHash($hash)
+    {
+        $this->internalArray['ORDER_HASH'] = $hash;
+    }
 }
