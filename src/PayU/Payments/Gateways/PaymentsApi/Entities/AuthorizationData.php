@@ -65,45 +65,12 @@ class AuthorizationData implements \JsonSerializable
         $this->paymentMethod = $paymentMethod;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getPaymentMethod()
-    {
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param string $paymentMethod
-     */
-    public function setPaymentMethod($paymentMethod)
-    {
-        $this->paymentMethod = $paymentMethod;
-    }
-
-    /**
-     * @return CardDetails
-     */
-    public function getCardDetails()
-    {
-        return $this->cardDetails;
-    }
-
     /**
      * @param CardDetails $cardDetails
      */
     public function setCardDetails($cardDetails)
     {
         $this->cardDetails = $cardDetails;
-    }
-
-    /**
-     * @return MerchantTokenData
-     */
-    public function getMerchantToken()
-    {
-        return $this->merchantToken;
     }
 
     /**
@@ -115,27 +82,11 @@ class AuthorizationData implements \JsonSerializable
     }
 
     /**
-     * @return mixed
-     */
-    public function getApplePayToken()
-    {
-        return $this->applePayToken;
-    }
-
-    /**
      * @param mixed $applePayToken
      */
     public function setApplePayToken($applePayToken)
     {
         $this->applePayToken = $applePayToken;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUserPaymentPage()
-    {
-        return $this->userPaymentPage;
     }
 
     /**
@@ -147,27 +98,11 @@ class AuthorizationData implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getInstallmentsNumber()
-    {
-        return $this->installmentsNumber;
-    }
-
-    /**
      * @param string $installmentsNumber
      */
     public function setInstallmentsNumber($installmentsNumber)
     {
         $this->installmentsNumber = $installmentsNumber;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUseLoyaltyPoints()
-    {
-        return $this->useLoyaltyPoints;
     }
 
     /**
@@ -179,14 +114,6 @@ class AuthorizationData implements \JsonSerializable
     }
 
     /**
-     * @return int
-     */
-    public function getLoyaltyPointsAmount()
-    {
-        return $this->loyaltyPointsAmount;
-    }
-
-    /**
      * @param int $loyaltyPointsAmount
      */
     public function setLoyaltyPointsAmount($loyaltyPointsAmount)
@@ -195,27 +122,11 @@ class AuthorizationData implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getCampaignType()
-    {
-        return $this->campaignType;
-    }
-
-    /**
      * @param string $campaignType
      */
     public function setCampaignType($campaignType)
     {
         $this->campaignType = $campaignType;
-    }
-
-    /**
-     * @return FxData
-     */
-    public function getFx()
-    {
-        return $this->fx;
     }
 
     /**

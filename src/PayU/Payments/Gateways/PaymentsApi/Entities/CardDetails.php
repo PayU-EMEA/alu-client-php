@@ -59,62 +59,6 @@ class CardDetails implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getNumber()
-    {
-        return $this->number;
-    }
-
-    /**
-     * @return int
-     */
-    public function getExpiryMonth()
-    {
-        return $this->expiryMonth;
-    }
-
-    /**
-     * @return int
-     */
-    public function getExpiryYear()
-    {
-        return $this->expiryYear;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCvv()
-    {
-        return $this->cvv;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTimeSpentTypingNumber()
-    {
-        return $this->timeSpentTypingNumber;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTimeSpentTypingOwner()
-    {
-        return $this->timeSpentTypingOwner;
-    }
-
-    /**
      * @param int $cvv
      */
     public function setCvv($cvv)

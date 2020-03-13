@@ -32,22 +32,6 @@ class ClientData implements \JsonSerializable
     private $communicationLanguage;
 
     /**
-     * @return string
-     */
-    public function getCommunicationLanguage()
-    {
-        return $this->communicationLanguage;
-    }
-
-    /**
-     * @param string $communicationLanguage
-     */
-    public function setCommunicationLanguage($communicationLanguage)
-    {
-        $this->communicationLanguage = $communicationLanguage;
-    }
-
-    /**
      * ClientData constructor.
      *
      * @param BillingData $billingData
@@ -55,38 +39,6 @@ class ClientData implements \JsonSerializable
     public function __construct($billingData)
     {
         $this->billingData = $billingData;
-    }
-
-    /**
-     * @return BillingData
-     */
-    public function getBillingData()
-    {
-        return $this->billingData;
-    }
-
-    /**
-     * @return DeliveryData
-     */
-    public function getDeliveryData()
-    {
-        return $this->deliveryData;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIp()
-    {
-        return $this->ip;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTime()
-    {
-        return $this->time;
     }
 
     /**
@@ -111,6 +63,14 @@ class ClientData implements \JsonSerializable
     public function setTime($time)
     {
         $this->time = $time;
+    }
+    
+    /**
+     * @param string $communicationLanguage
+     */
+    public function setCommunicationLanguage($communicationLanguage)
+    {
+        $this->communicationLanguage = $communicationLanguage;
     }
 
     /**

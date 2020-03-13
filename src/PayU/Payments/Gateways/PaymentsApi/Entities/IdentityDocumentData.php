@@ -17,27 +17,11 @@ class IdentityDocumentData implements \JsonSerializable
     private $type;
 
     /**
-     * @return string
-     */
-    public function getNumber()
-    {
-        return $this->number;
-    }
-
-    /**
      * @param string $number
      */
     public function setNumber($number)
     {
         $this->number = $number;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

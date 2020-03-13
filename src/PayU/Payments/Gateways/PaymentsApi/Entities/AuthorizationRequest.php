@@ -43,119 +43,6 @@ class AuthorizationRequest implements \JsonSerializable
     private $merchant;
 
     /**
-     * @return MerchantData
-     */
-    public function getMerchant()
-    {
-        return $this->merchant;
-    }
-
-    /**
-     * @param MerchantData $merchant
-     */
-    public function setMerchant($merchant)
-    {
-        $this->merchant = $merchant;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMerchantPaymentReference()
-    {
-        return $this->merchantPaymentReference;
-    }
-
-    /**
-     * @param string $merchantPaymentReference
-     */
-    public function setMerchantPaymentReference($merchantPaymentReference)
-    {
-        $this->merchantPaymentReference = $merchantPaymentReference;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @param string $currency
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReturnUrl()
-    {
-        return $this->returnUrl;
-    }
-
-    /**
-     * @param string $returnUrl
-     */
-    public function setReturnUrl($returnUrl)
-    {
-        $this->returnUrl = $returnUrl;
-    }
-
-    /**
-     * @return AuthorizationData
-     */
-    public function getAuthorization()
-    {
-        return $this->authorization;
-    }
-
-    /**
-     * @param AuthorizationData $authorization
-     */
-    public function setAuthorization($authorization)
-    {
-        $this->authorization = $authorization;
-    }
-
-    /**
-     * @return ClientData
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * @param ClientData $client
-     */
-    public function setClient($client)
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * @return ProductData[]
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * @param ProductData[] $products
-     */
-    public function setProducts($products)
-    {
-        $this->products = $products;
-    }
-
-
-    /**
      * AuthorizationRequest constructor.
      *
      * @param string $merchantPaymentReference
@@ -182,11 +69,19 @@ class AuthorizationRequest implements \JsonSerializable
     }
 
     /**
+     * @param MerchantData $merchant
+     */
+    public function setMerchant($merchant)
+    {
+        $this->merchant = $merchant;
+    }
+
+    /**
      * @inheritDoc
      */
     public function jsonSerialize()
     {
-        $arr = [
+        return [
             'merchantPaymentReference' => $this->merchantPaymentReference,
             'currency' => $this->currency,
             'returnUrl' => $this->returnUrl,
@@ -195,14 +90,5 @@ class AuthorizationRequest implements \JsonSerializable
             'merchant' => $this->merchant,
             'products' => $this->products
         ];
-
-//        $productsArray = [];
-//        for($i = 0; $i< count($this->products); $i++) {
-//            $productsArray[$i] = json_encode($this->products[$i]);
-//        }
-//
-//        $arr['products'] = $productsArray;
-
-        return $arr;
     }
 }

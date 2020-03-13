@@ -57,59 +57,11 @@ class ProductData implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSku()
-    {
-        return $this->sku;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitPrice()
-    {
-        return $this->unitPrice;
-    }
-
-    /**
-     * @return float
-     */
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAdditionalDetails()
-    {
-        return $this->additionalDetails;
-    }
-
-    /**
      * @param int $additionalDetails
      */
     public function setAdditionalDetails($additionalDetails)
     {
         $this->additionalDetails = $additionalDetails;
-    }
-
-    /**
-     * @return float
-     */
-    public function getVat()
-    {
-        return $this->vat;
     }
 
     /**

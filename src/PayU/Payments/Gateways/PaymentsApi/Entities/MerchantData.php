@@ -22,14 +22,6 @@ class MerchantData implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getPosCode()
-    {
-        return $this->posCode;
-    }
-
-    /**
      * @inheritDoc
      */
     public function jsonSerialize()

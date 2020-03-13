@@ -100,30 +100,6 @@ class BillingData implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
      * @param string $state
      */
     public function setState($state)
@@ -177,86 +153,6 @@ class BillingData implements \JsonSerializable
     public function setIdentityDocument($identityDocument)
     {
         $this->identityDocument = $identityDocument;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCountryCode()
-    {
-        return $this->countryCode;
-    }
-
-    /**
-     * @return string
-     */
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCompanyName()
-    {
-        return $this->companyName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTaxId()
-    {
-        return $this->taxId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAddressLine1()
-    {
-        return $this->addressLine1;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAddressLine2()
-    {
-        return $this->addressLine2;
-    }
-
-    /**
-     * @return string
-     */
-    public function getZipCode()
-    {
-        return $this->zipCode;
-    }
-
-    /**
-     * @return IdentityDocumentData
-     */
-    public function getIdentityDocument()
-    {
-        return $this->identityDocument;
     }
 
     /**

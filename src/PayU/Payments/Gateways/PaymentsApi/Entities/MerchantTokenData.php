@@ -32,30 +32,6 @@ class MerchantTokenData implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getTokenHash()
-    {
-        return $this->tokenHash;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCvv()
-    {
-        return $this->cvv;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    /**
      * @param int $cvv
      */
     public function setCvv($cvv)

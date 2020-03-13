@@ -23,22 +23,6 @@ class FxData implements \JsonSerializable
     }
 
     /**
-     * @return string
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @return float
-     */
-    public function getExchangeRate()
-    {
-        return $this->exchangeRate;
-    }
-
-    /**
      * @inheritDoc
      */
     public function jsonSerialize()
