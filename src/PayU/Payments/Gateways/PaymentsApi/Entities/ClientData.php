@@ -64,7 +64,7 @@ class ClientData implements \JsonSerializable
     {
         $this->time = $time;
     }
-    
+
     /**
      * @param string $communicationLanguage
      */
