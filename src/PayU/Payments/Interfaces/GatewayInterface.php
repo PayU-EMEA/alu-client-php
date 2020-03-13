@@ -1,6 +1,6 @@
 <?php
 
-namespace Payu\Payments\Interfaces;
+namespace PayU\Payments\Interfaces;
 
 use PayU\Alu\Request;
 use PayU\Alu\Response;

@@ -5,11 +5,10 @@ namespace PayU\Payments;
 
 
 use AluV3\AluV3Gateway;
+use AluV3\Services\HashService;
+use AluV3\Services\HTTPClient;
 use PaymentsApi\PaymentsApiGateway;
 use PayU\Alu\Exceptions\ClientException;
-use PayU\Alu\HashService;
-use PayU\Alu\HTTPClient;
-use PayU\Alu\MerchantConfig;
 
 class GatewayFactory
 {
