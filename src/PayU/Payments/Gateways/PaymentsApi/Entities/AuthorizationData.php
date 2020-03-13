@@ -21,6 +21,10 @@ class AuthorizationData implements \JsonSerializable
      */
     private $merchantToken;
 
+    /**
+     * @var ApplePayTokenData
+     * todo create class
+     */
     private $applePayToken;
 
     /**
