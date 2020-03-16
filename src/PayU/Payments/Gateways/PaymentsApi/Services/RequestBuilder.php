@@ -4,6 +4,7 @@
 namespace PaymentsApi\Services;
 
 
+
 use PayU\Alu\Request;
 use PaymentsApi\Entities\AuthorizationData;
 use PaymentsApi\Entities\AuthorizationRequest;
@@ -189,6 +190,4 @@ class RequestBuilder
 
         return $productsArray;
     }
-
-
 }

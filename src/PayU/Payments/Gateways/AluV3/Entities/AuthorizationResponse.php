@@ -4,6 +4,7 @@
 namespace AluV3\Entities;
 
 
+
 use SimpleXMLElement;
 
 class AuthorizationResponse

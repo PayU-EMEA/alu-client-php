@@ -75,5 +75,4 @@ class HashService
             throw new ClientException('Response HASH mismatch');
         }
     }
-
 }

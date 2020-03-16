@@ -175,5 +175,4 @@ class Client
 
         return $responseWireAccount;
     }
-
 }

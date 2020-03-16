@@ -4,6 +4,7 @@
 namespace AluV3\Services;
 
 
+
 use AluV3\Entities\AuthorizationResponse;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Response;
@@ -99,5 +100,4 @@ class ResponseBuilder
 
         return $responseWireAccount;
     }
-
 }

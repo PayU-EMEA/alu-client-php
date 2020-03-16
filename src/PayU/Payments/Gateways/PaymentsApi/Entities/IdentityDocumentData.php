@@ -4,6 +4,7 @@
 namespace PaymentsApi\Entities;
 
 
+
 class IdentityDocumentData implements \JsonSerializable
 {
     /**

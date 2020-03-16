@@ -214,5 +214,4 @@ class Request
     {
         $this->fx = $fx;
     }
-
 }

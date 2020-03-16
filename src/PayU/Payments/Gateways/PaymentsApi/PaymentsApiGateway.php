@@ -14,7 +14,6 @@ use PaymentsApi\Services\HTTPClient;
 use PaymentsApi\Services\RequestBuilder;
 use PaymentsApi\Services\ResponseBuilder;
 
-
 class PaymentsApiGateway implements GatewayInterface
 {
 

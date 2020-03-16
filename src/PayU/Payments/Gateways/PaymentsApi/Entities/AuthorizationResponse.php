@@ -4,6 +4,7 @@
 namespace PaymentsApi\Entities;
 
 
+
 class AuthorizationResponse
 {
     /**
@@ -28,5 +29,4 @@ class AuthorizationResponse
     {
         return $this->response;
     }
-
 }

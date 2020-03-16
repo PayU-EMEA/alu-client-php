@@ -4,6 +4,7 @@
 namespace PaymentsApi\Entities;
 
 
+
 use PaymentsApi\Entities\IdentityDocumentData;
 
 class BillingData implements \JsonSerializable
