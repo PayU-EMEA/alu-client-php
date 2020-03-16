@@ -59,11 +59,6 @@ class PaymentsApiGateway implements GatewayInterface
     private $responseParser;
 
     /**
-     * @var MerchantConfig
-     */
-    private $merchantConfig;
-
-    /**
      * @var ResponseBuilder
      */
     private $responseBuilder;
