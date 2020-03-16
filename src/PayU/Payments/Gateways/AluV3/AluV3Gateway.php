@@ -77,6 +77,7 @@ class AluV3Gateway implements GatewayInterface
     /**
      * @inheritDoc
      * @throws \PayU\Alu\Exceptions\ConnectionException
+     * @throws ClientException
      */
     public function authorize(Request $request)
     {
@@ -92,19 +93,28 @@ class AluV3Gateway implements GatewayInterface
                 $this->getAluUrl($request->getMerchantConfig()->getPlatform()),
                 $requestParams
             );
-            $xmlObject = new SimpleXMLElement($responseXML);
+
+            //todo remove after testing is done
+            var_dump($responseXML);
         } catch (ConnectionException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         } catch (\Exception $e) {
             throw new ClientException($e->getMessage(), $e->getCode());
         }
-        /*
-        $response = $this->getResponse($xmlObject);
+
+        $authorizationResponse = $this->responseParser->parseXMLResponse($responseXML);
+
+        $response = $this->responseBuilder->buildResponse($authorizationResponse);
+
         if ('' != $response->getHash()) {
-            $hashService->validateResponseHash($response);
+            try {
+                $this->hashService->validateResponseHash($response);
+            } catch (ClientException $e) {
+                echo($e->getMessage() . ' ' . $e->getCode());
+            }
         }
+
         return $response;
-        */
     }
 
     /**
