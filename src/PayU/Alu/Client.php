@@ -144,7 +144,7 @@ class Client
     public function pay(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
     {
         if (null === $hashService) {
-            $hashService = new HashService($this->merchantConfig->getSecretKey());
+            $hashService = new HashService();
         }
 
         if (null === $httpClient) {

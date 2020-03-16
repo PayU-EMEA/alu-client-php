@@ -82,7 +82,7 @@ class AluV3Gateway implements GatewayInterface
     {
         $requestArray = $this->requestBuilder->buildAuthorizationRequest($request);
 
-        $requestHash = $this->hashService->makeRequestHash($requestArray);
+        $requestHash = $this->hashService->makeRequestHash($requestArray, $request->getMerchantConfig()->getSecretKey());
 
         $this->requestBuilder->setOrderHash($requestHash);
 
