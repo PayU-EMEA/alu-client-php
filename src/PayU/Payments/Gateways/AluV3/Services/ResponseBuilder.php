@@ -74,7 +74,7 @@ class ResponseBuilder
         // parameters used for wire payments on ALU v3
         if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
             foreach ($xmlObject->WIRE_ACCOUNTS->ITEM as $account) {
-                 $response->addWireAccount($this->getResponseWireAccount($account));
+                $response->addWireAccount($this->getResponseWireAccount($account));
             }
         }
 
