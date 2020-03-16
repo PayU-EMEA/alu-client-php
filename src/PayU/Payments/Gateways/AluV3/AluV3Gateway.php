@@ -34,6 +34,11 @@ class AluV3Gateway implements GatewayInterface
     );
 
     /**
+     * @var string
+     */
+    private $customUrl = null;
+
+    /**
      * @var HTTPClient
      */
     private $httpClient;
