@@ -34,7 +34,6 @@ class GatewayFactory
 
             default:
                 throw new \Exception('Api version not available');
-
         }
     }
 }

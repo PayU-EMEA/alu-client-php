@@ -61,8 +61,7 @@ class AluV3Gateway implements GatewayInterface
     public function __construct(
         HTTPClient $httpClient,
         HashService $hashService
-    )
-    {
+    ) {
         $this->httpClient = $httpClient;
         $this->hashService = $hashService;
         $this->requestBuilder = new RequestBuilder();
@@ -89,7 +88,6 @@ class AluV3Gateway implements GatewayInterface
                 $requestParams
             );
             $xmlObject = new SimpleXMLElement($responseXML);
-
         } catch (ConnectionException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         } catch (\Exception $e) {

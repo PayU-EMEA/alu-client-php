@@ -110,19 +110,21 @@ class PaymentsApiGateway implements GatewayInterface
         $apiSignature = $this->hashService->generateSignature(
             $request->getMerchantConfig(),
             $request->getOrder()->getOrderDate(),
-            $jsonRequest);
+            $jsonRequest
+        );
 
         $headers = $this->httpClient->buildRequestHeaders(
             $request->getMerchantConfig(),
             $request->getOrder()->getOrderDate(),
-            $apiSignature);
+            $apiSignature
+        );
 
         try {
             $responseJson = $this->httpClient->post(
                 $this->getPaymentsUrl($request->getMerchantConfig()->getPlatform()),
                 $jsonRequest,
-                $headers);
-
+                $headers
+            );
         } catch (ClientException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         } catch (ConnectionException $e) {

@@ -57,7 +57,8 @@ $order->withBackRef('http://path/to/your/returnUrlScript')
     ->withOrderRef($merchantOrderRef)
     //->withOrderRef('MerchantOrderRef')
     ->withCurrency('RON')
-    ->withOrderDate(gmdate('Y-m-d\TH:i:sP'))
+//    ->withOrderDate(gmdate('Y-m-d\TH:i:sP'))
+    ->withOrderDate(gmdate('Y-m-d H:i:s'))
     //->withOrderTimeout(1000)
     ->withPayMethod('CCVISAMC');
 
@@ -166,7 +167,7 @@ $card = new Card('4111111111111111', '01', '2026', '123', 'Card Owner Name');
  * Delivery (or Billing object again, if you want to have the delivery address the same as the billing address)
  * User object
  */
-$request = new Request($cfg, $order, $billing, $delivery, $user, 'v4');
+$request = new Request($cfg, $order, $billing, $delivery, $user, 'v3');
 //$request = new Request($cfg, $order, $billing, $delivery, $user);
 
 /**

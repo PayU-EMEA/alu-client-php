@@ -24,7 +24,6 @@ class RequestBuilder
      */
     public function buildAuthorizationRequest($request)
     {
-
         $authorizationData = new AuthorizationData($request->getOrder()->getPayMethod());
         $authorizationData->setInstallmentsNumber($request->getOrder()->getInstallmentsNumber());
         /*
