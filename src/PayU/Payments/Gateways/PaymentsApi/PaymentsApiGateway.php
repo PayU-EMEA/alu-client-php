@@ -139,4 +139,12 @@ class PaymentsApiGateway implements GatewayInterface
 //            return $this->createTokenRequest($request, $response, $httpClient, $hashService);
 //        }
     }
+
+    /**
+     * @param string $customUrl
+     */
+    public function setCustomUrl($customUrl)
+    {
+        $this->customUrl = $customUrl;
+    }
 }

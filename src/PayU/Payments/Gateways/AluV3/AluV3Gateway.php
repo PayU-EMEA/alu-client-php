@@ -123,4 +123,12 @@ class AluV3Gateway implements GatewayInterface
         }
         return $this->aluUrlHostname[$platform] . self::ALU_URL_PATH;
     }
+
+    /**
+     * @param string $customUrl
+     */
+    public function setCustomUrl($customUrl)
+    {
+        $this->customUrl = $customUrl;
+    }
 }
