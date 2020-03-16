@@ -3,8 +3,6 @@
 
 namespace PaymentsApi\Services;
 
-
-
 use PaymentsApi\Entities\AuthorizationResponse;
 
 class ResponseParser

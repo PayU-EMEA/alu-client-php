@@ -3,8 +3,6 @@
 
 namespace PaymentsApi\Services;
 
-
-
 use PayU\Alu\Client;
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Request;

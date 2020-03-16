@@ -3,8 +3,6 @@
 
 namespace PaymentsApi\Entities;
 
-
-
 class AuthorizationRequest implements \JsonSerializable
 {
     /**
