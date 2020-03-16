@@ -66,8 +66,7 @@ class HTTPClient
                 )
             );
         }
-        var_dump($result);
-        die();
+
         return $result;
     }
 
