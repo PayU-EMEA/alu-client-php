@@ -30,7 +30,7 @@ class AuthorizationData implements \JsonSerializable
     /**
      * @var string
      */
-    private $userPaymentPage;
+    private $usePaymentPage;
 
     /**
      * @var string
@@ -90,11 +90,11 @@ class AuthorizationData implements \JsonSerializable
     }
 
     /**
-     * @param string $userPaymentPage
+     * @param string $usePaymentPage
      */
-    public function setUserPaymentPage($userPaymentPage)
+    public function setUsePaymentPage($usePaymentPage)
     {
-        $this->userPaymentPage = $userPaymentPage;
+        $this->usePaymentPage = $usePaymentPage;
     }
 
     /**
@@ -147,7 +147,7 @@ class AuthorizationData implements \JsonSerializable
             'cardDetails' => $this->cardDetails,
             'merchantToken' => $this->merchantToken,
             //'applePayToken' => json_encode($this->applePayToken),
-            'usePaymentPage' => $this->userPaymentPage,
+            'usePaymentPage' => $this->usePaymentPage,
             'installmentsNumber' => $this->installmentsNumber,
             'useLoyaltyPoints' => $this->useLoyaltyPoints,
             'loyaltyPointsAmount' => $this->loyaltyPointsAmount,

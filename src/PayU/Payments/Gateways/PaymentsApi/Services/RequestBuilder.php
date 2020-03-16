@@ -25,12 +25,16 @@ class RequestBuilder
     public function buildAuthorizationRequest($request)
     {
         $authorizationData = new AuthorizationData($request->getOrder()->getPayMethod());
+
+        //HOSTED_PAGE in V3
+        //$authorizationData->setUsePaymentPage($request->getOrder()->getHostedPage());
+
         $authorizationData->setInstallmentsNumber($request->getOrder()->getInstallmentsNumber());
+        $authorizationData->setUseLoyaltyPoints($request->getOrder()->getUseLoyaltyPoints());
+        $authorizationData->setLoyaltyPointsAmount($request->getOrder()->getLoyaltyPointsAmount());
+        $authorizationData->setCampaignType($request->getOrder()->getCampaignType());
         /*
          *      applePayToken object
-                "usePaymentPage"
-                "loyaltyPointsAmount"
-                "campaignType"
          */
 
         if (!is_null($request->getCard()) && is_null($request->getCardToken())) {
