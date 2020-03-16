@@ -25,7 +25,6 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->hashService = new HashService();
-        $this->hashService->setSecretKey('SECRET_KEY');
 
         $this->requestMock = $this->getMockBuilder('\PayU\Alu\Request')
             ->disableOriginalConstructor()
@@ -148,7 +147,7 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
         $this->requestMock->expects($this->once())->method('getRequestParams')
                     ->will($this->returnValue($requestParams));
 
-        $this->assertEquals($expectedHash, $this->hashService->makeRequestHash($this->requestMock));
+        $this->assertEquals($expectedHash, $this->hashService->makeRequestHash($this->requestMock, 'SECRET_KEY'));
     }
 
 
