@@ -173,9 +173,9 @@ class RequestBuilder
             );
         }
 
-        if (isset($this->fx)) {
-            $this->internalArray['AUTHORIZATION_CURRENCY'] = $this->fx->getAuthorizationCurrency();
-            $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $this->fx->getAuthorizationExchangeRate();
+        if (!is_null($request->getFx())) {
+            $this->internalArray['AUTHORIZATION_CURRENCY'] = $request->getFx()->getAuthorizationCurrency();
+            $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $request->getFx()->getAuthorizationExchangeRate();
         }
 
 
