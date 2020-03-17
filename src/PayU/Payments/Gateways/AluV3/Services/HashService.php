@@ -53,9 +53,11 @@ class HashService
      * @param string $secretKey
      * @return string
      */
-    public function makeRequestHash($requestArray, $secretKey)
+    public function makeRequestHash($requestArray, $secretKey = null)
     {
-        $this->setSecretKey($secretKey);
+        if (isset($secretKey)){
+            $this->setSecretKey($secretKey);
+        }
 
         return $this->computeHash($requestArray);
     }
