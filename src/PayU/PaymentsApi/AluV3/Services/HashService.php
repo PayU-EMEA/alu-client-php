@@ -53,7 +53,7 @@ class HashService
      */
     public function makeRequestHash($requestArray, $secretKey = null)
     {
-        if (isset($secretKey)){
+        if (isset($secretKey)) {
             $this->setSecretKey($secretKey);
         }
 
