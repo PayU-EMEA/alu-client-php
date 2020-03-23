@@ -2,11 +2,9 @@
 
 namespace PayU\Alu;
 
-use AluV3\Services\HashService;
-use AluV3\Services\HTTPClient;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
-use PayU\Payments\GatewayFactory;
+use PayU\PaymentsApi\Factories\AuthorizationFactory;
 use SimpleXMLElement;
 
 /**
@@ -25,8 +23,8 @@ class Client
      */
     private $customUrl = null;
 
-    /** @var GatewayFactory */
-    private $gatewayFactory;
+    /** @var AuthorizationFactory */
+    private $authorizationFactory;
 
     /**
      * @param MerchantConfig $merchantConfig
@@ -34,7 +32,7 @@ class Client
     public function __construct(MerchantConfig $merchantConfig)
     {
         $this->merchantConfig = $merchantConfig;
-        $this->gatewayFactory = new GatewayFactory();
+        $this->authorizationFactory = new AuthorizationFactory();
     }
 
     /**
@@ -63,7 +61,7 @@ class Client
             $httpClient = new HTTPClient();
         }
 
-        $gateway = $this->gatewayFactory->create($request->getPaymentsApiVersion(), $httpClient, $hashService);
+        $gateway = $this->authorizationFactory->create($request->getPaymentsApiVersion(), $httpClient, $hashService);
 
         return $gateway->authorize($request);
     }
