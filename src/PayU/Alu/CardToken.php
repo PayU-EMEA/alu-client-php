@@ -51,5 +51,4 @@ class CardToken
     {
         return !empty($this->cvv);
     }
-
 }
