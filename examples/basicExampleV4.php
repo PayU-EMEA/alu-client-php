@@ -211,4 +211,3 @@ try {
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }
-
