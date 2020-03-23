@@ -62,7 +62,11 @@ class Client
         }
 
         try {
-            $gateway = $this->authorizationFactory->create($request->getPaymentsApiVersion(), $httpClient, $hashService);
+            $gateway = $this->authorizationFactory->create(
+                $request->getPaymentsApiVersion(),
+                $httpClient,
+                $hashService
+            );
         } catch (AuthorizationFactoryException $exception) {
             throw new ClientException($exception->getMessage());
         }
