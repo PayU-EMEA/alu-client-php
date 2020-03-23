@@ -2,6 +2,8 @@
 
 namespace PayU\Alu;
 
+use PayU\PaymentsApi\AluV3\AluV3;
+
 /**
  * Class Request
  * @package PayU\Alu
@@ -80,7 +82,7 @@ class Request
         Billing $billing,
         AbstractCommonAddress $delivery = null,
         User $user = null,
-        $paymentsApiVersion = 'v3'
+        $paymentsApiVersion = AluV3::API_VERSION_V3
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;

@@ -16,6 +16,7 @@ use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
 class AluV3 implements AuthorizationInterface
 {
     const ALU_URL_PATH = '/order/alu/v3';
+    const API_VERSION_V3 = "v3";
 
     /**
      * @var array

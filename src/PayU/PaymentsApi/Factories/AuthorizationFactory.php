@@ -6,16 +6,16 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\PaymentsApi\AluV3\AluV3;
+use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
 
 class AuthorizationFactory
 {
-
     /**
-     * @param $apiVersion
+     * @param string $apiVersion
      * @param HTTPClient $httpClient
      * @param HashService $hashService
-     * @return AluV3|PaymentsApiGateway
-     * @throws ClientException
+     * @return AluV3
+     * @throws AuthorizationFactoryException
      */
     public function create(
         $apiVersion,
@@ -23,14 +23,11 @@ class AuthorizationFactory
         HashService $hashService
     ) {
         switch ($apiVersion) {
-            case 'v3':
+            case AluV3::API_VERSION_V3:
                 return new AluV3($httpClient, $hashService);
 
-            case 'v4':
-                return new PaymentsApiGateway();
-
             default:
-                throw new \Exception('Api version not available');
+                throw new AuthorizationFactoryException('Invalid API version provided.');
         }
     }
 }
