@@ -74,9 +74,10 @@ class Client
     public function handleThreeDSReturnResponse(array $returnData = array())
     {
         if (!empty($returnData['HASH'])) {
-            $hashService = new HashService();
+            $hashService = new HashService($this->merchantConfig->getSecretKey());
+
             //TODO remove
-            $hashService->setSecretKey('SECRET_KEY');
+            //$hashService->setSecretKey('SECRET_KEY');
             $threeDSReturnResponse = $this->getThreeDSReturnResponse($returnData);
             $hashService->validateResponseHash($threeDSReturnResponse);
         } else {
