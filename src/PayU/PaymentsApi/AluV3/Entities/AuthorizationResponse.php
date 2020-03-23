@@ -5,7 +5,7 @@ namespace PayU\PaymentsApi\AluV3\Entities;
 
 use SimpleXMLElement;
 
-class AuthorizationResponse
+final class AuthorizationResponse
 {
     /**
      * @var SimpleXMLElement
