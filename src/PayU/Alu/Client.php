@@ -3,7 +3,7 @@
 namespace PayU\Alu;
 
 use PayU\Alu\Exceptions\ClientException;
-use PayU\Alu\Exceptions\ConnectionException;
+use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
 use PayU\PaymentsApi\Factories\AuthorizationFactory;
 use SimpleXMLElement;
 
@@ -61,7 +61,11 @@ class Client
             $httpClient = new HTTPClient();
         }
 
-        $gateway = $this->authorizationFactory->create($request->getPaymentsApiVersion(), $httpClient, $hashService);
+        try {
+            $gateway = $this->authorizationFactory->create($request->getPaymentsApiVersion(), $httpClient, $hashService);
+        } catch (AuthorizationFactoryException $exception) {
+            throw new ClientException($exception->getMessage());
+        }
 
         return $gateway->authorize($request);
     }
