@@ -62,7 +62,7 @@ class Request
      */
     private $internalArray;
     /**
-     * @var String
+     * @var string
      */
     private $paymentsApiVersion;
 
@@ -72,7 +72,7 @@ class Request
      * @param Billing $billing
      * @param AbstractCommonAddress $delivery
      * @param User $user
-     * @param String $paymentsApiVersion
+     * @param string $paymentsApiVersion
      */
     public function __construct(
         MerchantConfig $merchantConfig,
@@ -171,7 +171,7 @@ class Request
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getPaymentsApiVersion()
     {
