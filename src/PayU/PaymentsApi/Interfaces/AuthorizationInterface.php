@@ -1,11 +1,11 @@
 <?php
 
-namespace PayU\Payments\Interfaces;
+namespace PayU\PaymentsApi\Interfaces;
 
 use PayU\Alu\Request;
 use PayU\Alu\Response;
 
-interface GatewayInterface
+interface AuthorizationInterface
 {
     /**
      * @param Request $request
