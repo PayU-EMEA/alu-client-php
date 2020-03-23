@@ -2,7 +2,6 @@
 
 namespace PayU\PaymentsApi\Factories;
 
-use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\PaymentsApi\AluV3\AluV3;
