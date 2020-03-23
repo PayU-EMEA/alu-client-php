@@ -1,6 +1,6 @@
 <?php
 
-namespace AluV3\Services;
+namespace PayU\PaymentsApi\AluV3\Services;
 
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;

@@ -1,21 +1,19 @@
 <?php
 
 
-namespace AluV3;
+namespace PayU\PaymentsApi\AluV3;
 
-use AluV3\Services\HashService;
-use AluV3\Services\HTTPClient;
-use AluV3\Services\RequestBuilder;
-use AluV3\Services\ResponseBuilder;
-use AluV3\Services\ResponseParser;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
+use PayU\Alu\HashService;
+use PayU\Alu\HTTPClient;
 use PayU\Alu\Request;
-use PayU\Alu\Response;
-use PayU\Payments\Interfaces\GatewayInterface;
-use SimpleXMLElement;
+use PayU\PaymentsApi\AluV3\Services\RequestBuilder;
+use PayU\PaymentsApi\AluV3\Services\ResponseBuilder;
+use PayU\PaymentsApi\AluV3\Services\ResponseParser;
+use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
 
-class AluV3Gateway implements GatewayInterface
+class AluV3 implements AuthorizationInterface
 {
     const ALU_URL_PATH = '/order/alu/v3';
 
@@ -75,7 +73,6 @@ class AluV3Gateway implements GatewayInterface
 
     /**
      * @inheritDoc
-     * @throws \PayU\Alu\Exceptions\ConnectionException
      * @throws ClientException
      */
     public function authorize(Request $request)

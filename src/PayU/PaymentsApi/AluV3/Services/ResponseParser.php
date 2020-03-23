@@ -1,9 +1,9 @@
 <?php
 
 
-namespace AluV3\Services;
+namespace PayU\PaymentsApi\AluV3\Services;
 
-use AluV3\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse;
 use SimpleXMLElement;
 
 class ResponseParser

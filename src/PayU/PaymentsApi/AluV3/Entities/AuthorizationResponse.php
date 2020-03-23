@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AluV3\Entities;
+namespace PayU\PaymentsApi\AluV3\Entities;
 
 use SimpleXMLElement;
 
