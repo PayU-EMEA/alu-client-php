@@ -282,6 +282,5 @@ class RequestBuilder
         $requestArray['ORDER_HASH'] = $hashService->makeRequestHash($requestArray);
 
         return $requestArray;
-
     }
 }
