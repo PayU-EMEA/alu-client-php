@@ -54,7 +54,7 @@ class Client
     public function pay(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
     {
         if (null === $hashService) {
-            $hashService = new HashService();
+            $hashService = new HashService($this->merchantConfig->getSecretKey());
         }
 
         if (null === $httpClient) {
@@ -75,9 +75,6 @@ class Client
     {
         if (!empty($returnData['HASH'])) {
             $hashService = new HashService($this->merchantConfig->getSecretKey());
-
-            //TODO remove
-            //$hashService->setSecretKey('SECRET_KEY');
             $threeDSReturnResponse = $this->getThreeDSReturnResponse($returnData);
             $hashService->validateResponseHash($threeDSReturnResponse);
         } else {

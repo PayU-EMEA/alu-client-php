@@ -17,6 +17,15 @@ class HashService
     private $secretKey;
 
     /**
+     * HashService constructor.
+     * @param string $secretKey
+     */
+    public function __construct($secretKey)
+    {
+        $this->secretKey = $secretKey;
+    }
+
+    /**
      * @param array $array
      * @return string
      */
@@ -48,24 +57,11 @@ class HashService
 
     /**
      * @param array $requestArray
-     * @param string $secretKey
      * @return string
      */
-    public function makeRequestHash($requestArray, $secretKey = null)
+    public function makeRequestHash($requestArray)
     {
-        if (isset($secretKey)) {
-            $this->setSecretKey($secretKey);
-        }
-
         return $this->computeHash($requestArray);
-    }
-
-    /**
-     * @param string $secretKey
-     */
-    public function setSecretKey($secretKey)
-    {
-        $this->secretKey = $secretKey;
     }
 
     public function validateResponseHash(Response $response)
