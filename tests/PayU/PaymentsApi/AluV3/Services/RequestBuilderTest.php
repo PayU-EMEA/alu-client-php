@@ -1,10 +1,21 @@
 <?php
 
-namespace PayU\Alu;
+namespace PayU\PaymentsApi\AluV3\Services;
 
-use AluV3\Services\RequestBuilder;
+use PayU\Alu\AirlineInfo;
+use PayU\Alu\Billing;
+use PayU\Alu\Card;
+use PayU\Alu\Delivery;
+use PayU\Alu\FX;
+use PayU\Alu\MerchantConfig;
+use PayU\Alu\Order;
+use PayU\Alu\Product;
+use PayU\Alu\Request;
+use PayU\Alu\StoredCredentials;
+use PayU\Alu\StrongCustomerAuthentication;
+use PayU\Alu\User;
 
-class RequestTest extends \PHPUnit_Framework_TestCase
+class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Request
@@ -17,14 +28,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     private $order;
 
     /**
-     * @var RequestBuilder| \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $requestBuilderMock;
-
-    /**
      * @var RequestBuilder
      */
     private $requestBuilder;
+
+    /**
+     * @var HashService \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $mockHashService;
 
     public function setUp()
     {
@@ -88,20 +99,27 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->request = new Request($cfg, $this->order, $billing, $delivery, $user, 'v3');
 
-        $this->request->setCard($card);
-
-//        $this->requestBuilderMock = $this->getMockBuilder('\AluV3\Services\RequestBuilder')
-//            ->disableOriginalConstructor()
-//            ->getMock();
+        $this->request->setCard($card);;
 
         $this->requestBuilder = new RequestBuilder();
+
+        $this->mockHashService = $this->getMockBuilder('PayU\Alu\HashService')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function testGetParams()
     {
         $result = $this->createExpectedRequest();
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->once())
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
     }
 
     public function testGetParamsWithFx()
@@ -115,7 +133,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setFx($fx);
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->once())
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
     }
 
     public function testWhenAirlineInfoIsSent()
@@ -184,7 +209,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $result = array_merge($airlineInfoResult, $expectedRequest);
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->once())
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
     }
 
     public function testWhenStoredCredentialsConsentTransaction()
@@ -202,10 +234,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->exactly(2))
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
+
         $this->assertArrayNotHasKey(
             StoredCredentials::STORED_CREDENTIALS_USE_TYPE,
-            $this->requestBuilder->buildAuthorizationRequest($this->request)
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
         );
     }
 
@@ -224,10 +264,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->exactly(2))
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
+
         $this->assertArrayNotHasKey(
             StoredCredentials::STORED_CREDENTIALS_USE_TYPE,
-            $this->requestBuilder->buildAuthorizationRequest($this->request)
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
         );
     }
 
@@ -246,10 +294,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->exactly(2))
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
+
         $this->assertArrayNotHasKey(
             StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
-            $this->requestBuilder->buildAuthorizationRequest($this->request)
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
         );
     }
 
@@ -268,10 +324,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->exactly(2))
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
+
         $this->assertArrayNotHasKey(
             StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
-            $this->requestBuilder->buildAuthorizationRequest($this->request)
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
         );
     }
 
@@ -290,10 +354,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $result = array_merge($storedCredentialsResult, $expectedRequest);
 
-        $this->assertEquals($result, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->exactly(2))
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $result,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
+
         $this->assertArrayNotHasKey(
             StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
-            $this->requestBuilder->buildAuthorizationRequest($this->request)
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
         );
     }
 
@@ -370,7 +442,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             $this->createExpectedRequest()
         );
 
-        $this->assertEquals($expectedResult, $this->requestBuilder->buildAuthorizationRequest($this->request));
+        $this->mockHashService->expects($this->once())
+            ->method('makeRequestHash')
+            ->will($this->returnValue('hash'));
+
+        $this->assertEquals(
+            $expectedResult,
+            $this->requestBuilder->buildAuthorizationRequest($this->request, $this->mockHashService)
+        );
     }
 
     /**
@@ -483,6 +562,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
                     0 => 24,
                     1 => 24,
                 ),
+            'ORDER_HASH' => 'hash'
         );
         return $result;
     }
