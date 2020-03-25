@@ -18,147 +18,147 @@ class RequestBuilder
      */
     private function transformObject2Array(Request $request)
     {
-        $this->internalArray = array();
-        $this->internalArray['MERCHANT'] = $request->getMerchantConfig()->getMerchantCode();
-        $this->internalArray['ORDER_REF'] = $request->getOrder()->getOrderRef();
-        $this->internalArray['ORDER_DATE'] = $request->getOrder()->getOrderDate();
+        $array = array();
+        $array['MERCHANT'] = $request->getMerchantConfig()->getMerchantCode();
+        $array['ORDER_REF'] = $request->getOrder()->getOrderRef();
+        $array['ORDER_DATE'] = $request->getOrder()->getOrderDate();
 
         $cnt = 0;
         /**
          * @var Product $product
          */
         foreach ($request->getOrder()->getProducts() as $product) {
-            $this->internalArray['ORDER_PNAME'][$cnt] = $product->getName();
-            $this->internalArray['ORDER_PGROUP'][$cnt] = $product->getProductGroup();
-            $this->internalArray['ORDER_PCODE'][$cnt] = $product->getCode();
-            $this->internalArray['ORDER_PINFO'][$cnt] = $product->getInfo();
-            $this->internalArray['ORDER_PRICE'][$cnt] = $product->getPrice();
-            $this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
-            $this->internalArray['ORDER_PRICE_TYPE'][$cnt] = $product->getPriceType();
-            $this->internalArray['ORDER_QTY'][$cnt] = $product->getQuantity();
+            $array['ORDER_PNAME'][$cnt] = $product->getName();
+            $array['ORDER_PGROUP'][$cnt] = $product->getProductGroup();
+            $array['ORDER_PCODE'][$cnt] = $product->getCode();
+            $array['ORDER_PINFO'][$cnt] = $product->getInfo();
+            $array['ORDER_PRICE'][$cnt] = $product->getPrice();
+            $array['ORDER_VAT'][$cnt] = $product->getVAT();
+            $array['ORDER_PRICE_TYPE'][$cnt] = $product->getPriceType();
+            $array['ORDER_QTY'][$cnt] = $product->getQuantity();
             //duplicated line ??
             //$this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
-            $this->internalArray['ORDER_MPLACE_MERCHANT'][$cnt] = $product->getMarketPlaceMerchantCode();
+            $array['ORDER_MPLACE_MERCHANT'][$cnt] = $product->getMarketPlaceMerchantCode();
             //removed
-            $this->internalArray['ORDER_VER'][$cnt] = $product->getProductVersion();
+            $array['ORDER_VER'][$cnt] = $product->getProductVersion();
             $cnt++;
         }
 
         // removed
-        $this->internalArray['ORDER_SHIPPING'] = $request->getOrder()->getShippingCost();
-        $this->internalArray['PRICES_CURRENCY'] = $request->getOrder()->getCurrency();
+        $array['ORDER_SHIPPING'] = $request->getOrder()->getShippingCost();
+        $array['PRICES_CURRENCY'] = $request->getOrder()->getCurrency();
         //removed
-        $this->internalArray['DISCOUNT'] = $request->getOrder()->getDiscount();
-        $this->internalArray['PAY_METHOD'] = $request->getOrder()->getPayMethod();
+        $array['DISCOUNT'] = $request->getOrder()->getDiscount();
+        $array['PAY_METHOD'] = $request->getOrder()->getPayMethod();
 
         if (!is_null($request->getCard()) && is_null($request->getCardToken())) {
-            $this->internalArray['CC_NUMBER'] = $request->getCard()->getCardNumber();
-            $this->internalArray['EXP_MONTH'] = $request->getCard()->getCardExpirationMonth();
-            $this->internalArray['EXP_YEAR'] = $request->getCard()->getCardExpirationYear();
-            $this->internalArray['CC_CVV'] = $request->getCard()->getCardCVV();
-            $this->internalArray['CC_OWNER'] = $request->getCard()->getCardOwnerName();
+            $array['CC_NUMBER'] = $request->getCard()->getCardNumber();
+            $array['EXP_MONTH'] = $request->getCard()->getCardExpirationMonth();
+            $array['EXP_YEAR'] = $request->getCard()->getCardExpirationYear();
+            $array['CC_CVV'] = $request->getCard()->getCardCVV();
+            $array['CC_OWNER'] = $request->getCard()->getCardOwnerName();
             if ($request->getCard()->isEnableTokenCreation()) {
-                $this->internalArray['LU_ENABLE_TOKEN'] = '1';
+                $array['LU_ENABLE_TOKEN'] = '1';
             }
         }
 
         if (!is_null($request->getStoredCredentials())) {
             if (!is_null($request->getStoredCredentials()->getStoredCredentialsConsentType())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
+                $array[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
                     $request->getStoredCredentials()->getStoredCredentialsConsentType();
             }
 
             if (!is_null($request->getStoredCredentials()->getStoredCredentialsUseType())) {
-                $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
+                $array[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
                     $request->getStoredCredentials()->getStoredCredentialsUseType();
 
                 if (!is_null($request->getStoredCredentials()->getStoredCredentialsUseId())) {
-                    $this->internalArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
+                    $array[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
                         $request->getStoredCredentials()->getStoredCredentialsUseId();
                 }
             }
         }
 
 
-        $this->internalArray['SELECTED_INSTALLMENTS_NUMBER'] = $request->getOrder()->getInstallmentsNumber();
+        $array['SELECTED_INSTALLMENTS_NUMBER'] = $request->getOrder()->getInstallmentsNumber();
         //remove
-        $this->internalArray['CARD_PROGRAM_NAME'] = $request->getOrder()->getCardProgramName();
+        $array['CARD_PROGRAM_NAME'] = $request->getOrder()->getCardProgramName();
 
         if (is_null($request->getCard()) && !is_null($request->getCardToken())) {
-            $this->internalArray['CC_TOKEN'] = $request->getCardToken()->getToken();
+            $array['CC_TOKEN'] = $request->getCardToken()->getToken();
             if ($request->getCardToken()->hasCvv()) {
-                $this->internalArray['CC_CVV'] = $request->getCardToken()->getCvv();
+                $array['CC_CVV'] = $request->getCardToken()->getCvv();
             } else {
-                $this->internalArray['CC_CVV'] = '';
+                $array['CC_CVV'] = '';
             }
         }
 
-        $this->internalArray['BACK_REF'] = $request->getOrder()->getBackRef();
+        $array['BACK_REF'] = $request->getOrder()->getBackRef();
         //removed
-        $this->internalArray['ALIAS'] = $request->getOrder()->getAlias();
+        $array['ALIAS'] = $request->getOrder()->getAlias();
 
         if (!empty($request->getUser())) {
-            $this->internalArray['CLIENT_IP'] = $request->getUser()->getUserIPAddress();
-            $this->internalArray['CLIENT_TIME'] = $request->getUser()->getClientTime();
+            $array['CLIENT_IP'] = $request->getUser()->getUserIPAddress();
+            $array['CLIENT_TIME'] = $request->getUser()->getClientTime();
         }
 
-        $this->internalArray['BILL_LNAME'] = $request->getBillingData()->getLastName();
-        $this->internalArray['BILL_FNAME'] = $request->getBillingData()->getFirstName();
+        $array['BILL_LNAME'] = $request->getBillingData()->getLastName();
+        $array['BILL_FNAME'] = $request->getBillingData()->getFirstName();
         //removed
-        $this->internalArray['BILL_CISERIAL'] = $request->getBillingData()->getIdentityCardSeries();
+        $array['BILL_CISERIAL'] = $request->getBillingData()->getIdentityCardSeries();
         //removed
-        $this->internalArray['BILL_CINUMBER'] = $request->getBillingData()->getIdentityCardNumber();
+        $array['BILL_CINUMBER'] = $request->getBillingData()->getIdentityCardNumber();
         //removed
-        $this->internalArray['BILL_CIISSUER'] = $request->getBillingData()->getIdentityCardIssuer();
+        $array['BILL_CIISSUER'] = $request->getBillingData()->getIdentityCardIssuer();
         //removed
-        $this->internalArray['BILL_CITYPE'] = $request->getBillingData()->getIdentityCardType();
+        $array['BILL_CITYPE'] = $request->getBillingData()->getIdentityCardType();
         //removed
-        $this->internalArray['BILL_CNP'] = $request->getBillingData()->getPersonalNumericCode();
-        $this->internalArray['BILL_COMPANY'] = $request->getBillingData()->getCompany();
-        $this->internalArray['BILL_FISCALCODE'] = $request->getBillingData()->getCompanyFiscalCode();
+        $array['BILL_CNP'] = $request->getBillingData()->getPersonalNumericCode();
+        $array['BILL_COMPANY'] = $request->getBillingData()->getCompany();
+        $array['BILL_FISCALCODE'] = $request->getBillingData()->getCompanyFiscalCode();
         //removed
-        $this->internalArray['BILL_REGNUMBER'] = $request->getBillingData()->getCompanyRegistrationNumber();
+        $array['BILL_REGNUMBER'] = $request->getBillingData()->getCompanyRegistrationNumber();
         //removed
-        $this->internalArray['BILL_BANK'] = $request->getBillingData()->getCompanyBank();
+        $array['BILL_BANK'] = $request->getBillingData()->getCompanyBank();
         //removed
-        $this->internalArray['BILL_BANKACCOUNT'] = $request->getBillingData()->getCompanyBankAccountNumber();
-        $this->internalArray['BILL_EMAIL'] = $request->getBillingData()->getEmail();
-        $this->internalArray['BILL_PHONE'] = $request->getBillingData()->getPhoneNumber();
+        $array['BILL_BANKACCOUNT'] = $request->getBillingData()->getCompanyBankAccountNumber();
+        $array['BILL_EMAIL'] = $request->getBillingData()->getEmail();
+        $array['BILL_PHONE'] = $request->getBillingData()->getPhoneNumber();
         //removed
-        $this->internalArray['BILL_FAX'] = $request->getBillingData()->getFaxNumber();
-        $this->internalArray['BILL_ADDRESS'] = $request->getBillingData()->getAddressLine1();
-        $this->internalArray['BILL_ADDRESS2'] = $request->getBillingData()->getAddressLine2();
-        $this->internalArray['BILL_ZIPCODE'] = $request->getBillingData()->getZipCode();
-        $this->internalArray['BILL_CITY'] = $request->getBillingData()->getCity();
-        $this->internalArray['BILL_STATE'] = $request->getBillingData()->getState();
-        $this->internalArray['BILL_COUNTRYCODE'] = $request->getBillingData()->getCountryCode();
+        $array['BILL_FAX'] = $request->getBillingData()->getFaxNumber();
+        $array['BILL_ADDRESS'] = $request->getBillingData()->getAddressLine1();
+        $array['BILL_ADDRESS2'] = $request->getBillingData()->getAddressLine2();
+        $array['BILL_ZIPCODE'] = $request->getBillingData()->getZipCode();
+        $array['BILL_CITY'] = $request->getBillingData()->getCity();
+        $array['BILL_STATE'] = $request->getBillingData()->getState();
+        $array['BILL_COUNTRYCODE'] = $request->getBillingData()->getCountryCode();
 
         if (!empty($request->getDeliveryData())) {
-            $this->internalArray['DELIVERY_LNAME'] = $request->getDeliveryData()->getLastName();
-            $this->internalArray['DELIVERY_FNAME'] = $request->getDeliveryData()->getFirstName();
-            $this->internalArray['DELIVERY_COMPANY'] = $request->getDeliveryData()->getCompany();
-            $this->internalArray['DELIVERY_PHONE'] = $request->getDeliveryData()->getPhoneNumber();
-            $this->internalArray['DELIVERY_ADDRESS'] = $request->getDeliveryData()->getAddressLine1();
-            $this->internalArray['DELIVERY_ADDRESS2'] = $request->getDeliveryData()->getAddressLine2();
-            $this->internalArray['DELIVERY_ZIPCODE'] = $request->getDeliveryData()->getZipCode();
-            $this->internalArray['DELIVERY_CITY'] = $request->getDeliveryData()->getCity();
-            $this->internalArray['DELIVERY_STATE'] = $request->getDeliveryData()->getState();
-            $this->internalArray['DELIVERY_COUNTRYCODE'] = $request->getDeliveryData()->getCountryCode();
-            $this->internalArray['DELIVERY_EMAIL'] = $request->getDeliveryData()->getEmail();
+            $array['DELIVERY_LNAME'] = $request->getDeliveryData()->getLastName();
+            $array['DELIVERY_FNAME'] = $request->getDeliveryData()->getFirstName();
+            $array['DELIVERY_COMPANY'] = $request->getDeliveryData()->getCompany();
+            $array['DELIVERY_PHONE'] = $request->getDeliveryData()->getPhoneNumber();
+            $array['DELIVERY_ADDRESS'] = $request->getDeliveryData()->getAddressLine1();
+            $array['DELIVERY_ADDRESS2'] = $request->getDeliveryData()->getAddressLine2();
+            $array['DELIVERY_ZIPCODE'] = $request->getDeliveryData()->getZipCode();
+            $array['DELIVERY_CITY'] = $request->getDeliveryData()->getCity();
+            $array['DELIVERY_STATE'] = $request->getDeliveryData()->getState();
+            $array['DELIVERY_COUNTRYCODE'] = $request->getDeliveryData()->getCountryCode();
+            $array['DELIVERY_EMAIL'] = $request->getDeliveryData()->getEmail();
         }
 
 
-        $this->internalArray['CC_NUMBER_RECIPIENT'] = $request->getOrder()->getCcNumberRecipient();
+        $array['CC_NUMBER_RECIPIENT'] = $request->getOrder()->getCcNumberRecipient();
 
-        $this->internalArray['USE_LOYALTY_POINTS'] = $request->getOrder()->getUseLoyaltyPoints();
-        $this->internalArray['LOYALTY_POINTS_AMOUNT'] = $request->getOrder()->getLoyaltyPointsAmount();
+        $array['USE_LOYALTY_POINTS'] = $request->getOrder()->getUseLoyaltyPoints();
+        $array['LOYALTY_POINTS_AMOUNT'] = $request->getOrder()->getLoyaltyPointsAmount();
 
-        $this->internalArray['CAMPAIGN_TYPE'] = $request->getOrder()->getCampaignType();
+        $array['CAMPAIGN_TYPE'] = $request->getOrder()->getCampaignType();
 
         $airlineInfoInstance = $request->getOrder()->getAirlineInfo();
 
         if ($airlineInfoInstance instanceof AirlineInfo) {
-            $this->internalArray['AIRLINE_INFO'] = array(
+            $array['AIRLINE_INFO'] = array(
                 'PASSENGER_NAME' => $request->getOrder()->getAirlineInfo()->getPassengerName(),
                 'TICKET_NUMBER' => $request->getOrder()->getAirlineInfo()->getTicketNumber(),
                 'RESTRICTED_REFUND' => $request->getOrder()->getAirlineInfo()->getRestrictedRefund(),
@@ -170,27 +170,27 @@ class RequestBuilder
         }
 
         if (!is_null($request->getFx())) {
-            $this->internalArray['AUTHORIZATION_CURRENCY'] = $request->getFx()->getAuthorizationCurrency();
-            $this->internalArray['AUTHORIZATION_EXCHANGE_RATE'] = $request->getFx()->getAuthorizationExchangeRate();
+            $array['AUTHORIZATION_CURRENCY'] = $request->getFx()->getAuthorizationCurrency();
+            $array['AUTHORIZATION_EXCHANGE_RATE'] = $request->getFx()->getAuthorizationExchangeRate();
         }
 
 
         if (is_array($request->getOrder()->getCustomParams())) {
             foreach ($request->getOrder()->getCustomParams() as $paramName => $paramValue) {
-                $this->internalArray[$paramName] = $paramValue;
+                $array[$paramName] = $paramValue;
             }
         }
 
         $threeDsTwoZeroParams = $request->getStrongCustomerAuthentication();
         if ($threeDsTwoZeroParams instanceof StrongCustomerAuthentication) {
-            $this->internalArray = array_merge(
-                $this->internalArray,
+            $array = array_merge(
+                $array,
                 $this->threeDsTwoParams($request->getStrongCustomerAuthentication())
             );
         }
 
-        ksort($this->internalArray);
-        return $this->internalArray;
+        ksort($array);
+        return $array;
     }
 
     /**
