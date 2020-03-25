@@ -2,7 +2,7 @@
 
 namespace PayU\Alu;
 
-use AluV3\Services\HashService;
+use PayU\Alu\HashService;
 
 class HashServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,8 +23,7 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->hashService = new HashService();
-        $this->hashService->setSecretKey('SECRET_KEY');
+        $this->hashService = new HashService('SECRET_KEY');
 
         $this->requestMock = $this->getMockBuilder('\PayU\Alu\Request')
             ->disableOriginalConstructor()
