@@ -99,7 +99,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->request = new Request($cfg, $this->order, $billing, $delivery, $user, 'v3');
 
-        $this->request->setCard($card);;
+        $this->request->setCard($card);
 
         $this->requestBuilder = new RequestBuilder();
 
