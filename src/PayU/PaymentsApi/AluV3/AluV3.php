@@ -77,16 +77,8 @@ class AluV3 implements AuthorizationInterface
      */
     public function authorize(Request $request)
     {
-        $requestArray = $this->requestBuilder->buildAuthorizationRequest($request);
+        $requestParams = $this->requestBuilder->buildAuthorizationRequest($request, $this->hashService);
 
-        $requestHash = $this->hashService->makeRequestHash(
-            $requestArray,
-            $request->getMerchantConfig()->getSecretKey()
-        );
-
-        $this->requestBuilder->setOrderHash($requestHash);
-
-        $requestParams = $this->requestBuilder->buildAuthorizationRequest($request);
         try {
             $responseXML = $this->httpClient->post(
                 $this->getAluUrl($request->getMerchantConfig()->getPlatform()),
@@ -103,17 +95,7 @@ class AluV3 implements AuthorizationInterface
 
         $authorizationResponse = $this->responseParser->parseXMLResponse($responseXML);
 
-        $response = $this->responseBuilder->buildResponse($authorizationResponse);
-
-        if ('' != $response->getHash()) {
-            try {
-                $this->hashService->validateResponseHash($response);
-            } catch (ClientException $e) {
-                echo($e->getMessage() . ' ' . $e->getCode());
-            }
-        }
-
-        return $response;
+        return $this->responseBuilder->buildResponse($authorizationResponse, $this->hashService);
     }
 
     /**

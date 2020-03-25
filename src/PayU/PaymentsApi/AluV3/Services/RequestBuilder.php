@@ -11,10 +11,6 @@ use PayU\Alu\StrongCustomerAuthentication;
 
 class RequestBuilder
 {
-    /**
-     * @var array
-     */
-    private $internalArray;
 
     /**
      * @param Request $request
@@ -280,19 +276,12 @@ class RequestBuilder
      * @param Request $request
      * @return array
      */
-    public function buildAuthorizationRequest(Request $request)
+    public function buildAuthorizationRequest(Request $request, \PayU\Alu\HashService $hashService)
     {
-        if (empty($this->internalArray)) {
-            return $this->transformObject2Array($request);
-        }
-        return $this->internalArray;
-    }
+        $requestArray = $this->transformObject2Array($request);
+        $requestArray['ORDER_HASH'] = $hashService->makeRequestHash($requestArray);
 
-    /**
-     * @param string $hash
-     */
-    public function setOrderHash($hash)
-    {
-        $this->internalArray['ORDER_HASH'] = $hash;
+        return $requestArray;
+
     }
 }

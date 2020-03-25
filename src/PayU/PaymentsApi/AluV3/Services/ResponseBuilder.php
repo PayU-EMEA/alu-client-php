@@ -13,9 +13,28 @@ class ResponseBuilder
 
     /**
      * @param AuthorizationResponse $response
+     * @param HashService $hashService
+     * @return Response|AuthorizationResponse
+     */
+    public function buildResponse(AuthorizationResponse $response, HashService $hashService)
+    {
+        $response = $this->build($response);
+        if ('' != $response->getHash()) {
+            try {
+                $hashService->validateResponseHash($response);
+            } catch (ClientException $e) {
+                echo($e->getMessage() . ' ' . $e->getCode());
+            }
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param AuthorizationResponse $response
      * @return Response
      */
-    public function buildResponse(AuthorizationResponse $response)
+    private function build(AuthorizationResponse $response)
     {
         $xmlObject = $response->getResponse();
         $response = new Response();
