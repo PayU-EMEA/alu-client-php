@@ -64,6 +64,10 @@ class HashService
         return $this->computeHash($requestArray);
     }
 
+    /**
+     * @param Response $response
+     * @throws ClientException
+     */
     public function validateResponseHash(Response $response)
     {
         $responseParams = $response->getResponseParams();
