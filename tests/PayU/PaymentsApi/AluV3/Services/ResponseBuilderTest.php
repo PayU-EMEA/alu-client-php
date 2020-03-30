@@ -3,7 +3,6 @@
 
 namespace PayU\PaymentsApi\AluV3\Services;
 
-
 use PayU\Alu\Response;
 use PayU\Alu\ResponseWireAccount;
 use PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse;
@@ -28,7 +27,8 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         //todo make AuthorizationRequest final ( cannot be mocked, should use a new framework)
-        $this->mockAuthorizationResponse = $this->getMockBuilder('PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse')
+        $this->mockAuthorizationResponse = $this
+            ->getMockBuilder('PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -85,7 +85,6 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
                 $this->mockHashService
             )
         );
-
     }
 
     private function createExpectedResponse()
