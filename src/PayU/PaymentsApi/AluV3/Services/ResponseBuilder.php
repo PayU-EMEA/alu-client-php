@@ -32,12 +32,12 @@ final class ResponseBuilder
     }
 
     /**
-     * @param AuthorizationResponse $response
+     * @param AuthorizationResponse $authorizationResponse
      * @return Response
      */
-    private function build(AuthorizationResponse $response)
+    private function build(AuthorizationResponse $authorizationResponse)
     {
-        $xmlObject = $response->getResponse();
+        $xmlObject = $authorizationResponse->getResponse();
         $response = new Response();
         $response->setRefno((string)$xmlObject->REFNO);
         $response->setAlias((string)$xmlObject->ALIAS);
