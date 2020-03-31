@@ -1,5 +1,6 @@
 <?php
 
+
 namespace PayU\Alu;
 
 class ClientTest extends \PHPUnit_Framework_TestCase
@@ -8,16 +9,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @var Client
      */
     private $client;
-
-    /**
-     * @var HashService | \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockHashService;
-
-    /**
-     * @var HTTPClient | \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockHTTPClient;
 
     /**
      * @var Request | \PHPUnit_Framework_MockObject_MockObject
@@ -32,21 +23,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->mockRequest = $this->getMockBuilder('PayU\Alu\Request')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->mockHashService = $this->getMockBuilder('PayU\Alu\HashService')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockHTTPClient = $this->getMockBuilder('PayU\Alu\HTTPClient')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     public function handleThreeDSReturnResponseProvider()
     {
         return array(
             array(
-                array (
+                array(
                     'REFNO' => '11682233',
                     'ALIAS' => '90b94dd8981e1df1a7574c043cc829cd',
                     'STATUS' => 'SUCCESS',
@@ -60,7 +43,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                array (
+                array(
                     'REFNO' => '11867687',
                     'ALIAS' => '0d4a0b58e9caeb07d1d43bf1ba8f4401',
                     'STATUS' => 'SUCCESS',
@@ -112,7 +95,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array ( 'REFNO' => '11682233',
+                array(
+                    'REFNO' => '11682233',
                     'ALIAS' => '90b94dd8981e1df1a7574c043cc829cd',
                     'STATUS' => 'SUCCESS',
                     'RETURN_CODE' => 'AUTHORIZED',
@@ -130,7 +114,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array ( 'REFNO' => '11682233',
+                array(
+                    'REFNO' => '11682233',
                     'ALIAS' => '90b94dd8981e1df1a7574c043cc829cd',
                     'STATUS' => 'SUCCESS',
                     'RETURN_CODE' => 'AUTHORIZED',
@@ -171,100 +156,4 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->client->handleThreeDSReturnResponse($data);
     }
 
-    public function testPay()
-    {
-        $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
-            ->will($this->returnValue('3444cd767df689bcd5034ead29aa08a711111'));
-
-        $this->mockRequest->expects($this->once())
-            ->method('setOrderHash');
-
-        $this->mockRequest->expects($this->once())
-            ->method('getRequestParams')
-            ->will($this->returnValue(array(
-                'HASH' => '3444cd767df689bcd5034ead29aa08a711111'
-            )));
-
-        $this->mockHTTPClient->expects($this->once())
-            ->method('post')
-            ->will($this->returnValue(
-                '<?xml version="1.0"?>
-                <EPAYMENT>
-                  <REFNO>12022985</REFNO>
-                  <ALIAS/>
-                  <STATUS>FAILED</STATUS>
-                  <RETURN_CODE>ALREADY_AUTHORIZED</RETURN_CODE>
-                  <RETURN_MESSAGE>The payment for your order is already authorized.</RETURN_MESSAGE>
-                  <DATE>2014-09-22 11:08:23</DATE>
-                  <ORDER_REF>90003</ORDER_REF>
-                  <AUTH_CODE/>
-                  <RRN/>
-                  <WIRE_ACCOUNTS>
-                    <ITEM>
-                      <BANK_IDENTIFIER>BANCA AGRICOLA-RAIFFEISEN S.A.</BANK_IDENTIFIER>
-                      <BANK_ACCOUNT>a12c8c196b11afb9beb8fe6221540a4f</BANK_ACCOUNT>
-                      <ROUTING_NUMBER></ROUTING_NUMBER>
-                      <IBAN_ACCOUNT></IBAN_ACCOUNT>
-                      <BANK_SWIFT>BANK7</BANK_SWIFT>
-                      <COUNTRY>Romania</COUNTRY>
-                      <WIRE_RECIPIENT_NAME>GECAD ePayment International SA SRL</WIRE_RECIPIENT_NAME>
-                    <WIRE_RECIPIENT_VAT_ID>RO16490162</WIRE_RECIPIENT_VAT_ID>
-                    </ITEM>
-                  </WIRE_ACCOUNTS>
-                  <HASH>1ef929de57a17b747c8b8569371f611e</HASH>
-                </EPAYMENT>'
-            ));
-
-        $this->mockHashService->expects($this->once())
-            ->method('validateResponseHash');
-
-        $this->assertInstanceOf(
-            'PayU\Alu\Response',
-            $this->client->pay($this->mockRequest, $this->mockHTTPClient, $this->mockHashService)
-        );
-    }
-
-    public function testPayWithCustomUrl()
-    {
-        $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
-            ->will($this->returnValue('3444cd767df689bcd5034ead29aa08a711111'));
-
-        $this->mockRequest->expects($this->once())
-            ->method('setOrderHash');
-
-        $this->mockRequest->expects($this->once())
-            ->method('getRequestParams')
-            ->will($this->returnValue(array(
-                'HASH' => '3444cd767df689bcd5034ead29aa08a711111'
-            )));
-
-        $this->mockHTTPClient->expects($this->once())
-            ->method('post')
-            ->will($this->returnValue(
-                '<?xml version="1.0"?>
-                <EPAYMENT>
-                  <REFNO>12022985</REFNO>
-                  <ALIAS/>
-                  <STATUS>FAILED</STATUS>
-                  <RETURN_CODE>ALREADY_AUTHORIZED</RETURN_CODE>
-                  <RETURN_MESSAGE>The payment for your order is already authorized.</RETURN_MESSAGE>
-                  <DATE>2014-09-22 11:08:23</DATE>
-                  <ORDER_REF>90003</ORDER_REF>
-                  <AUTH_CODE/>
-                  <RRN/>
-                  <HASH>1ef929de57a17b747c8b8569371f611e</HASH>
-                </EPAYMENT>'
-            ));
-
-        $this->mockHashService->expects($this->once())
-            ->method('validateResponseHash');
-
-        $this->client->setCustomUrl('http://www.example.com');
-        $this->assertInstanceOf(
-            'PayU\Alu\Response',
-            $this->client->pay($this->mockRequest, $this->mockHTTPClient, $this->mockHashService)
-        );
-    }
 }
