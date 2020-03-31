@@ -158,7 +158,8 @@ $fx = new FX("EUR", 0.2462);
  * Delivery (or Billing object again, if you want to have the delivery address the same as the billing address)
  * User object
  */
-$request = new Request($cfg, $order, $billing, $delivery, $user, $fx);
+$request = new Request($cfg, $order, $billing, $delivery, $user);
+$request->setFx($fx);
 
 /**
  * Add the Credit Card to the Request
