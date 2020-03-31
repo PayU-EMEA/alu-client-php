@@ -15,39 +15,20 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
     private $responseBuilder;
 
     /**
-     * @var AuthorizationResponse | \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockAuthorizationResponse;
-
-    /**
      * @var HashService |\PHPUnit_Framework_MockObject_MockObject
      */
     private $mockHashService;
 
+    /**
+     * @var AuthorizationResponse
+     */
+    private $authorizationResponse;
+
     public function setUp()
     {
-        //todo make AuthorizationRequest final ( cannot be mocked, should use a new framework)
-        $this->mockAuthorizationResponse = $this
-            ->getMockBuilder('PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockHashService = $this->getMockBuilder('PayU\Alu\HashService')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->responseBuilder = new ResponseBuilder();
-    }
-
-    public function testBuildResponse()
-    {
-        $result = $this->createExpectedResponse();
-
-        $this->mockAuthorizationResponse->expects($this->once())
-            ->method('getResponse')
-            ->will($this->returnValue(
-                new \SimpleXMLElement(
-                    '<?xml version="1.0"?>
+        $this->authorizationResponse = new AuthorizationResponse(
+            new \SimpleXMLElement(
+                '<?xml version="1.0"?>
                 <EPAYMENT>
                   <REFNO>12022985</REFNO>
                   <ALIAS/>
@@ -72,8 +53,19 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
                   </WIRE_ACCOUNTS>
                   <HASH>1ef929de57a17b747c8b8569371f611e</HASH>
                 </EPAYMENT>'
-                )
-            ));
+            )
+        );
+
+        $this->mockHashService = $this->getMockBuilder('PayU\Alu\HashService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->responseBuilder = new ResponseBuilder();
+    }
+
+    public function testBuildResponse()
+    {
+        $result = $this->createExpectedResponse();
 
         $this->mockHashService->expects($this->once())
             ->method('validateResponseHash');
@@ -81,7 +73,7 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $result,
             $this->responseBuilder->buildResponse(
-                $this->mockAuthorizationResponse,
+                $this->authorizationResponse,
                 $this->mockHashService
             )
         );
