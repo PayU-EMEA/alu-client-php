@@ -89,7 +89,6 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
             $this->mockHttpClient,
             $this->mockHashService
         );
-
     }
 
     public function testAuthorize()
