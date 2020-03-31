@@ -71,7 +71,7 @@ class Client
             throw new ClientException($exception->getMessage());
         }
 
-        return $gateway->authorize($request);
+        return $gateway->authorize($request, $this->customUrl);
     }
 
     /**
