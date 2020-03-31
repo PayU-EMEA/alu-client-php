@@ -86,8 +86,6 @@ class AluV3 implements AuthorizationInterface
                 $requestParams
             );
 
-            //todo remove after testing is done
-            var_dump($responseXML);
         } catch (ConnectionException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         } catch (\Exception $e) {
@@ -114,13 +112,5 @@ class AluV3 implements AuthorizationInterface
             throw new ClientException('Invalid platform');
         }
         return $this->aluUrlHostname[$platform] . self::ALU_URL_PATH;
-    }
-
-    /**
-     * @param string $customUrl
-     */
-    public function setCustomUrl($customUrl)
-    {
-        $this->customUrl = $customUrl;
     }
 }
