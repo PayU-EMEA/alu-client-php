@@ -18,147 +18,147 @@ final class RequestBuilder
      */
     private function transformObject2Array(Request $request)
     {
-        $array = array();
-        $array['MERCHANT'] = $request->getMerchantConfig()->getMerchantCode();
-        $array['ORDER_REF'] = $request->getOrder()->getOrderRef();
-        $array['ORDER_DATE'] = $request->getOrder()->getOrderDate();
+        $requestArray = array();
+        $requestArray['MERCHANT'] = $request->getMerchantConfig()->getMerchantCode();
+        $requestArray['ORDER_REF'] = $request->getOrder()->getOrderRef();
+        $requestArray['ORDER_DATE'] = $request->getOrder()->getOrderDate();
 
         $cnt = 0;
         /**
          * @var Product $product
          */
         foreach ($request->getOrder()->getProducts() as $product) {
-            $array['ORDER_PNAME'][$cnt] = $product->getName();
-            $array['ORDER_PGROUP'][$cnt] = $product->getProductGroup();
-            $array['ORDER_PCODE'][$cnt] = $product->getCode();
-            $array['ORDER_PINFO'][$cnt] = $product->getInfo();
-            $array['ORDER_PRICE'][$cnt] = $product->getPrice();
-            $array['ORDER_VAT'][$cnt] = $product->getVAT();
-            $array['ORDER_PRICE_TYPE'][$cnt] = $product->getPriceType();
-            $array['ORDER_QTY'][$cnt] = $product->getQuantity();
+            $requestArray['ORDER_PNAME'][$cnt] = $product->getName();
+            $requestArray['ORDER_PGROUP'][$cnt] = $product->getProductGroup();
+            $requestArray['ORDER_PCODE'][$cnt] = $product->getCode();
+            $requestArray['ORDER_PINFO'][$cnt] = $product->getInfo();
+            $requestArray['ORDER_PRICE'][$cnt] = $product->getPrice();
+            $requestArray['ORDER_VAT'][$cnt] = $product->getVAT();
+            $requestArray['ORDER_PRICE_TYPE'][$cnt] = $product->getPriceType();
+            $requestArray['ORDER_QTY'][$cnt] = $product->getQuantity();
             //duplicated line ??
             //$this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
-            $array['ORDER_MPLACE_MERCHANT'][$cnt] = $product->getMarketPlaceMerchantCode();
+            $requestArray['ORDER_MPLACE_MERCHANT'][$cnt] = $product->getMarketPlaceMerchantCode();
             //removed
-            $array['ORDER_VER'][$cnt] = $product->getProductVersion();
+            $requestArray['ORDER_VER'][$cnt] = $product->getProductVersion();
             $cnt++;
         }
 
         // removed
-        $array['ORDER_SHIPPING'] = $request->getOrder()->getShippingCost();
-        $array['PRICES_CURRENCY'] = $request->getOrder()->getCurrency();
+        $requestArray['ORDER_SHIPPING'] = $request->getOrder()->getShippingCost();
+        $requestArray['PRICES_CURRENCY'] = $request->getOrder()->getCurrency();
         //removed
-        $array['DISCOUNT'] = $request->getOrder()->getDiscount();
-        $array['PAY_METHOD'] = $request->getOrder()->getPayMethod();
+        $requestArray['DISCOUNT'] = $request->getOrder()->getDiscount();
+        $requestArray['PAY_METHOD'] = $request->getOrder()->getPayMethod();
 
         if (!is_null($request->getCard()) && is_null($request->getCardToken())) {
-            $array['CC_NUMBER'] = $request->getCard()->getCardNumber();
-            $array['EXP_MONTH'] = $request->getCard()->getCardExpirationMonth();
-            $array['EXP_YEAR'] = $request->getCard()->getCardExpirationYear();
-            $array['CC_CVV'] = $request->getCard()->getCardCVV();
-            $array['CC_OWNER'] = $request->getCard()->getCardOwnerName();
+            $requestArray['CC_NUMBER'] = $request->getCard()->getCardNumber();
+            $requestArray['EXP_MONTH'] = $request->getCard()->getCardExpirationMonth();
+            $requestArray['EXP_YEAR'] = $request->getCard()->getCardExpirationYear();
+            $requestArray['CC_CVV'] = $request->getCard()->getCardCVV();
+            $requestArray['CC_OWNER'] = $request->getCard()->getCardOwnerName();
             if ($request->getCard()->isEnableTokenCreation()) {
-                $array['LU_ENABLE_TOKEN'] = '1';
+                $requestArray['LU_ENABLE_TOKEN'] = '1';
             }
         }
 
         if (!is_null($request->getStoredCredentials())) {
             if (!is_null($request->getStoredCredentials()->getStoredCredentialsConsentType())) {
-                $array[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
+                $requestArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
                     $request->getStoredCredentials()->getStoredCredentialsConsentType();
             }
 
             if (!is_null($request->getStoredCredentials()->getStoredCredentialsUseType())) {
-                $array[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
+                $requestArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
                     $request->getStoredCredentials()->getStoredCredentialsUseType();
 
                 if (!is_null($request->getStoredCredentials()->getStoredCredentialsUseId())) {
-                    $array[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
+                    $requestArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
                         $request->getStoredCredentials()->getStoredCredentialsUseId();
                 }
             }
         }
 
 
-        $array['SELECTED_INSTALLMENTS_NUMBER'] = $request->getOrder()->getInstallmentsNumber();
+        $requestArray['SELECTED_INSTALLMENTS_NUMBER'] = $request->getOrder()->getInstallmentsNumber();
         //remove
-        $array['CARD_PROGRAM_NAME'] = $request->getOrder()->getCardProgramName();
+        $requestArray['CARD_PROGRAM_NAME'] = $request->getOrder()->getCardProgramName();
 
         if (is_null($request->getCard()) && !is_null($request->getCardToken())) {
-            $array['CC_TOKEN'] = $request->getCardToken()->getToken();
+            $requestArray['CC_TOKEN'] = $request->getCardToken()->getToken();
             if ($request->getCardToken()->hasCvv()) {
-                $array['CC_CVV'] = $request->getCardToken()->getCvv();
+                $requestArray['CC_CVV'] = $request->getCardToken()->getCvv();
             } else {
-                $array['CC_CVV'] = '';
+                $requestArray['CC_CVV'] = '';
             }
         }
 
-        $array['BACK_REF'] = $request->getOrder()->getBackRef();
+        $requestArray['BACK_REF'] = $request->getOrder()->getBackRef();
         //removed
-        $array['ALIAS'] = $request->getOrder()->getAlias();
+        $requestArray['ALIAS'] = $request->getOrder()->getAlias();
 
         if (!empty($request->getUser())) {
-            $array['CLIENT_IP'] = $request->getUser()->getUserIPAddress();
-            $array['CLIENT_TIME'] = $request->getUser()->getClientTime();
+            $requestArray['CLIENT_IP'] = $request->getUser()->getUserIPAddress();
+            $requestArray['CLIENT_TIME'] = $request->getUser()->getClientTime();
         }
 
-        $array['BILL_LNAME'] = $request->getBillingData()->getLastName();
-        $array['BILL_FNAME'] = $request->getBillingData()->getFirstName();
+        $requestArray['BILL_LNAME'] = $request->getBillingData()->getLastName();
+        $requestArray['BILL_FNAME'] = $request->getBillingData()->getFirstName();
         //removed
-        $array['BILL_CISERIAL'] = $request->getBillingData()->getIdentityCardSeries();
+        $requestArray['BILL_CISERIAL'] = $request->getBillingData()->getIdentityCardSeries();
         //removed
-        $array['BILL_CINUMBER'] = $request->getBillingData()->getIdentityCardNumber();
+        $requestArray['BILL_CINUMBER'] = $request->getBillingData()->getIdentityCardNumber();
         //removed
-        $array['BILL_CIISSUER'] = $request->getBillingData()->getIdentityCardIssuer();
+        $requestArray['BILL_CIISSUER'] = $request->getBillingData()->getIdentityCardIssuer();
         //removed
-        $array['BILL_CITYPE'] = $request->getBillingData()->getIdentityCardType();
+        $requestArray['BILL_CITYPE'] = $request->getBillingData()->getIdentityCardType();
         //removed
-        $array['BILL_CNP'] = $request->getBillingData()->getPersonalNumericCode();
-        $array['BILL_COMPANY'] = $request->getBillingData()->getCompany();
-        $array['BILL_FISCALCODE'] = $request->getBillingData()->getCompanyFiscalCode();
+        $requestArray['BILL_CNP'] = $request->getBillingData()->getPersonalNumericCode();
+        $requestArray['BILL_COMPANY'] = $request->getBillingData()->getCompany();
+        $requestArray['BILL_FISCALCODE'] = $request->getBillingData()->getCompanyFiscalCode();
         //removed
-        $array['BILL_REGNUMBER'] = $request->getBillingData()->getCompanyRegistrationNumber();
+        $requestArray['BILL_REGNUMBER'] = $request->getBillingData()->getCompanyRegistrationNumber();
         //removed
-        $array['BILL_BANK'] = $request->getBillingData()->getCompanyBank();
+        $requestArray['BILL_BANK'] = $request->getBillingData()->getCompanyBank();
         //removed
-        $array['BILL_BANKACCOUNT'] = $request->getBillingData()->getCompanyBankAccountNumber();
-        $array['BILL_EMAIL'] = $request->getBillingData()->getEmail();
-        $array['BILL_PHONE'] = $request->getBillingData()->getPhoneNumber();
+        $requestArray['BILL_BANKACCOUNT'] = $request->getBillingData()->getCompanyBankAccountNumber();
+        $requestArray['BILL_EMAIL'] = $request->getBillingData()->getEmail();
+        $requestArray['BILL_PHONE'] = $request->getBillingData()->getPhoneNumber();
         //removed
-        $array['BILL_FAX'] = $request->getBillingData()->getFaxNumber();
-        $array['BILL_ADDRESS'] = $request->getBillingData()->getAddressLine1();
-        $array['BILL_ADDRESS2'] = $request->getBillingData()->getAddressLine2();
-        $array['BILL_ZIPCODE'] = $request->getBillingData()->getZipCode();
-        $array['BILL_CITY'] = $request->getBillingData()->getCity();
-        $array['BILL_STATE'] = $request->getBillingData()->getState();
-        $array['BILL_COUNTRYCODE'] = $request->getBillingData()->getCountryCode();
+        $requestArray['BILL_FAX'] = $request->getBillingData()->getFaxNumber();
+        $requestArray['BILL_ADDRESS'] = $request->getBillingData()->getAddressLine1();
+        $requestArray['BILL_ADDRESS2'] = $request->getBillingData()->getAddressLine2();
+        $requestArray['BILL_ZIPCODE'] = $request->getBillingData()->getZipCode();
+        $requestArray['BILL_CITY'] = $request->getBillingData()->getCity();
+        $requestArray['BILL_STATE'] = $request->getBillingData()->getState();
+        $requestArray['BILL_COUNTRYCODE'] = $request->getBillingData()->getCountryCode();
 
         if (!empty($request->getDeliveryData())) {
-            $array['DELIVERY_LNAME'] = $request->getDeliveryData()->getLastName();
-            $array['DELIVERY_FNAME'] = $request->getDeliveryData()->getFirstName();
-            $array['DELIVERY_COMPANY'] = $request->getDeliveryData()->getCompany();
-            $array['DELIVERY_PHONE'] = $request->getDeliveryData()->getPhoneNumber();
-            $array['DELIVERY_ADDRESS'] = $request->getDeliveryData()->getAddressLine1();
-            $array['DELIVERY_ADDRESS2'] = $request->getDeliveryData()->getAddressLine2();
-            $array['DELIVERY_ZIPCODE'] = $request->getDeliveryData()->getZipCode();
-            $array['DELIVERY_CITY'] = $request->getDeliveryData()->getCity();
-            $array['DELIVERY_STATE'] = $request->getDeliveryData()->getState();
-            $array['DELIVERY_COUNTRYCODE'] = $request->getDeliveryData()->getCountryCode();
-            $array['DELIVERY_EMAIL'] = $request->getDeliveryData()->getEmail();
+            $requestArray['DELIVERY_LNAME'] = $request->getDeliveryData()->getLastName();
+            $requestArray['DELIVERY_FNAME'] = $request->getDeliveryData()->getFirstName();
+            $requestArray['DELIVERY_COMPANY'] = $request->getDeliveryData()->getCompany();
+            $requestArray['DELIVERY_PHONE'] = $request->getDeliveryData()->getPhoneNumber();
+            $requestArray['DELIVERY_ADDRESS'] = $request->getDeliveryData()->getAddressLine1();
+            $requestArray['DELIVERY_ADDRESS2'] = $request->getDeliveryData()->getAddressLine2();
+            $requestArray['DELIVERY_ZIPCODE'] = $request->getDeliveryData()->getZipCode();
+            $requestArray['DELIVERY_CITY'] = $request->getDeliveryData()->getCity();
+            $requestArray['DELIVERY_STATE'] = $request->getDeliveryData()->getState();
+            $requestArray['DELIVERY_COUNTRYCODE'] = $request->getDeliveryData()->getCountryCode();
+            $requestArray['DELIVERY_EMAIL'] = $request->getDeliveryData()->getEmail();
         }
 
 
-        $array['CC_NUMBER_RECIPIENT'] = $request->getOrder()->getCcNumberRecipient();
+        $requestArray['CC_NUMBER_RECIPIENT'] = $request->getOrder()->getCcNumberRecipient();
 
-        $array['USE_LOYALTY_POINTS'] = $request->getOrder()->getUseLoyaltyPoints();
-        $array['LOYALTY_POINTS_AMOUNT'] = $request->getOrder()->getLoyaltyPointsAmount();
+        $requestArray['USE_LOYALTY_POINTS'] = $request->getOrder()->getUseLoyaltyPoints();
+        $requestArray['LOYALTY_POINTS_AMOUNT'] = $request->getOrder()->getLoyaltyPointsAmount();
 
-        $array['CAMPAIGN_TYPE'] = $request->getOrder()->getCampaignType();
+        $requestArray['CAMPAIGN_TYPE'] = $request->getOrder()->getCampaignType();
 
         $airlineInfoInstance = $request->getOrder()->getAirlineInfo();
 
         if ($airlineInfoInstance instanceof AirlineInfo) {
-            $array['AIRLINE_INFO'] = array(
+            $requestArray['AIRLINE_INFO'] = array(
                 'PASSENGER_NAME' => $request->getOrder()->getAirlineInfo()->getPassengerName(),
                 'TICKET_NUMBER' => $request->getOrder()->getAirlineInfo()->getTicketNumber(),
                 'RESTRICTED_REFUND' => $request->getOrder()->getAirlineInfo()->getRestrictedRefund(),
@@ -170,27 +170,27 @@ final class RequestBuilder
         }
 
         if (!is_null($request->getFx())) {
-            $array['AUTHORIZATION_CURRENCY'] = $request->getFx()->getAuthorizationCurrency();
-            $array['AUTHORIZATION_EXCHANGE_RATE'] = $request->getFx()->getAuthorizationExchangeRate();
+            $requestArray['AUTHORIZATION_CURRENCY'] = $request->getFx()->getAuthorizationCurrency();
+            $requestArray['AUTHORIZATION_EXCHANGE_RATE'] = $request->getFx()->getAuthorizationExchangeRate();
         }
 
 
         if (is_array($request->getOrder()->getCustomParams())) {
             foreach ($request->getOrder()->getCustomParams() as $paramName => $paramValue) {
-                $array[$paramName] = $paramValue;
+                $requestArray[$paramName] = $paramValue;
             }
         }
 
         $threeDsTwoZeroParams = $request->getStrongCustomerAuthentication();
         if ($threeDsTwoZeroParams instanceof StrongCustomerAuthentication) {
-            $array = array_merge(
-                $array,
+            $requestArray = array_merge(
+                $requestArray,
                 $this->threeDsTwoParams($request->getStrongCustomerAuthentication())
             );
         }
 
-        ksort($array);
-        return $array;
+        ksort($requestArray);
+        return $requestArray;
     }
 
     /**
