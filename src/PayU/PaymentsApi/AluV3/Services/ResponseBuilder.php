@@ -9,7 +9,7 @@ use PayU\Alu\ResponseWireAccount;
 use PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse;
 use SimpleXMLElement;
 
-class ResponseBuilder
+final class ResponseBuilder
 {
 
     /**

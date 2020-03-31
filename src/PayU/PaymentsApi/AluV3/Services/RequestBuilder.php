@@ -9,7 +9,7 @@ use PayU\Alu\Request;
 use PayU\Alu\StoredCredentials;
 use PayU\Alu\StrongCustomerAuthentication;
 
-class RequestBuilder
+final class RequestBuilder
 {
 
     /**

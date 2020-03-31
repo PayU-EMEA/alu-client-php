@@ -7,7 +7,7 @@ use PayU\Alu\HTTPClient;
 use PayU\PaymentsApi\AluV3\AluV3;
 use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
 
-class AuthorizationFactory
+final class AuthorizationFactory
 {
     /**
      * @param string $apiVersion
