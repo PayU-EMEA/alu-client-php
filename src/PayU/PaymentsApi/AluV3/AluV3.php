@@ -85,7 +85,6 @@ final class AluV3 implements AuthorizationInterface
                 $this->getAluUrl($request->getMerchantConfig()->getPlatform()),
                 $requestParams
             );
-
         } catch (ConnectionException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         } catch (\Exception $e) {
