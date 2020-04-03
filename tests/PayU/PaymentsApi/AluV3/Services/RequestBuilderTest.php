@@ -228,112 +228,112 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
     private function createRequestArray()
     {
-        return [
-            'ALIAS' => null ,
-            'BACK_REF' => 'http://path/to/your/returnUrlScript' ,
-            'BILL_ADDRESS' => 'ADDRESS1' ,
-            'BILL_ADDRESS2' => 'ADDRESS2' ,
-            'BILL_BANK' => null ,
-            'BILL_BANKACCOUNT' => null ,
-            'BILL_CIISSUER' => null ,
-            'BILL_CINUMBER' => '324322' ,
-            'BILL_CISERIAL' => null ,
-            'BILL_CITYPE' => null ,
-            'BILL_CITY' => 'Bucuresti' ,
-            'BILL_CNP' => null ,
-            'BILL_COMPANY' => null ,
-            'BILL_COUNTRYCODE' => 'RO' ,
-            'BILL_EMAIL' => 'john.doe@mail.com' ,
-            'BILL_FAX' => null ,
-            'BILL_FISCALCODE' => null ,
-            'BILL_FNAME' => 'John' ,
-            'BILL_LNAME' => 'Doe' ,
-            'BILL_PHONE' => '0755167887' ,
-            'BILL_REGNUMBER' => null ,
-            'BILL_STATE' => null ,
-            'BILL_ZIPCODE' => null ,
-            'CARD_PROGRAM_NAME' => null ,
-            'CC_CVV' => 123 ,
-            'CC_NUMBER' => '5431210111111111' ,
-            'CC_NUMBER_RECIPIENT' => null ,
-            'CC_OWNER' => 'test' ,
-            'CLIENT_IP' => '127.0.0.1' ,
-            'CLIENT_TIME' => '' ,
-            'DELIVERY_ADDRESS' => 'ADDRESS1' ,
-            'DELIVERY_ADDRESS2' => 'ADDRESS2' ,
-            'DELIVERY_CITY' => 'Istanbul' ,
-            'DELIVERY_COMPANY' => null ,
-            'DELIVERY_COUNTRYCODE' => 'RO' ,
-            'DELIVERY_EMAIL' => 'john.doe@mail.com' ,
-            'DELIVERY_FNAME' => 'John' ,
-            'DELIVERY_LNAME' => 'Doe' ,
-            'DELIVERY_PHONE' => '0755167887' ,
-            'DELIVERY_STATE' => null ,
-            'DELIVERY_ZIPCODE' => null ,
-            'DISCOUNT' => null ,
-            'EXP_MONTH' => '11' ,
-            'EXP_YEAR' => 2016 ,
-            'MERCHANT' => 'CC5857' ,
-            'ORDER_DATE' => self::ORDER_DATE ,
+        return array(
+            'ALIAS' => null,
+            'BACK_REF' => 'http://path/to/your/returnUrlScript',
+            'BILL_ADDRESS' => 'ADDRESS1',
+            'BILL_ADDRESS2' => 'ADDRESS2',
+            'BILL_BANK' => null,
+            'BILL_BANKACCOUNT' => null,
+            'BILL_CIISSUER' => null,
+            'BILL_CINUMBER' => '324322',
+            'BILL_CISERIAL' => null,
+            'BILL_CITYPE' => null,
+            'BILL_CITY' => 'Bucuresti',
+            'BILL_CNP' => null,
+            'BILL_COMPANY' => null,
+            'BILL_COUNTRYCODE' => 'RO',
+            'BILL_EMAIL' => 'john.doe@mail.com',
+            'BILL_FAX' => null,
+            'BILL_FISCALCODE' => null,
+            'BILL_FNAME' => 'John',
+            'BILL_LNAME' => 'Doe',
+            'BILL_PHONE' => '0755167887',
+            'BILL_REGNUMBER' => null,
+            'BILL_STATE' => null,
+            'BILL_ZIPCODE' => null,
+            'CARD_PROGRAM_NAME' => null,
+            'CC_CVV' => 123,
+            'CC_NUMBER' => '5431210111111111',
+            'CC_NUMBER_RECIPIENT' => null,
+            'CC_OWNER' => 'test',
+            'CLIENT_IP' => '127.0.0.1',
+            'CLIENT_TIME' => '',
+            'DELIVERY_ADDRESS' => 'ADDRESS1',
+            'DELIVERY_ADDRESS2' => 'ADDRESS2',
+            'DELIVERY_CITY' => 'Istanbul',
+            'DELIVERY_COMPANY' => null,
+            'DELIVERY_COUNTRYCODE' => 'RO',
+            'DELIVERY_EMAIL' => 'john.doe@mail.com',
+            'DELIVERY_FNAME' => 'John',
+            'DELIVERY_LNAME' => 'Doe',
+            'DELIVERY_PHONE' => '0755167887',
+            'DELIVERY_STATE' => null,
+            'DELIVERY_ZIPCODE' => null,
+            'DISCOUNT' => null,
+            'EXP_MONTH' => '11',
+            'EXP_YEAR' => 2016,
+            'MERCHANT' => 'CC5857',
+            'ORDER_DATE' => self::ORDER_DATE,
             'ORDER_MPLACE_MERCHANT' =>
-                array (
-                    0 => null ,
-                    1 => null ,
-                ) ,
+                array(
+                    0 => null,
+                    1 => null,
+                ),
             'ORDER_PCODE' =>
-                array (
-                    0 => 'PCODE01' ,
-                    1 => 'PCODE02' ,
-                ) ,
+                array(
+                    0 => 'PCODE01',
+                    1 => 'PCODE02',
+                ),
             'ORDER_PGROUP' =>
-                array (
-                    0 => null ,
-                    1 => null ,
-                ) ,
+                array(
+                    0 => null,
+                    1 => null,
+                ),
             'ORDER_PINFO' =>
-                array (
-                    0 => null ,
-                    1 => null ,
-                ) ,
+                array(
+                    0 => null,
+                    1 => null,
+                ),
             'ORDER_PNAME' =>
-                array (
-                    0 => 'PNAME01' ,
-                    1 => 'PNAME02' ,
-                ) ,
+                array(
+                    0 => 'PNAME01',
+                    1 => 'PNAME02',
+                ),
             'ORDER_PRICE' =>
-                array (
-                    0 => 100 ,
-                    1 => 200 ,
-                ) ,
+                array(
+                    0 => 100,
+                    1 => 200,
+                ),
             'ORDER_QTY' =>
-                array (
-                    0 => 1 ,
-                    1 => 1 ,
-                ) ,
-            'ORDER_REF' => self::ORDER_REF ,
-            'ORDER_SHIPPING' => null ,
+                array(
+                    0 => 1,
+                    1 => 1,
+                ),
+            'ORDER_REF' => self::ORDER_REF,
+            'ORDER_SHIPPING' => null,
             'ORDER_VER' =>
-                array (
-                    0 => null ,
-                    1 => null ,
-                ) ,
-            'PAY_METHOD' => 'CCVISAMC' ,
-            'PRICES_CURRENCY' => 'RON' ,
-            'SELECTED_INSTALLMENTS_NUMBER' => '2' ,
-            'USE_LOYALTY_POINTS' => null ,
-            'LOYALTY_POINTS_AMOUNT' => null ,
-            'CAMPAIGN_TYPE' => 'EXTRA_INSTALLMENTS' ,
+                array(
+                    0 => null,
+                    1 => null,
+                ),
+            'PAY_METHOD' => 'CCVISAMC',
+            'PRICES_CURRENCY' => 'RON',
+            'SELECTED_INSTALLMENTS_NUMBER' => '2',
+            'USE_LOYALTY_POINTS' => null,
+            'LOYALTY_POINTS_AMOUNT' => null,
+            'CAMPAIGN_TYPE' => 'EXTRA_INSTALLMENTS',
             'ORDER_PRICE_TYPE' =>
-                array (
-                    0 => 'NET' ,
-                    1 => 'NET' ,
-                ) ,
+                array(
+                    0 => 'NET',
+                    1 => 'NET',
+                ),
             'ORDER_VAT' =>
-                array (
-                    0 => 24 ,
-                    1 => 24 ,
+                array(
+                    0 => 24,
+                    1 => 24,
                 )
-            ];
+        );
     }
 
     private function strongCustomerAuthenticationParams(StrongCustomerAuthentication $strongCustomerAuthentication)
