@@ -20,7 +20,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $cfg = new MerchantConfig('CC5857', 'SECRET_KEY', 'RO');
         $this->client = new Client($cfg);
 
-        $this->mockRequest = $this->getMockBuilder('PayU\Alu\Request')
+        $this->mockRequest = $this->getMockBuilder(\PayU\Alu\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

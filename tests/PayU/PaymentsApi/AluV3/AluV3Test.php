@@ -174,7 +174,7 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
                           <ORDER_REF>' . self::ORDER_REF . '</ORDER_REF>
                           <AUTH_CODE/>
                           <RRN/>
-                          <HASH>' . self::HASH_STRING  . '</HASH>
+                          <HASH>' . self::HASH_STRING . '</HASH>
                         </EPAYMENT>'
             );
 

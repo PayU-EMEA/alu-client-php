@@ -25,11 +25,11 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->hashService = new HashService('SECRET_KEY');
 
-        $this->requestMock = $this->getMockBuilder('\PayU\Alu\Request')
+        $this->requestMock = $this->getMockBuilder(\PayU\Alu\Request::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->responseMock = $this->getMockBuilder('\PayU\Alu\Response')
+        $this->responseMock = $this->getMockBuilder(\PayU\Alu\Response::class)
             ->disableOriginalConstructor()
             ->getMock();
     }

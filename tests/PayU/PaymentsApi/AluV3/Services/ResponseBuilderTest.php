@@ -30,7 +30,7 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mockHashService = $this->getMockBuilder('PayU\Alu\HashService')
+        $this->mockHashService = $this->getMockBuilder(\PayU\Alu\HashService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -111,7 +111,7 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
                   <ORDER_REF>' . self::ORDER_REF . '</ORDER_REF>
                   <AUTH_CODE>465321</AUTH_CODE>
                   <RRN>1234</RRN>
-                  <HASH>' . self::HASH_STRING  . '</HASH>
+                  <HASH>' . self::HASH_STRING . '</HASH>
                   <TOKEN_HASH>123456789</TOKEN_HASH>
                 </EPAYMENT>'
             )
@@ -162,7 +162,7 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
                     <WIRE_RECIPIENT_VAT_ID>RO16490162</WIRE_RECIPIENT_VAT_ID>
                     </ITEM>
                   </WIRE_ACCOUNTS>
-                  <HASH>' . self::HASH_STRING  . '</HASH>
+                  <HASH>' . self::HASH_STRING . '</HASH>
                 </EPAYMENT>'
             )
         );
