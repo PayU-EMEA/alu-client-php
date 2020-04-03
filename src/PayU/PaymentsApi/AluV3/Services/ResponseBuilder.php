@@ -13,14 +13,14 @@ final class ResponseBuilder
 {
 
     /**
-     * @param AuthorizationResponse $response
+     * @param AuthorizationResponse $authorizationResponse
      * @param HashService $hashService
      * @return Response|AuthorizationResponse
      * @throws ClientException
      */
-    public function buildResponse(AuthorizationResponse $response, HashService $hashService)
+    public function buildResponse(AuthorizationResponse $authorizationResponse, HashService $hashService)
     {
-        $response = $this->build($response);
+        $response = $this->build($authorizationResponse);
         if ('' != $response->getHash()) {
             $hashService->validateResponseHash($response);
         }
