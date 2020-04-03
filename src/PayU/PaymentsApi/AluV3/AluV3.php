@@ -4,7 +4,6 @@
 namespace PayU\PaymentsApi\AluV3;
 
 use PayU\Alu\Exceptions\ClientException;
-use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\Alu\Request;
@@ -79,8 +78,6 @@ final class AluV3 implements AuthorizationInterface
                 $this->getAluUrl($customAluUrl, $request->getMerchantConfig()->getPlatform()),
                 $requestParams
             );
-        } catch (ConnectionException $e) {
-            echo($e->getMessage() . ' ' . $e->getCode());
         } catch (\Exception $e) {
             throw new ClientException($e->getMessage(), $e->getCode());
         }

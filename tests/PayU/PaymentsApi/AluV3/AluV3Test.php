@@ -92,10 +92,12 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
         return new Request($cfg, $order, $billing);
     }
 
-    public function testAuthorizeWithSuccess()
+    /**
+     * @return array
+     */
+    private function createRequestArray()
     {
-        // Given
-        $requestArray = [
+        return [
             "BACK_REF" => "http://path/to/your/returnUrlScript",
             "BILL_ADDRESS" => "ADDRESS1",
             "BILL_ADDRESS2" => "ADDRESS2",
@@ -143,14 +145,23 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
             'SELECTED_INSTALLMENTS_NUMBER' => null,
             'USE_LOYALTY_POINTS' => null,
         ];
+    }
+
+    public function testAuthorizeWithSuccess()
+    {
+        // Given
+        $requestArray = $this->createRequestArray();
 
         $this->hashServiceMock->expects($this->once())
             ->method('makeRequestHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
+        $requestArray['ORDER_HASH'] = self::HASH_STRING;
+
         $this->httpClientMock->expects($this->once())
             ->method('post')
+            ->with('https://secure.payu.ro' . AluV3::ALU_URL_PATH, $requestArray)
             ->willReturn(
                 '<?xml version="1.0"?>
                         <EPAYMENT>
@@ -190,5 +201,27 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResponse, $actualResponse);
     }
 
+    /**
+     * @expectedException \PayU\Alu\Exceptions\ClientException
+     */
+    public function testAuthorizeWillThrowClientException()
+    {
+        // Given
+        $requestArray = $this->createRequestArray();
 
+        $this->hashServiceMock->expects($this->once())
+            ->method('makeRequestHash')
+            ->with($requestArray)
+            ->willReturn(self::HASH_STRING);
+
+        $requestArray['ORDER_HASH'] = self::HASH_STRING;
+
+        $this->httpClientMock->expects($this->once())
+            ->method('post')
+            ->with('https://secure.payu.ro' . AluV3::ALU_URL_PATH, $requestArray)
+            ->willThrowException(new \Exception());
+
+        // When
+        $this->aluV3->authorize($this->createAluRequest(), null);
+    }
 }
