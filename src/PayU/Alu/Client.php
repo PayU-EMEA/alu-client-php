@@ -71,7 +71,7 @@ class Client
             throw new ClientException($exception->getMessage());
         }
 
-        if (!is_null($this->customUrl)) {
+        if ($this->customUrl === null) {
             $request->setCustomUrl($this->customUrl);
         }
 
