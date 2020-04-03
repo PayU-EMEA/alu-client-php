@@ -75,11 +75,11 @@ final class AluV3 implements AuthorizationInterface
 
         try {
             $responseXML = $this->httpClient->post(
-                $this->getAluUrl($request->getCustomUrl(), $request->getMerchantConfig()->getPlatform()),
+                $this->getAluUrl($request),
                 $requestParams
             );
         } catch (\Exception $e) {
-            throw new ClientException($e->getMessage(), $e->getCode());
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
         $authorizationResponse = $this->responseParser->parseXMLResponse($responseXML);
@@ -88,20 +88,20 @@ final class AluV3 implements AuthorizationInterface
     }
 
     /**
-     * @param string $customAluUrl
-     * @param string $platform
+     * @param Request $request
      * @return string
      * @throws ClientException
      */
-    private function getAluUrl($customAluUrl, $platform)
+    private function getAluUrl(Request $request)
     {
-        if (!empty($customAluUrl)) {
-            return $customAluUrl;
+        if ($request->getCustomUrl() === null) {
+            return $request->getCustomUrl();
         }
 
-        if (!isset($this->aluUrlHostname[$platform])) {
+        if (!isset($this->aluUrlHostname[$request->getMerchantConfig()->getPlatform()])) {
             throw new ClientException('Invalid platform');
         }
-        return $this->aluUrlHostname[$platform] . self::ALU_URL_PATH;
+
+        return $this->aluUrlHostname[$request->getMerchantConfig()->getPlatform()] . self::ALU_URL_PATH;
     }
 }
