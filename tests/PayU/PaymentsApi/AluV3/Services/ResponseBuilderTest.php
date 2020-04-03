@@ -169,5 +169,4 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
 
         return $response;
     }
-
 }
