@@ -23,16 +23,6 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
     const ORDER_REF = "90003";
 
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var Order
-     */
-    private $order;
-
-    /**
      * @var RequestBuilder
      */
     private $requestBuilder;
