@@ -194,7 +194,7 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
         $expectedResponse->setRrn('');
 
         // When
-        $actualResponse = $this->aluV3->authorize($this->createAluRequest(), null);
+        $actualResponse = $this->aluV3->authorize($this->createAluRequest());
 
         // Then
         $this->assertInstanceOf(Response::class, $actualResponse);
