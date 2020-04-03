@@ -9,37 +9,53 @@ use PayU\Alu\MerchantConfig;
 use PayU\Alu\Order;
 use PayU\Alu\Product;
 use PayU\Alu\Request;
+use PayU\Alu\Response;
 
 class AluV3Test extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var HashService
-     */
-    private $hashService;
-
-    /**
-     * @var HTTPClient
-     */
-    private $httpClient;
+    const HASH_STRING = "HASH";
+    const REF_NO = "3244554";
+    const STATUS = "SUCCESS";
+    const RETURN_CODE = "AUTHORIZED";
+    const RETURN_MESSAGE = "Authorized.";
+    const ORDER_DATE = "2020-09-19 10:00:00";
+    const ORDER_REF = "90003";
 
     /**
      * @var AluV3
      */
     private $aluV3;
+
     /**
-     * @var Request
+     * @var HashService|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $request;
+    private $hashServiceMock;
+
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var HTTPClient|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $mockHashService;
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockHttpClient;
+    private $httpClientMock;
 
     public function setUp()
+    {
+        $this->hashServiceMock = $this->getMockBuilder('PayU\Alu\HashService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->httpClientMock = $this->getMockBuilder('PayU\Alu\HTTPClient')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->aluV3 = new AluV3(
+            $this->httpClientMock,
+            $this->hashServiceMock
+        );
+    }
+
+    /**
+     * @return Request
+     */
+    private function createAluRequest()
     {
         $cfg = new MerchantConfig('CC5857', 'SECRET_KEY', 'RO');
 
@@ -48,11 +64,9 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
         $order->withBackRef('http://path/to/your/returnUrlScript')
             ->withOrderRef('MerchantOrderRef')
             ->withCurrency('RON')
-            ->withOrderDate('2014-09-19 10:00:00')
+            ->withOrderDate(self::ORDER_DATE)
             ->withOrderTimeout(1000)
-            ->withPayMethod('CCVISAMC')
-            ->withInstallmentsNumber(2)
-            ->withCampaignType('EXTRA_INSTALLMENTS');
+            ->withPayMethod('CCVISAMC');
 
         $product = new Product();
         $product->withCode('PCODE01')
@@ -75,119 +89,106 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
             ->withPhoneNumber('0755167887')
             ->withIdentityCardNumber('324322');
 
-        $this->request = new Request($cfg, $order, $billing);
-
-        $this->mockHashService = $this->getMockBuilder('PayU\Alu\HashService')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockHttpClient = $this->getMockBuilder('PayU\Alu\HTTPClient')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->aluV3 = new AluV3(
-            $this->mockHttpClient,
-            $this->mockHashService
-        );
+        return new Request($cfg, $order, $billing);
     }
 
-    public function testAuthorize()
+    public function testAuthorizeWithSuccess()
     {
-        $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
-            ->will($this->returnValue('HASH'));
+        // Given
+        $requestArray = [
+            "BACK_REF" => "http://path/to/your/returnUrlScript",
+            "BILL_ADDRESS" => "ADDRESS1",
+            "BILL_ADDRESS2" => "ADDRESS2",
+            "BILL_CINUMBER" => "324322",
+            "BILL_CITY" => "Bucuresti",
+            "BILL_COUNTRYCODE" => "RO",
+            "BILL_EMAIL" => "john.doe@mail.com",
+            "BILL_FNAME" => "John",
+            "BILL_LNAME" => "Doe",
+            "BILL_PHONE" => "0755167887",
+            "MERCHANT" => "CC5857",
+            "ORDER_DATE" => self::ORDER_DATE,
+            "ORDER_PCODE" => ["PCODE01"],
+            "ORDER_PNAME" => ["PNAME01"],
+            "ORDER_PRICE" => [(float)100],
+            "ORDER_QTY" => [1],
+            "ORDER_REF" => "MerchantOrderRef",
+            "ORDER_VAT" => [(float)24],
+            "PAY_METHOD" => "CCVISAMC",
+            "PRICES_CURRENCY" => "RON",
+            'ALIAS' => null,
+            'BILL_BANK' => null,
+            'BILL_BANKACCOUNT' => null,
+            'BILL_CIISSUER' => null,
+            'BILL_CISERIAL' => null,
+            'BILL_CITYPE' => null,
+            'BILL_CNP' => null,
+            'BILL_COMPANY' => null,
+            'BILL_FAX' => null,
+            'BILL_FISCALCODE' => null,
+            'BILL_REGNUMBER' => null,
+            'BILL_STATE' => null,
+            'BILL_ZIPCODE' => null,
+            'CAMPAIGN_TYPE' => null,
+            'CARD_PROGRAM_NAME' => null,
+            'CC_NUMBER_RECIPIENT' => null,
+            'DISCOUNT' => null,
+            'LOYALTY_POINTS_AMOUNT' => null,
+            'ORDER_MPLACE_MERCHANT' => [null],
+            'ORDER_PGROUP' => [null],
+            'ORDER_PINFO' => [null],
+            'ORDER_PRICE_TYPE' => ["NET"],
+            'ORDER_SHIPPING' => null,
+            'ORDER_VER' => [null],
+            'SELECTED_INSTALLMENTS_NUMBER' => null,
+            'USE_LOYALTY_POINTS' => null,
+        ];
 
-        $this->mockHttpClient->expects($this->once())
+        $this->hashServiceMock->expects($this->once())
+            ->method('makeRequestHash')
+            ->with($requestArray)
+            ->willReturn(self::HASH_STRING);
+
+        $this->httpClientMock->expects($this->once())
             ->method('post')
-            ->will(
-                $this->returnValue(
-                    '<?xml version="1.0"?>
-                <EPAYMENT>
-                  <REFNO>12022985</REFNO>
-                  <ALIAS/>
-                  <STATUS>FAILED</STATUS>
-                  <RETURN_CODE>ALREADY_AUTHORIZED</RETURN_CODE>
-                  <RETURN_MESSAGE>The payment for your order is already authorized.</RETURN_MESSAGE>
-                  <DATE>2014-09-22 11:08:23</DATE>
-                  <ORDER_REF>90003</ORDER_REF>
-                  <AUTH_CODE/>
-                  <RRN/>
-                  <WIRE_ACCOUNTS>
-                    <ITEM>
-                      <BANK_IDENTIFIER>BANCA AGRICOLA-RAIFFEISEN S.A.</BANK_IDENTIFIER>
-                      <BANK_ACCOUNT>a12c8c196b11afb9beb8fe6221540a4f</BANK_ACCOUNT>
-                      <ROUTING_NUMBER></ROUTING_NUMBER>
-                      <IBAN_ACCOUNT></IBAN_ACCOUNT>
-                      <BANK_SWIFT>BANK7</BANK_SWIFT>
-                      <COUNTRY>Romania</COUNTRY>
-                      <WIRE_RECIPIENT_NAME>GECAD ePayment International SA SRL</WIRE_RECIPIENT_NAME>
-                    <WIRE_RECIPIENT_VAT_ID>RO16490162</WIRE_RECIPIENT_VAT_ID>
-                    </ITEM>
-                  </WIRE_ACCOUNTS>
-                  <HASH>1ef929de57a17b747c8b8569371f611e</HASH>
-                </EPAYMENT>'
-                )
+            ->willReturn(
+                '<?xml version="1.0"?>
+                        <EPAYMENT>
+                          <REFNO>' . self::REF_NO . '</REFNO>
+                          <ALIAS/>
+                          <STATUS>' . self::STATUS . '</STATUS>
+                          <RETURN_CODE>' . self::RETURN_CODE . '</RETURN_CODE>
+                          <RETURN_MESSAGE>' . self::RETURN_MESSAGE . '</RETURN_MESSAGE>
+                          <DATE>' . self::ORDER_DATE . '</DATE>
+                          <ORDER_REF>' . self::ORDER_REF . '</ORDER_REF>
+                          <AUTH_CODE/>
+                          <RRN/>
+                          <HASH>' . self::HASH_STRING  . '</HASH>
+                        </EPAYMENT>'
             );
 
-        $this->mockHashService->expects($this->once())
+        $this->hashServiceMock->expects($this->once())
             ->method('validateResponseHash');
 
-        $this->assertInstanceOf(
-            'PayU\Alu\Response',
-            $this->aluV3->authorize($this->request, null)
-        );
+        $expectedResponse = new Response();
+        $expectedResponse->setRefno(self::REF_NO);
+        $expectedResponse->setAlias('');
+        $expectedResponse->setStatus(self::STATUS);
+        $expectedResponse->setReturnCode(self::RETURN_CODE);
+        $expectedResponse->setReturnMessage(self::RETURN_MESSAGE);
+        $expectedResponse->setDate(self::ORDER_DATE);
+        $expectedResponse->setHash(self::HASH_STRING);
+        $expectedResponse->setOrderRef(self::ORDER_REF);
+        $expectedResponse->setAuthCode('');
+        $expectedResponse->setRrn('');
+
+        // When
+        $actualResponse = $this->aluV3->authorize($this->createAluRequest(), null);
+
+        // Then
+        $this->assertInstanceOf(Response::class, $actualResponse);
+        $this->assertEquals($expectedResponse, $actualResponse);
     }
-/*
-    public function testPayWithCustomUrl()
-    {
-        $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
-            ->will($this->returnValue('3444cd767df689bcd5034ead29aa08a711111'));
 
-        $this->mockRequest->expects($this->once())
-            ->method('setOrderHash');
 
-        $this->mockRequest->expects($this->once())
-            ->method('getRequestParams')
-            ->will(
-                $this->returnValue(
-                    array(
-                        'HASH' => '3444cd767df689bcd5034ead29aa08a711111'
-                    )
-                )
-            );
-
-        $this->mockRequest->method('getPaymentsApiVersion')
-            ->willReturn('v3');
-
-        $this->mockHTTPClient->expects($this->once())
-            ->method('post')
-            ->will(
-                $this->returnValue(
-                    '<?xml version="1.0"?>
-                <EPAYMENT>
-                  <REFNO>12022985</REFNO>
-                  <ALIAS/>
-                  <STATUS>FAILED</STATUS>
-                  <RETURN_CODE>ALREADY_AUTHORIZED</RETURN_CODE>
-                  <RETURN_MESSAGE>The payment for your order is already authorized.</RETURN_MESSAGE>
-                  <DATE>2014-09-22 11:08:23</DATE>
-                  <ORDER_REF>90003</ORDER_REF>
-                  <AUTH_CODE/>
-                  <RRN/>
-                  <HASH>1ef929de57a17b747c8b8569371f611e</HASH>
-                </EPAYMENT>'
-                )
-            );
-
-        $this->mockHashService->expects($this->once())
-            ->method('validateResponseHash');
-
-        $this->client->setCustomUrl('http://www.example.com');
-        $this->assertInstanceOf(
-            'PayU\Alu\Response',
-            $this->client->pay($this->mockRequest, $this->mockHTTPClient, $this->mockHashService)
-        );
-    }
-*/
 }
