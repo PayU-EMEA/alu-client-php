@@ -94,7 +94,7 @@ final class AluV3 implements AuthorizationInterface
      */
     private function getAluUrl(Request $request)
     {
-        if ($request->getCustomUrl() === null) {
+        if ($request->getCustomUrl() !== null) {
             return $request->getCustomUrl();
         }
 
