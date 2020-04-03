@@ -9,6 +9,7 @@ interface AuthorizationInterface
 {
     /**
      * @param Request $request
+     * @param string $customAluUrl
      * @return Response
      */
     public function authorize(Request $request);

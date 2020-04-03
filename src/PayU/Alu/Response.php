@@ -90,7 +90,6 @@ class Response
 
     /**
      * @var string[]
-     * ??
      */
     private $additionalResponseParameters = array();
 

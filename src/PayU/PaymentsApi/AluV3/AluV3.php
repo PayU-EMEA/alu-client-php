@@ -4,7 +4,6 @@
 namespace PayU\PaymentsApi\AluV3;
 
 use PayU\Alu\Exceptions\ClientException;
-use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\Alu\Request;
@@ -13,7 +12,7 @@ use PayU\PaymentsApi\AluV3\Services\ResponseBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseParser;
 use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
 
-class AluV3 implements AuthorizationInterface
+final class AluV3 implements AuthorizationInterface
 {
     const ALU_URL_PATH = '/order/alu/v3';
     const API_VERSION_V3 = "v3";
@@ -22,19 +21,13 @@ class AluV3 implements AuthorizationInterface
      * @var array
      * todo set ro to original value
      */
-    private $aluUrlHostname = array(
-        //'ro' => 'https://secure.payu.ro',
-        'ro' => 'http://ro.payu.local',
+    private $aluUrlHostname = [
+        'ro' => 'https://secure.payu.ro',
         'ru' => 'https://secure.payu.ru',
         'ua' => 'https://secure.payu.ua',
         'hu' => 'https://secure.payu.hu',
         'tr' => 'https://secure.payu.com.tr',
-    );
-
-    /**
-     * @var string
-     */
-    private $customUrl = null;
+    ];
 
     /**
      * @var HTTPClient
@@ -78,67 +71,37 @@ class AluV3 implements AuthorizationInterface
      */
     public function authorize(Request $request)
     {
-        $requestArray = $this->requestBuilder->buildAuthorizationRequest($request);
+        $requestParams = $this->requestBuilder->buildAuthorizationRequest($request, $this->hashService);
 
-        $requestHash = $this->hashService->makeRequestHash(
-            $requestArray,
-            $request->getMerchantConfig()->getSecretKey()
-        );
-
-        $this->requestBuilder->setOrderHash($requestHash);
-
-        $requestParams = $this->requestBuilder->buildAuthorizationRequest($request);
         try {
             $responseXML = $this->httpClient->post(
-                $this->getAluUrl($request->getMerchantConfig()->getPlatform()),
+                $this->getAluUrl($request),
                 $requestParams
             );
-
-            //todo remove after testing is done
-            var_dump($responseXML);
-        } catch (ConnectionException $e) {
-            echo($e->getMessage() . ' ' . $e->getCode());
         } catch (\Exception $e) {
-            throw new ClientException($e->getMessage(), $e->getCode());
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
         $authorizationResponse = $this->responseParser->parseXMLResponse($responseXML);
 
-        $response = $this->responseBuilder->buildResponse($authorizationResponse);
-
-        if ('' != $response->getHash()) {
-            try {
-                $this->hashService->validateResponseHash($response);
-            } catch (ClientException $e) {
-                echo($e->getMessage() . ' ' . $e->getCode());
-            }
-        }
-
-        return $response;
+        return $this->responseBuilder->buildResponse($authorizationResponse, $this->hashService);
     }
 
     /**
-     * @param string $platform
+     * @param Request $request
      * @return string
      * @throws ClientException
      */
-    private function getAluUrl($platform)
+    private function getAluUrl(Request $request)
     {
-        if (!empty($this->customUrl)) {
-            return $this->customUrl;
+        if ($request->getCustomUrl() !== null) {
+            return $request->getCustomUrl();
         }
 
-        if (!isset($this->aluUrlHostname[$platform])) {
+        if (!isset($this->aluUrlHostname[$request->getMerchantConfig()->getPlatform()])) {
             throw new ClientException('Invalid platform');
         }
-        return $this->aluUrlHostname[$platform] . self::ALU_URL_PATH;
-    }
 
-    /**
-     * @param string $customUrl
-     */
-    public function setCustomUrl($customUrl)
-    {
-        $this->customUrl = $customUrl;
+        return $this->aluUrlHostname[$request->getMerchantConfig()->getPlatform()] . self::ALU_URL_PATH;
     }
 }

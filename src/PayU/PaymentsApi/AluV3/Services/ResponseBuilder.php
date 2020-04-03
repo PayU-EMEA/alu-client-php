@@ -7,17 +7,34 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Response;
 use PayU\Alu\ResponseWireAccount;
 use PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse;
+use SimpleXMLElement;
 
-class ResponseBuilder
+final class ResponseBuilder
 {
 
     /**
-     * @param AuthorizationResponse $response
+     * @param AuthorizationResponse $authorizationResponse
+     * @param HashService $hashService
+     * @return Response|AuthorizationResponse
+     * @throws ClientException
+     */
+    public function buildResponse(AuthorizationResponse $authorizationResponse, HashService $hashService)
+    {
+        $response = $this->build($authorizationResponse);
+        if ('' != $response->getHash()) {
+            $hashService->validateResponseHash($response);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param AuthorizationResponse $authorizationResponse
      * @return Response
      */
-    public function buildResponse(AuthorizationResponse $response)
+    private function build(AuthorizationResponse $authorizationResponse)
     {
-        $xmlObject = $response->getResponse();
+        $xmlObject = $authorizationResponse->getResponse();
         $response = new Response();
         $response->setRefno((string)$xmlObject->REFNO);
         $response->setAlias((string)$xmlObject->ALIAS);

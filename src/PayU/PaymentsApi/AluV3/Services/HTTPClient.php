@@ -7,7 +7,6 @@ use PayU\Alu\Exceptions\ConnectionException;
 
 class HTTPClient
 {
-    const POST_METHOD = "POST";
 
     /**
      * @var resource
