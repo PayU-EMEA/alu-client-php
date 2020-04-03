@@ -60,13 +60,14 @@ class Request
     private $fx;
 
     /**
-     * @var array
-     */
-    private $internalArray;
-    /**
      * @var string
      */
     private $paymentsApiVersion;
+
+    /**
+     * @var string
+     */
+    private $customUrl;
 
     /**
      * @param MerchantConfig $merchantConfig
@@ -215,5 +216,21 @@ class Request
     public function setFx(FX $fx)
     {
         $this->fx = $fx;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomUrl()
+    {
+        return $this->customUrl;
+    }
+
+    /**
+     * @param string $customUrl
+     */
+    public function setCustomUrl($customUrl)
+    {
+        $this->customUrl = $customUrl;
     }
 }

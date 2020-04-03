@@ -69,13 +69,13 @@ final class AluV3 implements AuthorizationInterface
      * @inheritDoc
      * @throws ClientException
      */
-    public function authorize(Request $request, $customAluUrl)
+    public function authorize(Request $request)
     {
         $requestParams = $this->requestBuilder->buildAuthorizationRequest($request, $this->hashService);
 
         try {
             $responseXML = $this->httpClient->post(
-                $this->getAluUrl($customAluUrl, $request->getMerchantConfig()->getPlatform()),
+                $this->getAluUrl($request->getCustomUrl(), $request->getMerchantConfig()->getPlatform()),
                 $requestParams
             );
         } catch (\Exception $e) {
@@ -88,7 +88,7 @@ final class AluV3 implements AuthorizationInterface
     }
 
     /**
-     * @param $customAluUrl
+     * @param string $customAluUrl
      * @param string $platform
      * @return string
      * @throws ClientException

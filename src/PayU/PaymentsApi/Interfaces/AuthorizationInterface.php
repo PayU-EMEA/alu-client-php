@@ -12,5 +12,5 @@ interface AuthorizationInterface
      * @param string $customAluUrl
      * @return Response
      */
-    public function authorize(Request $request, $customAluUrl);
+    public function authorize(Request $request);
 }
