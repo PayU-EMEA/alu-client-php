@@ -222,6 +222,6 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
             ->willThrowException(new \Exception());
 
         // When
-        $this->aluV3->authorize($this->createAluRequest(), null);
+        $this->aluV3->authorize($this->createAluRequest());
     }
 }
