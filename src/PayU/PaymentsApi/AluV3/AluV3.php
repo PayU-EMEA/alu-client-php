@@ -82,7 +82,11 @@ final class AluV3 implements AuthorizationInterface
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $authorizationResponse = $this->responseParser->parseXMLResponse($responseXML);
+        try {
+            $authorizationResponse = $this->responseParser->parseXMLResponse($responseXML);
+        } catch (\Exception $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
 
         return $this->responseBuilder->buildResponse($authorizationResponse, $this->hashService);
     }
