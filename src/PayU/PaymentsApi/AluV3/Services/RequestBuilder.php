@@ -51,7 +51,7 @@ final class RequestBuilder
         $requestArray['DISCOUNT'] = $request->getOrder()->getDiscount();
         $requestArray['PAY_METHOD'] = $request->getOrder()->getPayMethod();
 
-        if (!is_null($request->getCard()) && is_null($request->getCardToken())) {
+        if ($request->getCard() !== null && $request->getCardToken() === null) {
             $requestArray['CC_NUMBER'] = $request->getCard()->getCardNumber();
             $requestArray['EXP_MONTH'] = $request->getCard()->getCardExpirationMonth();
             $requestArray['EXP_YEAR'] = $request->getCard()->getCardExpirationYear();
@@ -62,17 +62,17 @@ final class RequestBuilder
             }
         }
 
-        if (!is_null($request->getStoredCredentials())) {
-            if (!is_null($request->getStoredCredentials()->getStoredCredentialsConsentType())) {
+        if ($request->getStoredCredentials() !== null) {
+            if ($request->getStoredCredentials()->getStoredCredentialsConsentType() !== null) {
                 $requestArray[StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE] =
                     $request->getStoredCredentials()->getStoredCredentialsConsentType();
             }
 
-            if (!is_null($request->getStoredCredentials()->getStoredCredentialsUseType())) {
+            if ($request->getStoredCredentials()->getStoredCredentialsUseType() !== null) {
                 $requestArray[StoredCredentials::STORED_CREDENTIALS_USE_TYPE] =
                     $request->getStoredCredentials()->getStoredCredentialsUseType();
 
-                if (!is_null($request->getStoredCredentials()->getStoredCredentialsUseId())) {
+                if ($request->getStoredCredentials()->getStoredCredentialsUseId() !== null) {
                     $requestArray[StoredCredentials::STORED_CREDENTIALS_USE_ID] =
                         $request->getStoredCredentials()->getStoredCredentialsUseId();
                 }
@@ -84,7 +84,7 @@ final class RequestBuilder
         //remove
         $requestArray['CARD_PROGRAM_NAME'] = $request->getOrder()->getCardProgramName();
 
-        if (is_null($request->getCard()) && !is_null($request->getCardToken())) {
+        if ($request->getCard() === null && $request->getCardToken() !== null) {
             $requestArray['CC_TOKEN'] = $request->getCardToken()->getToken();
             if ($request->getCardToken()->hasCvv()) {
                 $requestArray['CC_CVV'] = $request->getCardToken()->getCvv();
@@ -97,7 +97,7 @@ final class RequestBuilder
         //removed
         $requestArray['ALIAS'] = $request->getOrder()->getAlias();
 
-        if (!empty($request->getUser())) {
+        if ($request->getUser() !== null) {
             $requestArray['CLIENT_IP'] = $request->getUser()->getUserIPAddress();
             $requestArray['CLIENT_TIME'] = $request->getUser()->getClientTime();
         }
@@ -133,7 +133,7 @@ final class RequestBuilder
         $requestArray['BILL_STATE'] = $request->getBillingData()->getState();
         $requestArray['BILL_COUNTRYCODE'] = $request->getBillingData()->getCountryCode();
 
-        if (!empty($request->getDeliveryData())) {
+        if ($request->getDeliveryData() !== null) {
             $requestArray['DELIVERY_LNAME'] = $request->getDeliveryData()->getLastName();
             $requestArray['DELIVERY_FNAME'] = $request->getDeliveryData()->getFirstName();
             $requestArray['DELIVERY_COMPANY'] = $request->getDeliveryData()->getCompany();
@@ -169,7 +169,7 @@ final class RequestBuilder
             );
         }
 
-        if (!is_null($request->getFx())) {
+        if ($request->getFx() !== null) {
             $requestArray['AUTHORIZATION_CURRENCY'] = $request->getFx()->getAuthorizationCurrency();
             $requestArray['AUTHORIZATION_EXCHANGE_RATE'] = $request->getFx()->getAuthorizationExchangeRate();
         }

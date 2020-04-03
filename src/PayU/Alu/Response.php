@@ -521,25 +521,25 @@ class Response
         $this->internalArray['RETURN_MESSAGE'] = $this->returnMessage;
         $this->internalArray['DATE'] = $this->date;
 
-        if (!is_null($this->amount)) {
+        if ($this->amount !== null) {
             $this->internalArray['AMOUNT'] = $this->amount;
         }
-        if (!is_null($this->currency)) {
+        if ($this->currency !== null) {
             $this->internalArray['CURRENCY'] = $this->currency;
         }
-        if (!is_null($this->installmentsNo)) {
+        if ($this->installmentsNo !== null) {
             $this->internalArray['INSTALLMENTS_NO'] = $this->installmentsNo;
         }
-        if (!is_null($this->cardProgramName)) {
+        if ($this->cardProgramName !== null) {
             $this->internalArray['CARD_PROGRAM_NAME'] = $this->cardProgramName;
         }
-        if (!is_null($this->orderRef)) {
+        if ($this->orderRef !== null) {
             $this->internalArray['ORDER_REF'] = $this->orderRef;
         }
-        if (!is_null($this->authCode)) {
+        if ($this->authCode !== null) {
             $this->internalArray['AUTH_CODE'] = $this->authCode;
         }
-        if (!is_null($this->rrn)) {
+        if ($this->rrn !== null) {
             $this->internalArray['RRN'] = $this->rrn;
         }
 
@@ -547,10 +547,10 @@ class Response
             $this->internalArray[$parameterKey] = $parameterValue;
         }
 
-        if (!is_null($this->urlRedirect)) {
+        if ($this->urlRedirect !== null) {
             $this->internalArray['URL_REDIRECT'] = $this->urlRedirect;
         }
-        if (!is_null($this->tokenHash)) {
+        if ($this->tokenHash !== null) {
             $this->internalArray['TOKEN_HASH'] = $this->tokenHash;
         }
 

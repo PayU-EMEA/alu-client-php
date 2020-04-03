@@ -21,6 +21,5 @@ final class ResponseParser
         } catch (\Exception $e) {
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
-
     }
 }
