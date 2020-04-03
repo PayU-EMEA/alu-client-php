@@ -143,6 +143,7 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testMakeRequestHash($requestParams, $expectedHash)
     {
+        // Then
         $this->assertEquals($expectedHash, $this->hashService->makeRequestHash($requestParams));
     }
 
@@ -244,12 +245,16 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateResponseHash($responseParams, $responseExpectedHash)
     {
-        $this->responseMock->expects($this->once())->method('getResponseParams')
-            ->will($this->returnValue($responseParams));
+        // Given
+        $this->responseMock->expects($this->once())
+            ->method('getResponseParams')
+            ->willReturn($responseParams);
 
-        $this->responseMock->expects($this->once())->method('getHash')
-            ->will($this->returnValue($responseExpectedHash));
+        $this->responseMock->expects($this->once())
+            ->method('getHash')
+            ->willReturn($responseExpectedHash);
 
+        // When
         $this->hashService->validateResponseHash($this->responseMock);
     }
 
@@ -260,12 +265,16 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateResponseHashFail($responseParams, $responseExpectedHash)
     {
-        $this->responseMock->expects($this->once())->method('getResponseParams')
-            ->will($this->returnValue($responseParams));
+        // Given
+        $this->responseMock->expects($this->once())
+            ->method('getResponseParams')
+            ->willReturn($responseParams);
 
-        $this->responseMock->expects($this->once())->method('getHash')
-            ->will($this->returnValue($responseExpectedHash . 'BREAK_THE_HASH'));
+        $this->responseMock->expects($this->once())
+            ->method('getHash')
+            ->willReturn($responseExpectedHash . 'BREAK_THE_HASH');
 
+        // When
         $this->hashService->validateResponseHash($this->responseMock);
     }
 }
