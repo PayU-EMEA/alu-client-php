@@ -39,7 +39,7 @@ class RequestBuilder
          *      applePayToken object
          */
 
-        if (!is_null($request->getCard()) && is_null($request->getCardToken())) {
+        if ($request->getCard() !== null && $request->getCardToken() === null) {
             $cardDetails = new CardDetails(
                 $request->getCard()->getCardNumber(),
                 $request->getCard()->getCardExpirationMonth(),
@@ -61,7 +61,7 @@ class RequestBuilder
         }
 
 
-        if (is_null($request->getCard()) && !is_null($request->getCardToken())) {
+        if ($request->getCard() === null && $request->getCardToken() !== null) {
             $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
 
             if ($request->getCardToken()->hasCvv()) {
@@ -75,7 +75,7 @@ class RequestBuilder
             $authorizationData->setMerchantToken($merchantToken);
         }
 
-        if (!is_null($request->getFx())) {
+        if ($request->getFx() !== null) {
             $fxData = new FxData(
                 $request->getFx()->getAuthorizationCurrency(),
                 $request->getFx()->getAuthorizationExchangeRate()
@@ -100,8 +100,8 @@ class RequestBuilder
         $billingData->setAddressLine2($request->getBillingData()->getAddressLine2());
         $billingData->setZipCode($request->getBillingData()->getZipCode());
 
-        if ($request->getBillingData()->getIdentityCardNumber() != null ||
-            $request->getBillingData()->getIdentityCardType() != null
+        if ($request->getBillingData()->getIdentityCardNumber() !== null ||
+            $request->getBillingData()->getIdentityCardType() !== null
         ) {
             $identityDocumentData = new IdentityDocumentData();
 
@@ -114,7 +114,7 @@ class RequestBuilder
 
         $clientData = new ClientData($billingData);
 
-        if (!empty($request->getDeliveryData())) {
+        if ($request->getDeliveryData() !== null) {
             $deliveryData = new DeliveryData();
 
             $deliveryData->setFirstName($request->getDeliveryData()->getFirstName());
@@ -131,7 +131,7 @@ class RequestBuilder
             $clientData->setDeliveryData($deliveryData);
         }
 
-        if (!empty($request->getUser())) {
+        if ($request->getUser() !== null) {
             $clientData->setIp($request->getUser()->getUserIPAddress());
             $clientData->setTime($request->getUser()->getClientTime());
             //"communicationLanguage"
