@@ -16,6 +16,7 @@ use PayU\PaymentsApi\PaymentsV4\Entities\MerchantTokenData;
 use PayU\PaymentsApi\PaymentsV4\Entities\ProductData;
 use PayU\PaymentsApi\PaymentsV4\Entities\AirlineInfoData;
 use PayU\PaymentsApi\PaymentsV4\Entities\FlightSegments;
+use PayU\PaymentsApi\PaymentsV4\Entities\StoredCredentialsData;
 use PayU\PaymentsApi\PaymentsV4\Entities\TravelAgency;
 
 class RequestBuilder
@@ -179,8 +180,18 @@ class RequestBuilder
 
             $authorizationRequest->setAirlineInfoData($airlineInfo);
         }
-//        if (threeDSecure){}
-//        if (storedCredentials){}
+
+        //if (threeDSecure){}
+
+        if ($request->getStoredCredentials() !== null) {
+            $storedCredentials = new StoredCredentialsData();
+
+            $storedCredentials->setConsentType($request->getStoredCredentials()->getStoredCredentialsConsentType());
+            $storedCredentials->setUseType($request->getStoredCredentials()->getStoredCredentialsUseType());
+            $storedCredentials->setUseId($request->getStoredCredentials()->getStoredCredentialsUseId());
+
+            $authorizationRequest->setStoredCredentialsData($storedCredentials);
+        }
 
         return json_encode($authorizationRequest);
     }

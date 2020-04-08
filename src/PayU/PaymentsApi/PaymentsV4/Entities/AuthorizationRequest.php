@@ -43,6 +43,17 @@ class AuthorizationRequest implements \JsonSerializable
     /** @var AirlineInfoData */
     private $airlineInfoData;
 
+    /** @var StoredCredentialsData */
+    private $storedCredentialsData;
+
+    /**
+     * @param StoredCredentialsData $storedCredentialsData
+     */
+    public function setStoredCredentialsData($storedCredentialsData)
+    {
+        $this->storedCredentialsData = $storedCredentialsData;
+    }
+
     /**
      * AuthorizationRequest constructor.
      *
