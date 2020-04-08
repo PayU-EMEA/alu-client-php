@@ -1,10 +1,10 @@
 <?php
 
 
-namespace PaymentsV4\Services;
+namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\Response;
-use PaymentsV4\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
 
 class ResponseBuilder
 {

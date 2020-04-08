@@ -1,17 +1,16 @@
 <?php
 
-namespace PaymentsV4;
+namespace PayU\PaymentsApi\PaymentsV4;
 
-use PaymentsV4\Services\ResponseParser;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Request;
-use PaymentsV4\Services\HashService;
-use PaymentsV4\Services\HTTPClient;
-use PaymentsV4\Services\RequestBuilder;
-use PaymentsV4\Services\ResponseBuilder;
+use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;
+use PayU\PaymentsApi\PaymentsV4\Services\RequestBuilder;
+use PayU\PaymentsApi\PaymentsV4\Services\ResponseBuilder;
 use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\AuthorizationResponseException;
+use PayU\PaymentsApi\PaymentsV4\Services\ResponseParser;
 
 class PaymentsV4 implements AuthorizationInterface
 {

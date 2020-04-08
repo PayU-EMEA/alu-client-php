@@ -1,10 +1,10 @@
 <?php
 
 
-namespace PaymentsV4\Services;
+namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\MerchantConfig;
-use PaymentsV4\PaymentsV4;
+use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
 class HashService
 {

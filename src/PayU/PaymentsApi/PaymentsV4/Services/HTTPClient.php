@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PaymentsV4\Services;
+namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
@@ -56,7 +56,6 @@ class HTTPClient
         $orderDate,
         $requestBody
     ) {
-
         $signature = $this->hashService->generateSignature($merchantConfig, $orderDate, $requestBody);
         $requestHeaders = $this->buildRequestHeaders($merchantConfig->getMerchantCode(), $orderDate, $signature);
 

@@ -2,7 +2,7 @@
 
 namespace PayU\PaymentsApi\Factories;
 
-use PaymentsV4\PaymentsV4;
+use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\PaymentsApi\AluV3\AluV3;

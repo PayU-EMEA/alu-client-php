@@ -1,19 +1,22 @@
 <?php
 
 
-namespace PaymentsV4\Services;
+namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\Request;
-use PaymentsV4\Entities\AuthorizationData;
-use PaymentsV4\Entities\AuthorizationRequest;
-use PaymentsV4\Entities\BillingData;
-use PaymentsV4\Entities\CardDetails;
-use PaymentsV4\Entities\ClientData;
-use PaymentsV4\Entities\DeliveryData;
-use PaymentsV4\Entities\FxData;
-use PaymentsV4\Entities\IdentityDocumentData;
-use PaymentsV4\Entities\MerchantTokenData;
-use PaymentsV4\Entities\ProductData;
+use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationData;
+use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationRequest;
+use PayU\PaymentsApi\PaymentsV4\Entities\BillingData;
+use PayU\PaymentsApi\PaymentsV4\Entities\CardDetails;
+use PayU\PaymentsApi\PaymentsV4\Entities\ClientData;
+use PayU\PaymentsApi\PaymentsV4\Entities\DeliveryData;
+use PayU\PaymentsApi\PaymentsV4\Entities\FxData;
+use PayU\PaymentsApi\PaymentsV4\Entities\IdentityDocumentData;
+use PayU\PaymentsApi\PaymentsV4\Entities\MerchantTokenData;
+use PayU\PaymentsApi\PaymentsV4\Entities\ProductData;
+use PayU\PaymentsApi\PaymentsV4\Entities\AirlineInfoData;
+use PayU\PaymentsApi\PaymentsV4\Entities\FlightSegments;
+use PayU\PaymentsApi\PaymentsV4\Entities\TravelAgency;
 
 class RequestBuilder
 {
