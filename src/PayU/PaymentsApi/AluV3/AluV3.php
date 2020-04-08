@@ -3,13 +3,14 @@
 
 namespace PayU\PaymentsApi\AluV3;
 
-use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\Alu\Request;
+use PayU\PaymentsApi\AluV3\Exceptions\ResponseParserException;
 use PayU\PaymentsApi\AluV3\Services\RequestBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseParser;
+use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
 
 final class AluV3 implements AuthorizationInterface
@@ -67,25 +68,24 @@ final class AluV3 implements AuthorizationInterface
 
     /**
      * @inheritDoc
-     * @throws ClientException
      */
     public function authorize(Request $request)
     {
         $requestParams = $this->requestBuilder->buildAuthorizationRequest($request, $this->hashService);
-
+        $url = $this->getAluUrl($request);
         try {
             $responseXML = $this->httpClient->post(
-                $this->getAluUrl($request),
+                $url,
                 $requestParams
             );
         } catch (\Exception $e) {
-            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+            throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
         }
 
         try {
             $authorizationResponse = $this->responseParser->parseXMLResponse($responseXML);
-        } catch (\Exception $e) {
-            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        } catch (ResponseParserException $e) {
+            throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $this->responseBuilder->buildResponse($authorizationResponse, $this->hashService);
@@ -94,7 +94,7 @@ final class AluV3 implements AuthorizationInterface
     /**
      * @param Request $request
      * @return string
-     * @throws ClientException
+     * @throws AuthorizationException
      */
     private function getAluUrl(Request $request)
     {
@@ -103,7 +103,7 @@ final class AluV3 implements AuthorizationInterface
         }
 
         if (!isset($this->aluUrlHostname[$request->getMerchantConfig()->getPlatform()])) {
-            throw new ClientException('Invalid platform');
+            throw new AuthorizationException('Invalid platform');
         }
 
         return $this->aluUrlHostname[$request->getMerchantConfig()->getPlatform()] . self::ALU_URL_PATH;

@@ -3,6 +3,7 @@
 namespace PayU\Alu;
 
 use PayU\Alu\Exceptions\ClientException;
+use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
 use PayU\PaymentsApi\Factories\AuthorizationFactory;
 use SimpleXMLElement;
@@ -75,7 +76,13 @@ class Client
             $request->setCustomUrl($this->customUrl);
         }
 
-        return $gateway->authorize($request);
+        try {
+            $response = $gateway->authorize($request);
+        } catch (AuthorizationException $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        return $response;
     }
 
     /**
