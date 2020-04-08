@@ -1,9 +1,7 @@
 <?php
 
 
-namespace PaymentsV4\Entities;
-
-use PaymentsV4\Entities\IdentityDocumentData;
+namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
 class BillingData implements \JsonSerializable
 {
