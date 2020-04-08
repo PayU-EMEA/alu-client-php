@@ -228,7 +228,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
     private function createRequestArray()
     {
-        return [
+        return array(
             'ALIAS' => null,
             'BACK_REF' => 'http://path/to/your/returnUrlScript',
             'BILL_ADDRESS' => 'ADDRESS1',
@@ -333,7 +333,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                     0 => 24,
                     1 => 24,
                 )
-        ];
+        );
     }
 
     private function strongCustomerAuthenticationParams(StrongCustomerAuthentication $strongCustomerAuthentication)

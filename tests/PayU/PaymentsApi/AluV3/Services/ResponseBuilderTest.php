@@ -106,8 +106,12 @@ class ResponseBuilderTest extends \PHPUnit_Framework_TestCase
                   <RETURN_CODE>' . self::RETURN_CODE . '</RETURN_CODE>
                   <RETURN_MESSAGE>' . self::RETURN_MESSAGE . '</RETURN_MESSAGE>
                   <DATE>' . self::ORDER_DATE . '</DATE>
-                  <URL_3DS>https://secure.payu.ro/order/alu_return_3ds.php?request_id=2Xrl85eakbSBr3WtcbixYQ%3D%3D</URL_3DS>
-                  <URL_REDIRECT>https://secure.payu.ro/order/pbl/redirect.php?hash=acf28e4ea9dafd77c4ca6de16f2e6cbd</URL_REDIRECT>
+                  <URL_3DS>' .
+                'https://secure.payu.ro/order/alu_return_3ds.php?request_id=2Xrl85eakbSBr3WtcbixYQ%3D%3D' .
+                '</URL_3DS>
+                  <URL_REDIRECT>' .
+                'https://secure.payu.ro/order/pbl/redirect.php?hash=acf28e4ea9dafd77c4ca6de16f2e6cbd' .
+                '</URL_REDIRECT>
                   <ORDER_REF>' . self::ORDER_REF . '</ORDER_REF>
                   <AUTH_CODE>465321</AUTH_CODE>
                   <RRN>1234</RRN>
