@@ -76,7 +76,7 @@ class Client
             $request->setCustomUrl($this->customUrl);
         }
 
-        try{
+        try {
             $response = $gateway->authorize($request);
         } catch (AuthorizationException $e) {
             throw new ClientException($e->getMessage(), $e->getCode(), $e);

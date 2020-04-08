@@ -28,7 +28,6 @@ final class ResponseBuilder
             } catch (ClientException $e) {
                 throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
             }
-
         }
 
         return $response;
