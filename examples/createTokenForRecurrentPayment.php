@@ -15,6 +15,7 @@ use PayU\Alu\Request;
 use PayU\Alu\User;
 use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Exceptions\ClientException;
+use PayU\PaymentsApi\AluV3\AluV3;
 
 /**
  * Create configuration with params:
@@ -145,7 +146,7 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '12', 2016, 123, 'Card Owner Name');
+$card = new Card('4111111111111111', '12', 2030, 123, 'Card Owner Name');
 
 /**
  * tokenize card for further token payments
@@ -160,8 +161,9 @@ $card->enableTokenCreation();
  * Billing object
  * Delivery (or Billing object again, if you want to have the delivery address the same as the billing address)
  * User object
+ * Api version - by default is used 'v3' for ALU v3
  */
-$request = new Request($cfg, $order, $billing, $delivery, $user);
+$request = new Request($cfg, $order, $billing, $delivery, $user, AluV3::API_VERSION_V3);
 
 /**
  * Add the Credit Card to the Request
