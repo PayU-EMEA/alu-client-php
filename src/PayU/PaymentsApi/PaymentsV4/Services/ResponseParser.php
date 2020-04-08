@@ -4,15 +4,24 @@
 namespace PaymentsV4\Services;
 
 use PaymentsV4\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\PaymentsV4\Exceptions\AuthorizationResponseException;
 
 class ResponseParser
 {
+
     /**
-     * @param string $jsonResponse
+     * @param $jsonResponse
      * @return AuthorizationResponse
+     * @throws AuthorizationResponseException
      */
     public function parseJsonResponse($jsonResponse)
     {
-        return new AuthorizationResponse(json_decode($jsonResponse, true));
+        $responseArray = json_decode($jsonResponse, true);
+
+        if (is_array($responseArray)) {
+            return new AuthorizationResponse($responseArray);
+        }
+
+        throw new AuthorizationResponseException('Could not decode Json response');
     }
 }
