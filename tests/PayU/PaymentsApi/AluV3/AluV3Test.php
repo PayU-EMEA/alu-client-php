@@ -202,7 +202,7 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \PayU\Alu\Exceptions\ClientException
+     * @expectedException \PayU\PaymentsApi\Exceptions\AuthorizationException
      */
     public function testAuthorizeWillThrowClientException()
     {

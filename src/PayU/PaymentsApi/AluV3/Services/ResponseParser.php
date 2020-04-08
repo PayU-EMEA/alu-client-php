@@ -3,8 +3,8 @@
 
 namespace PayU\PaymentsApi\AluV3\Services;
 
-use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\AluV3\Exceptions\ResponseParserException;
 use SimpleXMLElement;
 
 final class ResponseParser
@@ -12,14 +12,14 @@ final class ResponseParser
     /**
      * @param $xmlResponse
      * @return AuthorizationResponse
-     * @throws ClientException
+     * @throws ResponseParserException
      */
     public function parseXMLResponse($xmlResponse)
     {
         try {
             return new AuthorizationResponse(new SimpleXMLElement($xmlResponse));
         } catch (\Exception $e) {
-            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+            throw new ResponseParserException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

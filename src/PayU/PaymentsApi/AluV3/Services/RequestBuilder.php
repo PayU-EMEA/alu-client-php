@@ -36,18 +36,13 @@ final class RequestBuilder
             $requestArray['ORDER_VAT'][$cnt] = $product->getVAT();
             $requestArray['ORDER_PRICE_TYPE'][$cnt] = $product->getPriceType();
             $requestArray['ORDER_QTY'][$cnt] = $product->getQuantity();
-            //duplicated line ??
-            //$this->internalArray['ORDER_VAT'][$cnt] = $product->getVAT();
             $requestArray['ORDER_MPLACE_MERCHANT'][$cnt] = $product->getMarketPlaceMerchantCode();
-            //removed
             $requestArray['ORDER_VER'][$cnt] = $product->getProductVersion();
             $cnt++;
         }
 
-        // removed
         $requestArray['ORDER_SHIPPING'] = $request->getOrder()->getShippingCost();
         $requestArray['PRICES_CURRENCY'] = $request->getOrder()->getCurrency();
-        //removed
         $requestArray['DISCOUNT'] = $request->getOrder()->getDiscount();
         $requestArray['PAY_METHOD'] = $request->getOrder()->getPayMethod();
 
@@ -81,7 +76,6 @@ final class RequestBuilder
 
 
         $requestArray['SELECTED_INSTALLMENTS_NUMBER'] = $request->getOrder()->getInstallmentsNumber();
-        //remove
         $requestArray['CARD_PROGRAM_NAME'] = $request->getOrder()->getCardProgramName();
 
         if ($request->getCard() === null && $request->getCardToken() !== null) {
@@ -94,7 +88,6 @@ final class RequestBuilder
         }
 
         $requestArray['BACK_REF'] = $request->getOrder()->getBackRef();
-        //removed
         $requestArray['ALIAS'] = $request->getOrder()->getAlias();
 
         if ($request->getUser() !== null) {
@@ -104,27 +97,18 @@ final class RequestBuilder
 
         $requestArray['BILL_LNAME'] = $request->getBillingData()->getLastName();
         $requestArray['BILL_FNAME'] = $request->getBillingData()->getFirstName();
-        //removed
         $requestArray['BILL_CISERIAL'] = $request->getBillingData()->getIdentityCardSeries();
-        //removed
         $requestArray['BILL_CINUMBER'] = $request->getBillingData()->getIdentityCardNumber();
-        //removed
         $requestArray['BILL_CIISSUER'] = $request->getBillingData()->getIdentityCardIssuer();
-        //removed
         $requestArray['BILL_CITYPE'] = $request->getBillingData()->getIdentityCardType();
-        //removed
         $requestArray['BILL_CNP'] = $request->getBillingData()->getPersonalNumericCode();
         $requestArray['BILL_COMPANY'] = $request->getBillingData()->getCompany();
         $requestArray['BILL_FISCALCODE'] = $request->getBillingData()->getCompanyFiscalCode();
-        //removed
         $requestArray['BILL_REGNUMBER'] = $request->getBillingData()->getCompanyRegistrationNumber();
-        //removed
         $requestArray['BILL_BANK'] = $request->getBillingData()->getCompanyBank();
-        //removed
         $requestArray['BILL_BANKACCOUNT'] = $request->getBillingData()->getCompanyBankAccountNumber();
         $requestArray['BILL_EMAIL'] = $request->getBillingData()->getEmail();
         $requestArray['BILL_PHONE'] = $request->getBillingData()->getPhoneNumber();
-        //removed
         $requestArray['BILL_FAX'] = $request->getBillingData()->getFaxNumber();
         $requestArray['BILL_ADDRESS'] = $request->getBillingData()->getAddressLine1();
         $requestArray['BILL_ADDRESS2'] = $request->getBillingData()->getAddressLine2();
