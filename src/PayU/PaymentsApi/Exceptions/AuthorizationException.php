@@ -3,6 +3,6 @@
 
 namespace PayU\PaymentsApi\Exceptions;
 
-class AuthorizationException extends \Exception
+final class AuthorizationException extends \Exception
 {
 }
