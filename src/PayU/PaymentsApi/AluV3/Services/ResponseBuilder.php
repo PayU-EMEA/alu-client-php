@@ -7,6 +7,7 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Response;
 use PayU\Alu\ResponseWireAccount;
 use PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use SimpleXMLElement;
 
 final class ResponseBuilder
@@ -16,13 +17,18 @@ final class ResponseBuilder
      * @param AuthorizationResponse $authorizationResponse
      * @param HashService $hashService
      * @return Response|AuthorizationResponse
-     * @throws ClientException
+     * @throws AuthorizationException
      */
     public function buildResponse(AuthorizationResponse $authorizationResponse, HashService $hashService)
     {
         $response = $this->build($authorizationResponse);
         if ('' != $response->getHash()) {
-            $hashService->validateResponseHash($response);
+            try {
+                $hashService->validateResponseHash($response);
+            } catch (ClientException $e) {
+                throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
+            }
+
         }
 
         return $response;
