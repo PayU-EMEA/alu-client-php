@@ -12,6 +12,11 @@ class HTTPClient
     const POST_METHOD = "POST";
 
     /**
+     * @var HashService
+     */
+    private $hashService;
+
+    /**
      * @var resource
      */
     private $handler;
@@ -25,6 +30,7 @@ class HTTPClient
             throw new ClientException('CURL php extension is not available on your system');
         }
 
+        $this->hashService = new HashService();
         $this->handler = curl_init();
 
         curl_setopt_array(
@@ -37,14 +43,23 @@ class HTTPClient
     }
 
     /**
-     * @param $url
-     * @param $requestBody
-     * @param $requestHeaders
+     * @param string $url
+     * @param MerchantConfig $merchantConfig
+     * @param string $orderDate
+     * @param string $requestBody
      * @return bool|string
      * @throws ConnectionException
      */
-    public function post($url, $requestBody, $requestHeaders)
-    {
+    public function post(
+        $url,
+        MerchantConfig $merchantConfig,
+        $orderDate,
+        $requestBody
+    ) {
+
+        $signature = $this->hashService->generateSignature($merchantConfig, $orderDate, $requestBody);
+        $requestHeaders = $this->buildRequestHeaders($merchantConfig->getMerchantCode(), $orderDate, $signature);
+
         curl_setopt_array(
             $this->handler,
             array(
@@ -70,24 +85,19 @@ class HTTPClient
     }
 
     /**
-     * @param MerchantConfig $merchantConfig
+     * @param string $merchantCode
      * @param string $orderDate
-     * @param string $apiSignature
+     * @param string $signature
      * @return array
      */
-    public function buildRequestHeaders($merchantConfig, $orderDate, $apiSignature)
+    public function buildRequestHeaders($merchantCode, $orderDate, $signature)
     {
         return [
             'Accept: application/json',
-            'X-Header-Signature:' . $apiSignature,
-            'X-Header-Merchant:' . $merchantConfig->getMerchantCode(),
+            'X-Header-Signature:' . $signature,
+            'X-Header-Merchant:' . $merchantCode,
             'X-Header-Date:' . $orderDate,
             'Content-Type: application/json;charset=utf-8'
         ];
-    }
-
-    public function __destruct()
-    {
-        curl_close($this->handler);
     }
 }

@@ -50,7 +50,6 @@ class PaymentsV4 implements AuthorizationInterface
     public function __construct()
     {
         $this->httpClient = new HTTPClient();
-        $this->hashService = new HashService();
         $this->requestBuilder = new RequestBuilder();
         $this->responseParser = new ResponseParser();
         $this->responseBuilder = new ResponseBuilder();
@@ -85,23 +84,12 @@ class PaymentsV4 implements AuthorizationInterface
     {
         $jsonRequest = $this->requestBuilder->buildAuthorizationRequest($request);
 
-        $apiSignature = $this->hashService->generateSignature(
-            $request->getMerchantConfig(),
-            $request->getOrder()->getOrderDate(),
-            $jsonRequest
-        );
-
-        $headers = $this->httpClient->buildRequestHeaders(
-            $request->getMerchantConfig(),
-            $request->getOrder()->getOrderDate(),
-            $apiSignature
-        );
-
         try {
             $responseJson = $this->httpClient->post(
                 $this->getPaymentsUrl($request->getMerchantConfig()->getPlatform()),
-                $jsonRequest,
-                $headers
+                $request->getMerchantConfig(),
+                $request->getOrder()->getOrderDate(),
+                $jsonRequest
             );
         } catch (ClientException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
