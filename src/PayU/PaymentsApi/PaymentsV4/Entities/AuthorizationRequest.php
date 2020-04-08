@@ -40,6 +40,9 @@ class AuthorizationRequest implements \JsonSerializable
      */
     private $merchant;
 
+    /** @var AirlineInfoData */
+    private $airlineInfoData;
+
     /**
      * AuthorizationRequest constructor.
      *
@@ -72,6 +75,14 @@ class AuthorizationRequest implements \JsonSerializable
     public function setMerchant($merchant)
     {
         $this->merchant = $merchant;
+    }
+
+    /**
+     * @param AirlineInfoData $airlineInfoData
+     */
+    public function setAirlineInfoData($airlineInfoData)
+    {
+        $this->airlineInfoData = $airlineInfoData;
     }
 
     /**
