@@ -18,24 +18,6 @@ class PaymentsV4 implements AuthorizationInterface
     const API_VERSION_V4 = 'v4';
 
     /**
-     * @var array
-     * todo set ro to original value
-     */
-    private $aluUrlHostname = array(
-        //'ro' => 'https://secure.payu.ro',
-        'ro' => 'http://ro.payu.local',
-        'ru' => 'https://secure.payu.ru',
-        'ua' => 'https://secure.payu.ua',
-        'hu' => 'https://secure.payu.hu',
-        'tr' => 'https://secure.payu.com.tr',
-    );
-
-    /**
-     * @var string
-     */
-    private $customUrl = null;
-
-    /**
      * @var HashService
      */
     private $hashService;
@@ -75,21 +57,25 @@ class PaymentsV4 implements AuthorizationInterface
     }
 
     /**
-     * @param string $platform
+     * @param string $country
      * @return string
      * @throws ClientException
      */
-    private function getPaymentsUrl($platform)
+    private function getPaymentsUrl($country)
     {
-        if (!empty($this->customUrl)) {
-            return $this->customUrl;
-        }
+        $platformHostname = [
+            'ro' => 'https://secure.payu.ro',
+            'ru' => 'https://secure.payu.ru',
+            'ua' => 'https://secure.payu.ua',
+            'hu' => 'https://secure.payu.hu',
+            'tr' => 'https://secure.payu.com.tr',
+        ];
 
-        if (!isset($this->aluUrlHostname[$platform])) {
+        if (!isset($platformHostname[$country])) {
             throw new ClientException('Invalid platform');
         }
 
-        return $this->aluUrlHostname[$platform] . self::PAYMENTS_API_AUTHORIZE_PATH;
+        return $platformHostname[$country] . self::PAYMENTS_API_AUTHORIZE_PATH;
     }
 
     /**
