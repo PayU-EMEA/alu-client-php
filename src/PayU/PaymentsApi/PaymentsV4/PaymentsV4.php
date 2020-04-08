@@ -18,11 +18,6 @@ class PaymentsV4 implements AuthorizationInterface
     const API_VERSION_V4 = 'v4';
 
     /**
-     * @var HashService
-     */
-    private $hashService;
-
-    /**
      * @var HTTPClient
      */
     private $httpClient;
