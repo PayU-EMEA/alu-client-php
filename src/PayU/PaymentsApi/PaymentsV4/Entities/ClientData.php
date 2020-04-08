@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class ClientData implements \JsonSerializable
+final class ClientData implements \JsonSerializable
 {
     /**
      * @var BillingData

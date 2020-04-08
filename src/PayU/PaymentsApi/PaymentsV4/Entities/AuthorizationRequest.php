@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class AuthorizationRequest implements \JsonSerializable
+final class AuthorizationRequest implements \JsonSerializable
 {
     /**
      * @var string

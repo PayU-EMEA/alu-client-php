@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class IdentityDocumentData implements \JsonSerializable
+final class IdentityDocumentData implements \JsonSerializable
 {
     /**
      * @var string

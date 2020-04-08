@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class CardDetails implements \JsonSerializable
+final class CardDetails implements \JsonSerializable
 {
     /**
      * @var string

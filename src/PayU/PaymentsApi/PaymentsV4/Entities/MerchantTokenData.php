@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class MerchantTokenData implements \JsonSerializable
+final class MerchantTokenData implements \JsonSerializable
 {
     /**
      * @var string

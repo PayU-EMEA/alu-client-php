@@ -2,7 +2,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class FxData implements \JsonSerializable
+final class FxData implements \JsonSerializable
 {
     /** @var string */
     private $currency;

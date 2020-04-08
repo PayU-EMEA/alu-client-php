@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class AuthorizationResponse
+final class AuthorizationResponse
 {
     /**
      * @var array
