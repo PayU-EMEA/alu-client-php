@@ -155,7 +155,30 @@ class RequestBuilder
         }
         */
 
-//        if (airlineInfo){}
+        if ($request->getOrder()->getAirlineInfo() !== null) {
+            $flightSegments = $this->getFlightSegmentsArray($request);
+
+            $airlineInfo = new AirlineInfoData(
+                $request->getOrder()->getAirlineInfo()->getPassengerName(),
+                $flightSegments
+            );
+
+            $airlineInfo->setTicketNumber($request->getOrder()->getAirlineInfo()->getTicketNumber());
+            $airlineInfo->setRefundPolicy($request->getOrder()->getAirlineInfo()->getRestrictedRefund());
+            $airlineInfo->setReservationSystem($request->getOrder()->getAirlineInfo()->getReservationSystem());
+
+            if ($request->getOrder()->getAirlineInfo()->getTravelAgencyCode() !== null ||
+                $request->getOrder()->getAirlineInfo()->getTravelAgencyName() !== null
+            ) {
+                $travelAgency = new TravelAgency();
+                $travelAgency->setCode($request->getOrder()->getAirlineInfo()->getTravelAgencyCode());
+                $travelAgency->setName($request->getOrder()->getAirlineInfo()->getTravelAgencyName());
+
+                $airlineInfo->setTravelAgency($travelAgency);
+            }
+
+            $authorizationRequest->setAirlineInfoData($airlineInfo);
+        }
 //        if (threeDSecure){}
 //        if (storedCredentials){}
 
@@ -190,5 +213,37 @@ class RequestBuilder
         }
 
         return $productsArray;
+    }
+
+    /**
+     * @param $request
+     * @return FlightSegments[]
+     */
+    private function getFlightSegmentsArray($request)
+    {
+        $cnt = 0;
+        $flightSegmentsArray = [];
+
+        /**
+         * @var Request $request
+         */
+        foreach ($request->getOrder()->getAirlineInfo()->getFlightSegments() as $flightSegmentArray) {
+            $flightSegment = new FlightSegments(
+                $flightSegmentArray['DEPARTURE_DATE'],
+                $flightSegmentArray['DEPARTURE_AIRPORT'],
+                $flightSegmentArray['DESTINATION_AIRPORT']
+            );
+
+            $flightSegment->setAirlineCode($flightSegmentArray['AIRLINE_CODE']);
+            //$flightSegment->setAirlineName($flightSegmentArray['AIRLINE_NAME']);
+            $flightSegment->setServiceClass($flightSegmentArray['SERVICE_CLASS']);
+            $flightSegment->setStopover($flightSegmentArray['STOPOVER']);
+            $flightSegment->setFareCode($flightSegmentArray['FARE_CODE']);
+            $flightSegment->setFlightNumber($flightSegmentArray['FLIGHT_NUMBER']);
+
+            $flightSegmentsArray[$cnt++] = $flightSegment;
+        }
+
+        return $flightSegmentsArray;
     }
 }
