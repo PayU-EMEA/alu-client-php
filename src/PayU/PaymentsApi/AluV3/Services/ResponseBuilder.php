@@ -8,7 +8,6 @@ use PayU\Alu\Response;
 use PayU\Alu\ResponseWireAccount;
 use PayU\PaymentsApi\AluV3\Entities\AuthorizationResponse;
 use PayU\PaymentsApi\AluV3\Exceptions\ResponseBuilderException;
-use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use SimpleXMLElement;
 
 final class ResponseBuilder
