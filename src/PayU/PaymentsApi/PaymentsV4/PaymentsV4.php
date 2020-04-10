@@ -5,6 +5,7 @@ namespace PayU\PaymentsApi\PaymentsV4;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Request;
+use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;
 use PayU\PaymentsApi\PaymentsV4\Services\RequestBuilder;
 use PayU\PaymentsApi\PaymentsV4\Services\ResponseBuilder;
@@ -53,7 +54,7 @@ class PaymentsV4 implements AuthorizationInterface
     /**
      * @param string $country
      * @return string
-     * @throws ClientException
+     * @throws AuthorizationException
      */
     private function getPaymentsUrl($country)
     {
@@ -66,7 +67,7 @@ class PaymentsV4 implements AuthorizationInterface
         ];
 
         if (!isset($platformHostname[$country])) {
-            throw new ClientException('Invalid platform');
+            throw new AuthorizationException('Invalid platform');
         }
 
         return $platformHostname[$country] . self::PAYMENTS_API_AUTHORIZE_PATH;
@@ -89,13 +90,15 @@ class PaymentsV4 implements AuthorizationInterface
         } catch (ClientException $e) {
             echo($e->getMessage() . ' ' . $e->getCode());
         } catch (ConnectionException $e) {
-            echo($e->getMessage() . ' ' . $e->getCode());
+            throw new AuthorizationException($e->getMessage() . ' ' . $e->getCode());
         }
 
         try {
             $authorizationResponse = $this->responseParser->parseJsonResponse($responseJson);
         } catch (AuthorizationResponseException $exception) {
-            throw new ClientException($exception->getMessage());
+            throw new AuthorizationException($exception->getMessage());
+        } catch (Exceptions\ResponseBuilderException $e) {
+            throw new AuthorizationException($e->getMessage());
         }
 
         return $this->responseBuilder->buildResponse($authorizationResponse);
