@@ -3,6 +3,7 @@
 namespace PayU\PaymentsApi\AluV3;
 
 use PayU\Alu\Billing;
+use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\Alu\MerchantConfig;
@@ -204,7 +205,7 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \PayU\PaymentsApi\Exceptions\AuthorizationException
      */
-    public function testAuthorizeWillThrowClientException()
+    public function testAuthorizeWillThrowAuthorizeException()
     {
         // Given
         $requestArray = $this->createRequestArray();
@@ -219,7 +220,7 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
         $this->httpClientMock->expects($this->once())
             ->method('post')
             ->with('https://secure.payu.ro' . AluV3::ALU_URL_PATH, $requestArray)
-            ->willThrowException(new \Exception());
+            ->willThrowException(new ConnectionException("Exception"));
 
         // When
         $this->aluV3->authorize($this->createAluRequest());
