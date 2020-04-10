@@ -3,6 +3,6 @@
 
 namespace PayU\PaymentsApi\AluV3\Exceptions;
 
-class ResponseBuilderException extends \Exception
+final class ResponseBuilderException extends \Exception
 {
 }
