@@ -100,7 +100,8 @@ class AluResponseTransformation
         )
         ) {
             if (!empty($responseData[AluResponseMapper::PAYMENT_RESULT]['payuResponseCode'])) {
-                $responseData[AluResponseMapper::STATUS_KEY] = $responseData[AluResponseMapper::PAYMENT_RESULT]['payuResponseCode'];
+                $responseData[AluResponseMapper::STATUS_KEY] =
+                    $responseData[AluResponseMapper::PAYMENT_RESULT]['payuResponseCode'];
             } elseif (empty($responseData[AluResponseMapper::STATUS_KEY])) {
                 //this should never happen
                 //as status key from $responseData always has something before calling this method.
