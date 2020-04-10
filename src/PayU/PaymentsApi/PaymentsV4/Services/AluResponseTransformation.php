@@ -2,10 +2,6 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
-
-//use CLogger;
-//use ThreeDSTwoZero\Service\ThreeDSTwoZeroValidator;
-
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
 
 class AluResponseTransformation
@@ -51,7 +47,8 @@ class AluResponseTransformation
          *      "request_date" => "DATE",
          *      "order_date" => "ORDER_DATE"
          * ] and message = "Invalid DATE,ORDER_DATE",
-         * the result of str_replace would be "Invalid request_date,ORDER_request_date" instead of "Invalid request_date,order_date"
+         * the result of str_replace would be "Invalid request_date,ORDER_request_date"
+         * instead of "Invalid request_date,order_date"
          */
         //todo ask andra
 //        $mapping = AluRequestMapper::MAP;
@@ -80,7 +77,9 @@ class AluResponseTransformation
         }
 
         if (empty($responseData['message'])) {
-            $responseData['message'] = $this->convertAluStatusToHumanReadable($responseData[AluResponseMapper::STATUS_KEY]);
+            $responseData['message'] = $this->convertAluStatusToHumanReadable(
+                $responseData[AluResponseMapper::STATUS_KEY]
+            );
         }
 
         if (isset($responseData[AluResponseMapper::PAYMENT_RESULT]['url'])) {
@@ -94,11 +93,15 @@ class AluResponseTransformation
         // moved in AluResponseMapper map
         //$responseData['code'] = $this->aluHttpCodeMapper->getCode($responseData);
 
-        if (!in_array($responseData[AluResponseMapper::STATUS_KEY], [self::LU_STATUS_SUCCESS, self::LU_STATUS_FAILED])) {
+        if (!in_array($responseData[AluResponseMapper::STATUS_KEY],
+                      [self::LU_STATUS_SUCCESS, self::LU_STATUS_FAILED],
+                      true)
+        ) {
             if (!empty($responseData[AluResponseMapper::PAYMENT_RESULT]['payuResponseCode'])) {
                 $responseData[AluResponseMapper::STATUS_KEY] = $responseData[AluResponseMapper::PAYMENT_RESULT]['payuResponseCode'];
             } elseif (empty($responseData[AluResponseMapper::STATUS_KEY])) {
-                //this should never happen as status key from $responseData always has something before calling this method.
+                //this should never happen
+                //as status key from $responseData always has something before calling this method.
 
 //                $this->logger->log(
 //                    CLogger::LEVEL_ERROR,
@@ -107,14 +110,15 @@ class AluResponseTransformation
 //                    "Error building response - status key expected in response array : " . print_r($responseData, 1)
 //                );
 
-                throw new ResponseBuilderException('Merchant API - empty status detected. \n Error building response - status key expected in response array');
+                throw new ResponseBuilderException('Merchant API - empty status detected.');
             }
 
             //Keep payuResponseCode only for success and auth errors (cases when the order is created)
             $responseData = $this->removePayuResponseCodeFromResponse($responseData);
         } /** @noinspection PhpStatementHasEmptyBodyInspection */ else {
             /*
-             * Here, the STATUS_KEY is NOT changed as it already is 'SUCCESS' (LU_STATUS_SUCCESS) or 'FAILED' (LU_STATUS_FAILED)
+             * Here, the STATUS_KEY is NOT changed as it already is 'SUCCESS'
+             * (LU_STATUS_SUCCESS) or 'FAILED' (LU_STATUS_FAILED)
              * It will have the values from these constants.
             */
         }

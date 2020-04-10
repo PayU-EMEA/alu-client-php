@@ -66,7 +66,8 @@ class AluResponseMapper
         self::PAYMENT_RESULT . '.' . 'type' => 'TYPE',
         self::PAYMENT_RESULT . '.' . 'url' => 'URL_3DS',
         self::PAYMENT_RESULT . '.' . 'url' => 'URL_REDIRECT',
-        'status' => 'STATUS', //used only for some decisions in AluResponseTransformation; won't be in the final response
+        /* used only for some decisions in AluResponseTransformation; won't be in the final response */
+        'status' => 'STATUS',
     ];
 
     /** @var FieldMapper */
