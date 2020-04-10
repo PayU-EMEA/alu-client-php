@@ -93,9 +93,11 @@ class AluResponseTransformation
         // moved in AluResponseMapper map
         //$responseData['code'] = $this->aluHttpCodeMapper->getCode($responseData);
 
-        if (!in_array($responseData[AluResponseMapper::STATUS_KEY],
-                      [self::LU_STATUS_SUCCESS, self::LU_STATUS_FAILED],
-                      true)
+        if (!in_array(
+            $responseData[AluResponseMapper::STATUS_KEY],
+            [self::LU_STATUS_SUCCESS, self::LU_STATUS_FAILED],
+            true
+        )
         ) {
             if (!empty($responseData[AluResponseMapper::PAYMENT_RESULT]['payuResponseCode'])) {
                 $responseData[AluResponseMapper::STATUS_KEY] = $responseData[AluResponseMapper::PAYMENT_RESULT]['payuResponseCode'];
