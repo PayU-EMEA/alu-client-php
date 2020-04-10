@@ -2,10 +2,9 @@
 
 namespace PayU\PaymentsApi\PaymentsV4;
 
-use PayU\Alu\Exceptions\ClientException;
-use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Request;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
+use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
 use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;
 use PayU\PaymentsApi\PaymentsV4\Services\RequestBuilder;
@@ -40,9 +39,8 @@ class PaymentsV4 implements AuthorizationInterface
     private $responseBuilder;
 
     /**
-     * PaymentsApiGateway constructor.
-     *
-     * @throws ClientException
+     * PaymentsV4 constructor.
+     * @throws AuthorizationException
      */
     public function __construct()
     {
@@ -88,8 +86,6 @@ class PaymentsV4 implements AuthorizationInterface
                 $request->getOrder()->getOrderDate(),
                 $jsonRequest
             );
-        } catch (ClientException $e) {
-            echo($e->getMessage() . ' ' . $e->getCode());
         } catch (ConnectionException $e) {
             throw new AuthorizationException($e->getMessage() . ' ' . $e->getCode());
         }
