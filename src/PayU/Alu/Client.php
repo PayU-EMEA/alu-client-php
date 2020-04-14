@@ -6,7 +6,6 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
 use PayU\PaymentsApi\Factories\AuthorizationFactory;
-use SimpleXMLElement;
 
 /**
  * Class Client
