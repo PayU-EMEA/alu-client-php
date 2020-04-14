@@ -146,7 +146,13 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '11', '2020', '123', 'Card Owner Name');
+$card = new Card(
+    '4111111111111111',
+    '11',
+    date("Y", strtotime("+1 year")),
+    '123',
+    'Card Owner Name'
+);
 
 /**
  * AIRLINE_INFO parameter
