@@ -50,14 +50,6 @@ class RequestBuilder
             $cardDetails->setCvv($request->getCard()->getCardCVV());
             $cardDetails->setOwner($request->getCard()->getCardOwnerName());
 
-            if ($request->getCard()->hasTimeSpentTypingNumber()) {
-                $cardDetails->setTimeSpentTypingNumber($request->getCard()->getTimeSpentTypingNumber());
-            }
-
-            if ($request->getCard()->hasTimeSpentTypingOwner()) {
-                $cardDetails->setTimeSpentTypingOwner($request->getCard()->getTimeSpentTypingOwner());
-            }
-
             $authorizationData->setCardDetails($cardDetails);
         }
 
