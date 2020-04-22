@@ -36,7 +36,8 @@ class Client
     }
 
     /**
-     * @param $fullUrl
+     * @deprecated Should use \PayU\Alu\Request::setCustomUrl instead for futher usage
+     * @param string $fullUrl
      * @codeCoverageIgnore
      */
     public function setCustomUrl($fullUrl)
