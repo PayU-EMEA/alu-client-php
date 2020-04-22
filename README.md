@@ -5,9 +5,9 @@ Documentation in [Russian](docs-intl/README.ru.md).
 
 ## Prerequisites
 
- * PHP 5.3 and above
+ * PHP 5.6 and above
  * curl extension with support for OpenSSL
- * PHPUnit 4.2.0 for running test suite (Optional)
+ * PHPUnit 4.8.0 for running test suite (Optional)
  * Composer (Optional)
 
 ## Composer

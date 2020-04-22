@@ -3,10 +3,12 @@
 
 namespace PayU\PaymentsApi\AluV3;
 
-use PayU\Alu\HashService;
-use PayU\Alu\HTTPClient;
+use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Request;
+use PayU\PaymentsApi\AluV3\Exceptions\ResponseBuilderException;
 use PayU\PaymentsApi\AluV3\Exceptions\ResponseParserException;
+use PayU\PaymentsApi\AluV3\Services\HashService;
+use PayU\PaymentsApi\AluV3\Services\HTTPClient;
 use PayU\PaymentsApi\AluV3\Services\RequestBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseParser;
@@ -25,8 +27,6 @@ final class AluV3 implements AuthorizationInterface
     private $aluUrlHostname = [
         'ro' => 'https://secure.payu.ro',
         'ru' => 'https://secure.payu.ru',
-        'ua' => 'https://secure.payu.ua',
-        'hu' => 'https://secure.payu.hu',
         'tr' => 'https://secure.payu.com.tr',
     ];
 
@@ -78,7 +78,7 @@ final class AluV3 implements AuthorizationInterface
                 $url,
                 $requestParams
             );
-        } catch (\Exception $e) {
+        } catch (ConnectionException $e) {
             throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
         }
 
@@ -88,7 +88,11 @@ final class AluV3 implements AuthorizationInterface
             throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
         }
 
-        return $this->responseBuilder->buildResponse($authorizationResponse, $this->hashService);
+        try {
+            return $this->responseBuilder->buildResponse($authorizationResponse, $this->hashService);
+        } catch (ResponseBuilderException $e) {
+            throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**

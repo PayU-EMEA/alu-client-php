@@ -258,9 +258,10 @@ final class RequestBuilder
 
     /**
      * @param Request $request
+     * @param HashService $hashService
      * @return array
      */
-    public function buildAuthorizationRequest(Request $request, \PayU\Alu\HashService $hashService)
+    public function buildAuthorizationRequest(Request $request, HashService $hashService)
     {
         $requestArray = $this->transformObject2Array($request);
         $requestArray['ORDER_HASH'] = $hashService->makeRequestHash($requestArray);
