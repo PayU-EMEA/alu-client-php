@@ -108,7 +108,10 @@ final class AuthorizationRequest implements \JsonSerializable
             'authorization' => $this->authorization,
             'client' => $this->client,
             'merchant' => $this->merchant,
-            'products' => $this->products
+            'products' => $this->products,
+            'airlineInfo' => $this->airlineInfoData,
+            'threeDSecure' => null,
+            'storedCredentials' => $this->storedCredentialsData
         ];
     }
 }
