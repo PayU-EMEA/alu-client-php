@@ -22,7 +22,6 @@ final class AluV3 implements AuthorizationInterface
 
     /**
      * @var array
-     * todo set ro to original value
      */
     private $aluUrlHostname = [
         'ro' => 'https://secure.payu.ro',
