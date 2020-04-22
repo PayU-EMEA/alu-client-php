@@ -4,11 +4,11 @@
 namespace PayU\PaymentsApi\AluV3;
 
 use PayU\Alu\Exceptions\ConnectionException;
-use PayU\Alu\HashService;
-use PayU\Alu\HTTPClient;
 use PayU\Alu\Request;
 use PayU\PaymentsApi\AluV3\Exceptions\ResponseBuilderException;
 use PayU\PaymentsApi\AluV3\Exceptions\ResponseParserException;
+use PayU\PaymentsApi\AluV3\Services\HashService;
+use PayU\PaymentsApi\AluV3\Services\HTTPClient;
 use PayU\PaymentsApi\AluV3\Services\RequestBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseParser;
