@@ -3,7 +3,6 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
-
 use PayU\Alu\MerchantConfig;
 
 class HashServiceTest extends \PHPUnit_Framework_TestCase

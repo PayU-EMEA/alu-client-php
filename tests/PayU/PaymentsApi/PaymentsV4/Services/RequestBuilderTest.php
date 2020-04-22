@@ -441,5 +441,4 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             json_decode($this->requestBuilder->buildAuthorizationRequest($request), true)
         );
     }
-
 }
