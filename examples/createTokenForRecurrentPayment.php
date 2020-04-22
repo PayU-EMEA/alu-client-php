@@ -146,8 +146,13 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '12', 2030, 123, 'Card Owner Name');
-
+$card = new Card(
+    '4111111111111111',
+    '12',
+    date("Y", strtotime("+1 year")),
+    '123',
+    'Card Owner Name'
+);
 /**
  * tokenize card for further token payments
  */

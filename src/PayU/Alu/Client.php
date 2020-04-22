@@ -6,7 +6,6 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
 use PayU\PaymentsApi\Factories\AuthorizationFactory;
-use SimpleXMLElement;
 
 /**
  * Class Client
@@ -37,7 +36,8 @@ class Client
     }
 
     /**
-     * @param $fullUrl
+     * @deprecated Should use \PayU\Alu\Request::setCustomUrl instead for futher usage
+     * @param string $fullUrl
      * @codeCoverageIgnore
      */
     public function setCustomUrl($fullUrl)
