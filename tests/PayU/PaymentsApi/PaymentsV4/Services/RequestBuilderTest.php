@@ -123,9 +123,6 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                     'expiryYear' => '2026',
                     'cvv' => '123',
                     'owner' => 'Card Owner Name',
-                    //todo : remove
-                    'timeSpentTypingNumber' => null,
-                    'timeSpentTypingOwner' => null
                 ],
                 'merchantToken' => null,
                 //'applePayToken' => json_encode($this->applePayToken),
@@ -191,10 +188,8 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                     'vat' => 24.0
                 ]
             ],
-            //todo create test for airlineInfo
             self::AIRLINE_INFO_NODE => null,
-            //'threeDSecure' => null,
-            //Todo create test for stored credentials
+            'threeDSecure' => null,
             self::STORED_CREDENTIALS_NODE => null
         ];
     }

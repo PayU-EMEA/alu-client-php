@@ -31,16 +31,6 @@ final class CardDetails implements \JsonSerializable
     private $owner;
 
     /**
-     * @var int
-     */
-    private $timeSpentTypingNumber;
-
-    /**
-     * @var int
-     */
-    private $timeSpentTypingOwner;
-
-    /**
      * CardDetails constructor.
      *
      * @param string $number
@@ -74,22 +64,6 @@ final class CardDetails implements \JsonSerializable
     }
 
     /**
-     * @param int $timeSpentTypingNumber
-     */
-    public function setTimeSpentTypingNumber($timeSpentTypingNumber)
-    {
-        $this->timeSpentTypingNumber = $timeSpentTypingNumber;
-    }
-
-    /**
-     * @param int $timeSpentTypingOwner
-     */
-    public function setTimeSpentTypingOwner($timeSpentTypingOwner)
-    {
-        $this->timeSpentTypingOwner = $timeSpentTypingOwner;
-    }
-
-    /**
      * @inheritDoc
      */
     public function jsonSerialize()
@@ -99,9 +73,7 @@ final class CardDetails implements \JsonSerializable
             'expiryMonth' => $this->expiryMonth,
             'expiryYear' => $this->expiryYear,
             'cvv' => $this->cvv,
-            'owner' => $this->owner,
-            'timeSpentTypingNumber' => $this->timeSpentTypingNumber,
-            'timeSpentTypingOwner' => $this->timeSpentTypingOwner
+            'owner' => $this->owner
         ];
     }
 }
