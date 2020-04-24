@@ -76,8 +76,8 @@ class AluResponseTransformation
             $responseData = $this->buildWireResponse($responseData);
         }
 
-        if (empty($responseData['message'])) {
-            $responseData['message'] = $this->convertAluStatusToHumanReadable(
+        if (empty($responseData['RETURN_MESSAGE'])) {
+            $responseData['RETURN_MESSAGE'] = $this->convertAluStatusToHumanReadable(
                 $responseData[AluResponseMapper::STATUS_KEY]
             );
         }
