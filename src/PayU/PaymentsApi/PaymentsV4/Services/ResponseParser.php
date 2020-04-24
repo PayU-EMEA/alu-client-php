@@ -18,7 +18,7 @@ class ResponseParser
     }
 
     /**
-     * @param $jsonResponse
+     * @param string $jsonResponse
      * @return AuthorizationResponse
      * @throws AuthorizationResponseException
      * @throws ResponseBuilderException
@@ -37,7 +37,7 @@ class ResponseParser
     }
 
     /**
-     * @param $jsonResponse
+     * @param array $jsonResponse
      * @return array
      * @throws ResponseBuilderException
      */
