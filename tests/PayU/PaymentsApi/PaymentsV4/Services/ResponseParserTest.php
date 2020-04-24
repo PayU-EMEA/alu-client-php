@@ -323,7 +323,7 @@ class ResponseParserTest extends \PHPUnit_Framework_TestCase
         $decodedResponse = json_decode($jsonResponse, true);
 
         // When
-       $this->setAluResponseParserMock();
+        $this->setAluResponseParserMock();
 
         $this->mockAluResponseMapper->expects($this->once())
             ->method('processResponse')
