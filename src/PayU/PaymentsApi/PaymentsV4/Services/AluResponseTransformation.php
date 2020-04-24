@@ -90,9 +90,6 @@ class AluResponseTransformation
             $responseData[self::TYPE_KEY] = self::TYPE_OFFLINE;
         }
 
-        // moved in AluResponseMapper map
-        //$responseData['code'] = $this->aluHttpCodeMapper->getCode($responseData);
-
         if (!in_array(
             $responseData[AluResponseMapper::STATUS_KEY],
             [self::LU_STATUS_SUCCESS, self::LU_STATUS_FAILED],
