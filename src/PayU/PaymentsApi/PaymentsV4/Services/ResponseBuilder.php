@@ -59,13 +59,13 @@ class ResponseBuilder
             $response->setOrderRef($responseArray['ORDER_REF']);
         }
         if ($responseArray['AUTH_CODE'] !== null) {
-            $response->setOrderRef($responseArray['AUTH_CODE']);
+            $response->setAuthCode($responseArray['AUTH_CODE']);
         }
         if ($responseArray['RRN'] !== null) {
-            $response->setOrderRef($responseArray['RRN']);
+            $response->setRrn($responseArray['RRN']);
         }
         if ($responseArray['URL_REDIRECT'] !== null) {
-            $response->setOrderRef($responseArray['URL_REDIRECT']);
+            $response->setUrlRedirect($responseArray['URL_REDIRECT']);
         }
 
         $response->parseAdditionalParameters($responseArray);
