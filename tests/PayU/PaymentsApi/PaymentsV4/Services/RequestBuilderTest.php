@@ -131,7 +131,6 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                 'useLoyaltyPoints' => null,
                 'loyaltyPointsAmount' => null,
                 'campaignType' => 'EXTRA_INSTALLMENTS',
-                //todo create test for fx
                 self::FX_NODE => null
             ],
             'client' => [
