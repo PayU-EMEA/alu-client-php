@@ -56,8 +56,9 @@ class HashService
     }
 
     /**
-     * @deprecated This method was used to compute request hash in PayU/Alu/Client.php and this logic was moved \PayU\PaymentsApi\ namespace     *
-     * Now the request hash should be computed inside \PayU\PaymentsApi\AluV3\Services\RequestBuilder::buildAuthorizationRequest
+     * @deprecated This method was used to compute request hash in PayU/Alu/Client.php and this logic was moved
+     * \PayU\PaymentsApi\ namespace. Now the request hash should be computed inside
+     * \PayU\PaymentsApi\AluV3\Services\RequestBuilder::buildAuthorizationRequest()
      *
      * @param Request $request
      * @return string
