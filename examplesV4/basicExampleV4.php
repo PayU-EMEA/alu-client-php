@@ -7,7 +7,6 @@ require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
 use PayU\Alu\Billing;
 use PayU\Alu\Card;
-use PayU\Alu\CardToken;
 use PayU\Alu\Client;
 use PayU\Alu\Delivery;
 use PayU\Alu\MerchantConfig;
