@@ -3,7 +3,6 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
-use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\MerchantConfig;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
