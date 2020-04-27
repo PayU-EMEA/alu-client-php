@@ -2,7 +2,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class ApplePayToken implements \JsonSerializable
+final class ApplePayToken implements \JsonSerializable
 {
     /** @var string */
     private $data;

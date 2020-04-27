@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class ThreeDSecure implements \JsonSerializable
+final class ThreeDSecure implements \JsonSerializable
 {
     /** @var MpiData */
     private $mpi;

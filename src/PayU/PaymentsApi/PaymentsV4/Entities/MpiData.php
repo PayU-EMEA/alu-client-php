@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Entities;
 
-class MpiData implements \JsonSerializable
+final class MpiData implements \JsonSerializable
 {
     /** @var int */
     private $eci;
