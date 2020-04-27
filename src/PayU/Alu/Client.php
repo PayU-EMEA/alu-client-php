@@ -36,7 +36,7 @@ class Client
     }
 
     /**
-     * @deprecated Should use \PayU\Alu\Request::setCustomUrl instead for futher usage
+     * @deprecated Should use \PayU\Alu\Request::setCustomUrl instead for further usage
      * @param string $fullUrl
      * @codeCoverageIgnore
      */
@@ -46,6 +46,10 @@ class Client
     }
 
     /**
+     * Method responsible with making an authorization call, based on the payments API version, which should be set
+     * before on \PayU\Alu\Request instance.
+     * Depending on the API version, an AuthorizationPaymentsApiClient implementation is instantiated by
+     * AuthorizationPaymentsApiFactory and used to place the authorization call.
      * @param Request $request
      * @param HTTPClient $httpClient
      * @param HashService $hashService
@@ -68,7 +72,7 @@ class Client
                 $httpClient = $this->authorizationPaymentsApiFactory->createHttpClient($paymentsApiVersion);
             }
 
-            $gateway = $this->authorizationPaymentsApiFactory->createPaymentsApiClient(
+            $paymentsApiClient = $this->authorizationPaymentsApiFactory->createPaymentsApiClient(
                 $paymentsApiVersion,
                 $httpClient,
                 $hashService
@@ -82,7 +86,7 @@ class Client
         }
 
         try {
-            $response = $gateway->authorize($request);
+            $response = $paymentsApiClient->authorize($request);
         } catch (AuthorizationException $e) {
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }

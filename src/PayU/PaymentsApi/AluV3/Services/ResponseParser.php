@@ -10,7 +10,7 @@ use SimpleXMLElement;
 final class ResponseParser
 {
     /**
-     * @param $xmlResponse
+     * @param string $xmlResponse
      * @return AuthorizationResponse
      * @throws ResponseParserException
      */

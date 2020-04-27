@@ -15,6 +15,10 @@ use PayU\PaymentsApi\AluV3\Services\ResponseParser;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Interfaces\AuthorizationPaymentsApiClient;
 
+/**
+ * This class is responsible with orchestrating calls to different services related to ALU v3 authorization call.
+ * Should not be instantiated separately, but through \PayU\PaymentsApi\Factories\AuthorizationPaymentsApiFactory
+ */
 final class AluV3 implements AuthorizationPaymentsApiClient
 {
     const ALU_URL_PATH = '/order/alu/v3';

@@ -9,6 +9,12 @@ use PayU\PaymentsApi\AluV3\AluV3;
 use PayU\PaymentsApi\Exceptions\AuthorizationPaymentsApiFactoryException;
 use PayU\PaymentsApi\Interfaces\AuthorizationPaymentsApiClient;
 
+/**
+ * Responsible with creating a different implementation for AuthorizationPaymentsApiClient interface, depending on the
+ * payments api version.
+ * The version should be set on the PayU/Alu/Request instance, which encapsules all data needed for
+ * an authorization request. For ALU v3 use \PayU\PaymentsApi\AluV3\AluV3::API_VERSION_V3 constant.
+ */
 final class AuthorizationPaymentsApiFactory
 {
     /**
