@@ -156,7 +156,6 @@ $delivery->withAddressLine1('Address1')
  * Credit Card Owner
  */
 $card = new Card('4111111111111111', '01', '2026', '123', 'Card Owner Name');
-$cardToken = new CardToken('g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJwS/d/M9lTqE+b8QZQuYmiQx8XArGSEc/xHg==');
 
 /**
  * Create new Request with params:
@@ -168,7 +167,6 @@ $cardToken = new CardToken('g9D+ttsiJD+16EQEV8fcBexI4EGZkLgorBUGnxqgLp541g3epvJw
  * User object
  */
 $request = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
-//$request->setCardToken($cardToken);
 
 /**
  * Add the Credit Card to the Request
