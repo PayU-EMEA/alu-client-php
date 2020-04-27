@@ -36,7 +36,7 @@ final class AuthorizationPaymentsApiFactory
 
     /**
      * @param string $apiVersion
-     * @return \PayU\PaymentsApi\AluV3\Services\HTTPClient
+     * @return HTTPClient
      * @throws AuthorizationPaymentsApiFactoryException
      * @throws ClientException
      */
@@ -44,7 +44,7 @@ final class AuthorizationPaymentsApiFactory
     {
         switch ($apiVersion) {
             case AluV3::API_VERSION_V3:
-                return new \PayU\PaymentsApi\AluV3\Services\HTTPClient();
+                return new HTTPClient();
 
             default:
                 throw new AuthorizationPaymentsApiFactoryException('Invalid API version provided.');
