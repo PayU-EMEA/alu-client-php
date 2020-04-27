@@ -9,10 +9,12 @@ use PayU\Alu\Delivery;
 use PayU\Alu\FX;
 use PayU\Alu\Marketplace;
 use PayU\Alu\MerchantConfig;
+use PayU\Alu\Mpi;
 use PayU\Alu\Order;
 use PayU\Alu\Product;
 use PayU\Alu\Request;
 use PayU\Alu\StoredCredentials;
+use PayU\Alu\ThreeDSecure;
 use PayU\Alu\User;
 use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
@@ -106,9 +108,19 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         $card = new Card('4111111111111111', '01', 2026, 123, 'Card Owner Name');
 
+        $mpi = new Mpi();
+        $mpi->withEci(5)
+            ->withXid('75BCD15')
+            ->withCavv('hmbTh+XZEf/cYwAAAH8kAlcAAAA=')
+            ->withDsTransactionId('1jpe0dc0-i9t2-4067-bcb1-nmt866956sgd')
+            ->withVersion(2);
+
+        $threeDSecure = new ThreeDSecure($mpi);
+
         $request = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
 
         $request->setCard($card);
+        $request->setThreeDSecure($threeDSecure);
 
         return $request;
     }
@@ -202,7 +214,15 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             self::AIRLINE_INFO_NODE => null,
-            'threeDSecure' => null,
+            'threeDSecure' => [
+                'mpi' => [
+                    'eci' => 5,
+                    'xid' => '75BCD15',
+                    'cavv' => 'hmbTh+XZEf/cYwAAAH8kAlcAAAA=',
+                    'dsTransactionId' => '1jpe0dc0-i9t2-4067-bcb1-nmt866956sgd',
+                    'version' => 2
+                ]
+            ],
             self::STORED_CREDENTIALS_NODE => null
         ];
     }
