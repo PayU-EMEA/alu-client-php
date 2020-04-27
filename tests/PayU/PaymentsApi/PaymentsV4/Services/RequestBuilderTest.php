@@ -125,7 +125,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                     'owner' => 'Card Owner Name',
                 ],
                 'merchantToken' => null,
-                //'applePayToken' => json_encode($this->applePayToken),
+                'applePayToken' => null,
                 'usePaymentPage' => null,
                 'installmentsNumber' => 2,
                 'useLoyaltyPoints' => null,

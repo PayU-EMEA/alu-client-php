@@ -21,8 +21,7 @@ final class AuthorizationData implements \JsonSerializable
     private $merchantToken;
 
     /**
-     * @var ApplePayTokenData
-     * todo create class
+     * @var ApplePayToken
      */
     private $applePayToken;
 
@@ -81,7 +80,7 @@ final class AuthorizationData implements \JsonSerializable
     }
 
     /**
-     * @param mixed $applePayToken
+     * @param ApplePayToken $applePayToken
      */
     public function setApplePayToken($applePayToken)
     {
@@ -145,7 +144,7 @@ final class AuthorizationData implements \JsonSerializable
             'paymentMethod' => $this->paymentMethod,
             'cardDetails' => $this->cardDetails,
             'merchantToken' => $this->merchantToken,
-            //'applePayToken' => json_encode($this->applePayToken),
+            'applePayToken' => $this->applePayToken,
             'usePaymentPage' => $this->usePaymentPage,
             'installmentsNumber' => $this->installmentsNumber,
             'useLoyaltyPoints' => $this->useLoyaltyPoints,
