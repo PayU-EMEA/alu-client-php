@@ -3,6 +3,7 @@
 namespace PayU\Alu;
 
 use PayU\PaymentsApi\AluV3\AluV3;
+use PayU\PaymentsApi\PaymentsV4\Entities\ApplePayToken;
 
 /**
  * Class Request
@@ -69,6 +70,9 @@ class Request
      */
     private $customUrl;
 
+    /** @var ApplePayToken */
+    private $applePayToken;
+
     /**
      * @param MerchantConfig $merchantConfig
      * @param Order $order
@@ -91,6 +95,22 @@ class Request
         $this->deliveryData = $delivery;
         $this->user = $user;
         $this->paymentsApiVersion = $paymentsApiVersion;
+    }
+
+    /**
+     * @param ApplePayToken $applePayToken
+     */
+    public function setApplePayToken($applePayToken)
+    {
+        $this->applePayToken = $applePayToken;
+    }
+
+    /**
+     * @return ApplePayToken
+     */
+    public function getApplePayToken()
+    {
+        return $this->applePayToken;
     }
 
     /**

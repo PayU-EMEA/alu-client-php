@@ -40,7 +40,10 @@ class RequestBuilder
          *      applePayToken object
          */
 
-        if ($request->getCard() !== null && $request->getCardToken() === null) {
+        if ($request->getCard() !== null &&
+            $request->getCardToken() === null &&
+            $request->getApplePayToken() === null
+        ) {
             $cardDetails = new CardDetails(
                 $request->getCard()->getCardNumber(),
                 $request->getCard()->getCardExpirationMonth(),
@@ -51,21 +54,32 @@ class RequestBuilder
             $cardDetails->setOwner($request->getCard()->getCardOwnerName());
 
             $authorizationData->setCardDetails($cardDetails);
-        }
+        } else {
+            if ($request->getCard() === null &&
+                $request->getCardToken() !== null &&
+                $request->getApplePayToken() === null
+            ) {
+                $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
 
+                if ($request->getCardToken()->hasCvv()) {
+                    $merchantToken->setCvv($request->getCardToken()->getCvv());
+                }
 
-        if ($request->getCard() === null && $request->getCardToken() !== null) {
-            $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
+                if ($request->getCardToken()->hasOwner()) {
+                    $merchantToken->setOwner($request->getCardToken()->getOwner());
+                }
 
-            if ($request->getCardToken()->hasCvv()) {
-                $merchantToken->setCvv($request->getCardToken()->getCvv());
+                $authorizationData->setMerchantToken($merchantToken);
+            } else {
+                if ($request->getCard() === null &&
+                    $request->getCardToken() === null &&
+                    $request->getApplePayToken()
+                ) {
+                    $authorizationData->setApplePayToken($request->getApplePayToken());
+                } else {
+                    throw new RequestBuilderException("Too many payment instruments");
+                }
             }
-
-            if ($request->getCardToken()->hasOwner()) {
-                $merchantToken->setOwner($request->getCardToken()->getOwner());
-            }
-
-            $authorizationData->setMerchantToken($merchantToken);
         }
 
         if ($request->getFx() !== null) {
