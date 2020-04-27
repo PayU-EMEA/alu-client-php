@@ -204,7 +204,6 @@ try {
         . ' ' . $response->getStatus()
         . ' ' . $response->getReturnCode()
         . ' ' . $response->getReturnMessage();
-
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }

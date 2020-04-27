@@ -242,8 +242,7 @@ class RequestBuilder
 
             $productData->setAdditionalDetails($product->getInfo());
             $productData->setVat($product->getVAT());
-            if ($product->getMarketplace() !== null)
-            {
+            if ($product->getMarketplace() !== null) {
                 $marketplace = new Marketplace(
                     $product->getMarketplace()->getId(),
                     $product->getMarketplace()->getSellerId(),
