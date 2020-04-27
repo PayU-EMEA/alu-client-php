@@ -7,6 +7,7 @@ use PayU\Alu\Billing;
 use PayU\Alu\Card;
 use PayU\Alu\Delivery;
 use PayU\Alu\FX;
+use PayU\Alu\Marketplace;
 use PayU\Alu\MerchantConfig;
 use PayU\Alu\Order;
 use PayU\Alu\Product;
@@ -63,13 +64,19 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             ->withQuantity(1);
 
         $order->addProduct($product);
-
+        $marketplace = new Marketplace(
+            'Market1',
+            "7cff8d290e58-b4de-4c31-ac82-ac1ae54c",
+            1.66,
+            "EUR"
+        );
         $product = new Product();
         $product->withCode('PCODE02')
             ->withName('PNAME02')
             ->withPrice(200.0)
             ->withVAT(24.0)
-            ->withQuantity(1);
+            ->withQuantity(1)
+            ->withMarketplace($marketplace);
 
         $order->addProduct($product);
 
@@ -186,7 +193,12 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                     'unitPrice' => 200.0,
                     'quantity' => 1,
                     'vat' => 24.0,
-                    'marketplace' => null
+                    'marketplace' => [
+                        'id' => 'Market1',
+                        "sellerId" => "7cff8d290e58-b4de-4c31-ac82-ac1ae54c",
+                        "commissionAmount" => 1.66,
+                        "commissionCurrency" => "EUR"
+                    ]
                 ]
             ],
             self::AIRLINE_INFO_NODE => null,
