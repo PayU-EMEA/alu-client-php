@@ -15,6 +15,7 @@ use PayU\PaymentsApi\PaymentsV4\Entities\ClientData;
 use PayU\PaymentsApi\PaymentsV4\Entities\DeliveryData;
 use PayU\PaymentsApi\PaymentsV4\Entities\FxData;
 use PayU\PaymentsApi\PaymentsV4\Entities\IdentityDocumentData;
+use PayU\PaymentsApi\PaymentsV4\Entities\Marketplace;
 use PayU\PaymentsApi\PaymentsV4\Entities\MerchantTokenData;
 use PayU\PaymentsApi\PaymentsV4\Entities\ProductData;
 use PayU\PaymentsApi\PaymentsV4\Entities\AirlineInfoData;
@@ -241,6 +242,17 @@ class RequestBuilder
 
             $productData->setAdditionalDetails($product->getInfo());
             $productData->setVat($product->getVAT());
+            if ($product->getMarketplace() !== null)
+            {
+                $marketplace = new Marketplace(
+                    $product->getMarketplace()->getId(),
+                    $product->getMarketplace()->getSellerId(),
+                    $product->getMarketplace()->getCommissionAmount(),
+                    $product->getMarketplace()->getCommissionCurrency()
+                );
+
+                $productData->setMarketplace($marketplace);
+            }
 
             $productsArray[$cnt++] = $productData;
         }

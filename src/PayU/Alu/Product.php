@@ -57,6 +57,19 @@ class Product
      */
     private $productVersion;
 
+    /** @var Marketplace */
+    private $marketplace;
+
+    /**
+     * @param $marketplace
+     * @return $this
+     */
+    public function withMarketplace($marketplace)
+    {
+        $this->marketplace = $marketplace;
+        return $this;
+    }
+
     /**
      * @param float $VAT
      * @return $this
@@ -240,5 +253,13 @@ class Product
     public function getProductVersion()
     {
         return $this->productVersion;
+    }
+
+    /**
+     * @return Marketplace
+     */
+    public function getMarketplace()
+    {
+        return $this->marketplace;
     }
 }
