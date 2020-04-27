@@ -20,17 +20,43 @@ final class MpiData implements \JsonSerializable
     /** @var int */
     private $version;
 
-    public function __construct(
-        $eci,
-        $xid,
-        $cavv,
-        $dsTransactionId,
-        $version
-    ) {
+    /**
+     * @param int $eci
+     */
+    public function setEci($eci)
+    {
         $this->eci = $eci;
+    }
+
+    /**
+     * @param string $xid
+     */
+    public function setXid($xid)
+    {
         $this->xid = $xid;
+    }
+
+    /**
+     * @param string $cavv
+     */
+    public function setCavv($cavv)
+    {
         $this->cavv = $cavv;
+    }
+
+    /**
+     * @param string $dsTransactionId
+     */
+    public function setDsTransactionId($dsTransactionId)
+    {
         $this->dsTransactionId = $dsTransactionId;
+    }
+
+    /**
+     * @param int $version
+     */
+    public function setVersion($version)
+    {
         $this->version = $version;
     }
 
