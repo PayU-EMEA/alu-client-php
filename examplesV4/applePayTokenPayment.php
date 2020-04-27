@@ -4,6 +4,8 @@
  */
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
+use PayU\Alu\ApplePayToken;
+use PayU\Alu\ApplePayTokenHeader;
 use PayU\Alu\Billing;
 use PayU\Alu\Client;
 use PayU\Alu\Delivery;
@@ -13,9 +15,7 @@ use PayU\Alu\Product;
 use PayU\Alu\Request;
 use PayU\Alu\User;
 use PayU\Alu\Exceptions\ClientException;
-use PayU\PaymentsApi\AluV3\AluV3;
-use PayU\PaymentsApi\PaymentsV4\Entities\ApplePayToken;
-use PayU\PaymentsApi\PaymentsV4\Entities\ApplePayTokenHeader;
+use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
 /**
  * Create configuration with params:
@@ -150,8 +150,19 @@ $delivery->withAddressLine1('Address1')
  *
  * Token
  */
-$applePayHeader = new ApplePayTokenHeader();
-$applePayToken = new ApplePayToken();
+$applePayHeader = new ApplePayTokenHeader(
+    'string',
+    'string',
+    'string',
+    'string',
+    'string'
+);
+$applePayToken = new ApplePayToken(
+    'string',
+    $applePayHeader,
+    'string',
+    'string'
+);
 
 /**
  * Create new Request with params:
@@ -163,7 +174,7 @@ $applePayToken = new ApplePayToken();
  * User object
  * Api version - by default is used 'v3' for ALU v3
  */
-$request = new Request($cfg, $order, $billing, $delivery, $user, AluV3::API_VERSION_V3);
+$request = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
 
 /**
  * Add the Card Token to the Request

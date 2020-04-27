@@ -3,7 +3,10 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
+use PayU\Alu\Product;
 use PayU\Alu\Request;
+use PayU\PaymentsApi\PaymentsV4\Entities\ApplePayToken;
+use PayU\PaymentsApi\PaymentsV4\Entities\ApplePayTokenHeader;
 use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationData;
 use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationRequest;
 use PayU\PaymentsApi\PaymentsV4\Entities\BillingData;
@@ -74,7 +77,21 @@ class RequestBuilder
                     $request->getCardToken() === null &&
                     $request->getApplePayToken()
                 ) {
-                    $authorizationData->setApplePayToken($request->getApplePayToken());
+                    $applePayHeader = new ApplePayTokenHeader(
+                        $request->getApplePayToken()->getHeader()->getApplicationData(),
+                        $request->getApplePayToken()->getHeader()->getEphemeralPublicKey(),
+                        $request->getApplePayToken()->getHeader()->getWrappedKey(),
+                        $request->getApplePayToken()->getHeader()->getPublicKeyHash(),
+                        $request->getApplePayToken()->getHeader()->getTransactionId()
+                    );
+
+                    $applePayToken = new ApplePayToken(
+                        $request->getApplePayToken()->getData(),
+                        $applePayHeader,
+                        $request->getApplePayToken()->getSignature(),
+                        $request->getApplePayToken()->getVersion()
+                    );
+                    $authorizationData->setApplePayToken($applePayToken);
                 } else {
                     throw new RequestBuilderException("Too many payment instruments");
                 }

@@ -3,7 +3,6 @@
 namespace PayU\Alu;
 
 use PayU\PaymentsApi\AluV3\AluV3;
-use PayU\PaymentsApi\PaymentsV4\Entities\ApplePayToken;
 
 /**
  * Class Request
