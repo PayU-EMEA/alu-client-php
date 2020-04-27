@@ -3,6 +3,7 @@
 namespace PayU\PaymentsApi\AluV3\Services;
 
 use PayU\Alu\Exceptions\ClientException;
+use PayU\Alu\Request;
 use PayU\Alu\Response;
 
 /**
@@ -45,23 +46,26 @@ class HashService
     }
 
     /**
-     * @param array $process
+     * @param array $arrayToProcess
      * @return string
      */
-    private function computeHash(array $process)
+    public function computeHash(array $arrayToProcess)
     {
-        $serialization = $this->serializeArray($process);
-        $hash = hash_hmac("md5", $serialization, $this->secretKey);
-        return $hash;
+        $serialization = $this->serializeArray($arrayToProcess);
+        return hash_hmac("md5", $serialization, $this->secretKey);
     }
 
     /**
-     * @param array $requestArray
+     * @deprecated This method was used to compute request hash in PayU/Alu/Client.php and this logic was moved \PayU\PaymentsApi\ namespace     *
+     * Now the request hash should be computed inside \PayU\PaymentsApi\AluV3\Services\RequestBuilder::buildAuthorizationRequest
+     *
+     * @param Request $request
      * @return string
      */
-    public function makeRequestHash($requestArray)
+    public function makeRequestHash(Request $request)
     {
-        return $this->computeHash($requestArray);
+        $params = $request->getRequestParams();
+        return $this->computeHash($params);
     }
 
     /**

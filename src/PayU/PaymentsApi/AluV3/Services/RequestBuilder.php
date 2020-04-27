@@ -18,7 +18,7 @@ final class RequestBuilder
      */
     private function transformObject2Array(Request $request)
     {
-        $requestArray = array();
+        $requestArray = [];
         $requestArray['MERCHANT'] = $request->getMerchantConfig()->getMerchantCode();
         $requestArray['ORDER_REF'] = $request->getOrder()->getOrderRef();
         $requestArray['ORDER_DATE'] = $request->getOrder()->getOrderDate();
@@ -264,7 +264,7 @@ final class RequestBuilder
     public function buildAuthorizationRequest(Request $request, HashService $hashService)
     {
         $requestArray = $this->transformObject2Array($request);
-        $requestArray['ORDER_HASH'] = $hashService->makeRequestHash($requestArray);
+        $requestArray['ORDER_HASH'] = $hashService->computeHash($requestArray);
 
         return $requestArray;
     }
