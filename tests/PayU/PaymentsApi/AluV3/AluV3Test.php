@@ -154,7 +154,7 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
         $requestArray = $this->createRequestArray();
 
         $this->hashServiceMock->expects($this->once())
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -211,7 +211,7 @@ class AluV3Test extends \PHPUnit_Framework_TestCase
         $requestArray = $this->createRequestArray();
 
         $this->hashServiceMock->expects($this->once())
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 

@@ -140,13 +140,16 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider requestParamsProvider
+     * @param array $requestParams
+     * @param string $expectedHash
      */
     public function testMakeRequestHash($requestParams, $expectedHash)
     {
-        // Then
-        $this->assertEquals($expectedHash, $this->hashService->makeRequestHash($requestParams));
-    }
+        $this->requestMock->expects($this->once())->method('getRequestParams')
+            ->willReturn($requestParams);
 
+        $this->assertEquals($expectedHash, $this->hashService->makeRequestHash($this->requestMock));
+    }
 
     public function responseParamsProvider()
     {
