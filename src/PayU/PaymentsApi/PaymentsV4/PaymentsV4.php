@@ -5,6 +5,7 @@ namespace PayU\PaymentsApi\PaymentsV4;
 use PayU\Alu\Request;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
+use PayU\PaymentsApi\PaymentsV4\Exceptions\RequestBuilderException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
 use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;
 use PayU\PaymentsApi\PaymentsV4\Services\RequestBuilder;
@@ -77,7 +78,11 @@ class PaymentsV4 implements AuthorizationInterface
      */
     public function authorize(Request $request)
     {
-        $jsonRequest = $this->requestBuilder->buildAuthorizationRequest($request);
+        try {
+            $jsonRequest = $this->requestBuilder->buildAuthorizationRequest($request);
+        } catch (RequestBuilderException $e) {
+            throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
+        }
 
         try {
             $responseJson = $this->httpClient->post(
