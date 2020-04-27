@@ -4,8 +4,8 @@ namespace PayU\Alu;
 
 use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
-use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
-use PayU\PaymentsApi\Factories\AuthorizationPaymentsApiClientFactory;
+use PayU\PaymentsApi\Exceptions\AuthorizationPaymentsApiFactoryException;
+use PayU\PaymentsApi\Factories\AuthorizationPaymentsApiFactory;
 
 /**
  * Class Client
@@ -23,8 +23,8 @@ class Client
      */
     private $customUrl = null;
 
-    /** @var AuthorizationPaymentsApiClientFactory */
-    private $authorizationPaymentsApiClientFactory;
+    /** @var AuthorizationPaymentsApiFactory */
+    private $authorizationPaymentsApiFactory;
 
     /**
      * @param MerchantConfig $merchantConfig
@@ -32,7 +32,7 @@ class Client
     public function __construct(MerchantConfig $merchantConfig)
     {
         $this->merchantConfig = $merchantConfig;
-        $this->authorizationPaymentsApiClientFactory = new AuthorizationPaymentsApiClientFactory();
+        $this->authorizationPaymentsApiFactory = new AuthorizationPaymentsApiFactory();
     }
 
     /**
@@ -54,21 +54,26 @@ class Client
      */
     public function pay(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
     {
-        if (null === $hashService) {
-            $hashService = new HashService($this->merchantConfig->getSecretKey());
-        }
-
-        if (null === $httpClient) {
-            $httpClient = new HTTPClient();
-        }
-
         try {
-            $gateway = $this->authorizationPaymentsApiClientFactory->create(
-                $request->getPaymentsApiVersion(),
+            $paymentsApiVersion = $request->getPaymentsApiVersion();
+
+            if (null === $hashService) {
+                $hashService = $this->authorizationPaymentsApiFactory->createHashService(
+                    $paymentsApiVersion,
+                    $this->merchantConfig->getSecretKey()
+                );
+            }
+
+            if (null === $httpClient) {
+                $httpClient = $this->authorizationPaymentsApiFactory->createHttpClient($paymentsApiVersion);
+            }
+
+            $gateway = $this->authorizationPaymentsApiFactory->createPaymentsApiClient(
+                $paymentsApiVersion,
                 $httpClient,
                 $hashService
             );
-        } catch (AuthorizationFactoryException $exception) {
+        } catch (AuthorizationPaymentsApiFactoryException $exception) {
             throw new ClientException($exception->getMessage());
         }
 
