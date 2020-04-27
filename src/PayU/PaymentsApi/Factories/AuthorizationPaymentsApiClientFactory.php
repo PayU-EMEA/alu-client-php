@@ -6,15 +6,15 @@ use PayU\Alu\HashService;
 use PayU\Alu\HTTPClient;
 use PayU\PaymentsApi\AluV3\AluV3;
 use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
-use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
+use PayU\PaymentsApi\Interfaces\AuthorizationPaymentsApiClient;
 
-final class AuthorizationFactory
+final class AuthorizationPaymentsApiClientFactory
 {
     /**
      * @param string $apiVersion
      * @param HTTPClient $httpClient
      * @param HashService $hashService
-     * @return AuthorizationInterface
+     * @return AuthorizationPaymentsApiClient
      * @throws AuthorizationFactoryException
      */
     public function create(

@@ -6,7 +6,7 @@ use PayU\Alu\Request;
 use PayU\Alu\Response;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 
-interface AuthorizationInterface
+interface AuthorizationPaymentsApiClient
 {
     /**
      * @param Request $request

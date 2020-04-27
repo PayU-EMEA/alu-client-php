@@ -13,9 +13,9 @@ use PayU\PaymentsApi\AluV3\Services\RequestBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseParser;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
-use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
+use PayU\PaymentsApi\Interfaces\AuthorizationPaymentsApiClient;
 
-final class AluV3 implements AuthorizationInterface
+final class AluV3 implements AuthorizationPaymentsApiClient
 {
     const ALU_URL_PATH = '/order/alu/v3';
     const API_VERSION_V3 = "v3";

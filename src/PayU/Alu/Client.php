@@ -5,7 +5,7 @@ namespace PayU\Alu;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Exceptions\AuthorizationFactoryException;
-use PayU\PaymentsApi\Factories\AuthorizationFactory;
+use PayU\PaymentsApi\Factories\AuthorizationPaymentsApiClientFactory;
 
 /**
  * Class Client
@@ -23,8 +23,8 @@ class Client
      */
     private $customUrl = null;
 
-    /** @var AuthorizationFactory */
-    private $authorizationFactory;
+    /** @var AuthorizationPaymentsApiClientFactory */
+    private $authorizationPaymentsApiClientFactory;
 
     /**
      * @param MerchantConfig $merchantConfig
@@ -32,7 +32,7 @@ class Client
     public function __construct(MerchantConfig $merchantConfig)
     {
         $this->merchantConfig = $merchantConfig;
-        $this->authorizationFactory = new AuthorizationFactory();
+        $this->authorizationPaymentsApiClientFactory = new AuthorizationPaymentsApiClientFactory();
     }
 
     /**
@@ -63,7 +63,7 @@ class Client
         }
 
         try {
-            $gateway = $this->authorizationFactory->create(
+            $gateway = $this->authorizationPaymentsApiClientFactory->create(
                 $request->getPaymentsApiVersion(),
                 $httpClient,
                 $hashService
