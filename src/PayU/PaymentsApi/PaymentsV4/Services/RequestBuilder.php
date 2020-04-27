@@ -18,12 +18,14 @@ use PayU\PaymentsApi\PaymentsV4\Entities\AirlineInfoData;
 use PayU\PaymentsApi\PaymentsV4\Entities\FlightSegments;
 use PayU\PaymentsApi\PaymentsV4\Entities\StoredCredentialsData;
 use PayU\PaymentsApi\PaymentsV4\Entities\TravelAgency;
+use PayU\PaymentsApi\PaymentsV4\Exceptions\RequestBuilderException;
 
 class RequestBuilder
 {
     /**
      * @param Request $request
      * @return false|string
+     * @throws RequestBuilderException
      */
     public function buildAuthorizationRequest($request)
     {
@@ -36,9 +38,6 @@ class RequestBuilder
         $authorizationData->setUseLoyaltyPoints($request->getOrder()->getUseLoyaltyPoints());
         $authorizationData->setLoyaltyPointsAmount($request->getOrder()->getLoyaltyPointsAmount());
         $authorizationData->setCampaignType($request->getOrder()->getCampaignType());
-        /*
-         *      applePayToken object
-         */
 
         if ($request->getCard() !== null &&
             $request->getCardToken() === null &&
