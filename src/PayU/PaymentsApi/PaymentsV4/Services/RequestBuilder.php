@@ -17,10 +17,12 @@ use PayU\PaymentsApi\PaymentsV4\Entities\FxData;
 use PayU\PaymentsApi\PaymentsV4\Entities\IdentityDocumentData;
 use PayU\PaymentsApi\PaymentsV4\Entities\Marketplace;
 use PayU\PaymentsApi\PaymentsV4\Entities\MerchantTokenData;
+use PayU\PaymentsApi\PaymentsV4\Entities\MpiData;
 use PayU\PaymentsApi\PaymentsV4\Entities\ProductData;
 use PayU\PaymentsApi\PaymentsV4\Entities\AirlineInfoData;
 use PayU\PaymentsApi\PaymentsV4\Entities\FlightSegments;
 use PayU\PaymentsApi\PaymentsV4\Entities\StoredCredentialsData;
+use PayU\PaymentsApi\PaymentsV4\Entities\ThreeDSecure;
 use PayU\PaymentsApi\PaymentsV4\Entities\TravelAgency;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\RequestBuilderException;
 
@@ -204,7 +206,18 @@ class RequestBuilder
             $authorizationRequest->setAirlineInfoData($airlineInfo);
         }
 
-        //if (threeDSecure){}
+        if ($request->getThreeDSecure() !== null){
+            $mpi = new MpiData();
+
+            $mpi->setEci($request->getThreeDSecure()->getMpi()->getEci());
+            $mpi->setXid($request->getThreeDSecure()->getMpi()->getXid());
+            $mpi->setCavv($request->getThreeDSecure()->getMpi()->getCavv());
+            $mpi->setDsTransactionId($request->getThreeDSecure()->getMpi()->getDsTransactionId());
+            $mpi->setVersion($request->getThreeDSecure()->getMpi()->getVersion());
+
+            $threeDSecure = new ThreeDSecure($mpi);
+            $authorizationRequest->setThreeDSecure($threeDSecure);
+        }
 
         if ($request->getStoredCredentials() !== null) {
             $storedCredentials = new StoredCredentialsData();
