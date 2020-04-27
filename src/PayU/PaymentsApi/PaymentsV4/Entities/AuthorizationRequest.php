@@ -46,6 +46,9 @@ final class AuthorizationRequest implements \JsonSerializable
     /** @var StoredCredentialsData */
     private $storedCredentialsData;
 
+    /** @var ThreeDSecure */
+    private $threeDSecure;
+
     /**
      * @param StoredCredentialsData $storedCredentialsData
      */
@@ -97,6 +100,14 @@ final class AuthorizationRequest implements \JsonSerializable
     }
 
     /**
+     * @param ThreeDSecure $threeDSecure
+     */
+    public function setThreeDSecure($threeDSecure)
+    {
+        $this->threeDSecure = $threeDSecure;
+    }
+
+    /**
      * @inheritDoc
      */
     public function jsonSerialize()
@@ -110,7 +121,7 @@ final class AuthorizationRequest implements \JsonSerializable
             'merchant' => $this->merchant,
             'products' => $this->products,
             'airlineInfo' => $this->airlineInfoData,
-            'threeDSecure' => null,
+            'threeDSecure' => $this->threeDSecure,
             'storedCredentials' => $this->storedCredentialsData
         ];
     }
