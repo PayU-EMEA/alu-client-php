@@ -210,7 +210,6 @@ try {
     }
 
     echo $response->getReturnMessage() . ' ' . $response->getRefno();
-    var_dump($response);
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }

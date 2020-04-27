@@ -208,7 +208,6 @@ try {
         . ' ' . $response->getReturnCode()
         . ' ' . $response->getReturnMessage();
 
-    var_dump($response);
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }
