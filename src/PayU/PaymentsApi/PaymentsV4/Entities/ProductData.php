@@ -35,6 +35,9 @@ final class ProductData implements \JsonSerializable
      */
     private $vat;
 
+    /** @var Marketplace */
+    private $marketplace;
+
     /**
      * ProductData constructor.
      *
@@ -53,6 +56,14 @@ final class ProductData implements \JsonSerializable
         $this->sku = $sku;
         $this->unitPrice = $unitPrice;
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @param Marketplace $marketplace
+     */
+    public function setMarketplace($marketplace)
+    {
+        $this->marketplace = $marketplace;
     }
 
     /**
@@ -82,7 +93,8 @@ final class ProductData implements \JsonSerializable
             'additionalDetails' => $this->additionalDetails,
             'unitPrice' => $this->unitPrice,
             'quantity' => $this->quantity,
-            'vat' => $this->vat
+            'vat' => $this->vat,
+            'marketplace' => $this->marketplace
         ];
     }
 }

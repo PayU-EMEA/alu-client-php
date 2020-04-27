@@ -176,7 +176,8 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                     'additionalDetails' => null,
                     'unitPrice' => 100.0,
                     'quantity' => 1,
-                    'vat' => 24.0
+                    'vat' => 24.0,
+                    'marketplace' => null
                 ],
                 1 => [
                     'name' => 'PNAME02',
@@ -184,7 +185,8 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                     'additionalDetails' => null,
                     'unitPrice' => 200.0,
                     'quantity' => 1,
-                    'vat' => 24.0
+                    'vat' => 24.0,
+                    'marketplace' => null
                 ]
             ],
             self::AIRLINE_INFO_NODE => null,
