@@ -3,7 +3,6 @@
 
 namespace PayU\Alu;
 
-
 class ThreeDSecure
 {
     /** @var Mpi */

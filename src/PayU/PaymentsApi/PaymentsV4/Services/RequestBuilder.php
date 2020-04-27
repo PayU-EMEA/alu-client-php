@@ -206,7 +206,7 @@ class RequestBuilder
             $authorizationRequest->setAirlineInfoData($airlineInfo);
         }
 
-        if ($request->getThreeDSecure() !== null){
+        if ($request->getThreeDSecure() !== null) {
             $mpi = new MpiData();
 
             $mpi->setEci($request->getThreeDSecure()->getMpi()->getEci());
