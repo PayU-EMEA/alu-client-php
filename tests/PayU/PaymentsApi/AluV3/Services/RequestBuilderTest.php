@@ -418,7 +418,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -448,7 +448,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -488,16 +488,16 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'F5512'
         );
 
-        $airlineInfoResult = array(
-            'AIRLINE_INFO' => array(
+        $airlineInfoResult = [
+            'AIRLINE_INFO' => [
                 'PASSENGER_NAME' => 'John Doe',
                 'TICKET_NUMBER' => 'TICKET_1234',
                 'RESTRICTED_REFUND' => 0,
                 'RESERVATION_SYSTEM' => 'DATS',
                 'TRAVEL_AGENCY_CODE' => 'MYTRAVEL',
                 'TRAVEL_AGENCY_NAME' => 'My Travel Agency',
-                'FLIGHT_SEGMENTS' => array(
-                    array(
+                'FLIGHT_SEGMENTS' => [
+                    [
                         'DEPARTURE_DATE' => '2017-01-10',
                         'DEPARTURE_AIRPORT' => 'MOS',
                         'DESTINATION_AIRPORT' => 'SOF',
@@ -506,8 +506,8 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                         'STOPOVER' => null,
                         'FARE_CODE' => null,
                         'FLIGHT_NUMBER' => null,
-                    ),
-                    array(
+                    ],
+                    [
                         'DEPARTURE_DATE' => '2017-02-10',
                         'DEPARTURE_AIRPORT' => 'ANK',
                         'DESTINATION_AIRPORT' => 'WDC',
@@ -516,10 +516,10 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                         'STOPOVER' => 1,
                         'FARE_CODE' => 'MAXY12',
                         'FLIGHT_NUMBER' => 'F5512',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         $request = $this->createAluRequest();
         $request->getOrder()->withAirlineInfo($airlineInfo);
@@ -532,7 +532,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -564,7 +564,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->exactly(2))
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -601,7 +601,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->exactly(2))
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -638,7 +638,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->exactly(2))
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -675,7 +675,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->exactly(2))
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -712,7 +712,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->exactly(2))
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($requestArray)
             ->willReturn(self::HASH_STRING);
 
@@ -810,7 +810,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // When
         $this->mockHashService->expects($this->once())
-            ->method('makeRequestHash')
+            ->method('computeHash')
             ->with($responseArray)
             ->willReturn(self::HASH_STRING);
 
