@@ -14,6 +14,11 @@ class CardToken
     private $token;
 
     /**
+     * @var string
+     */
+    private $cvv;
+
+    /**
      * @param string $token
      * @param string $cvv
      */

@@ -3,8 +3,9 @@
 namespace PayU\Alu;
 
 use PayU\Alu\Exceptions\ClientException;
-use PayU\Alu\Exceptions\ConnectionException;
-use SimpleXMLElement;
+use PayU\PaymentsApi\Exceptions\AuthorizationException;
+use PayU\PaymentsApi\Exceptions\AuthorizationPaymentsApiClientFactoryException;
+use PayU\PaymentsApi\Factories\AuthorizationPaymentsApiClientFactory;
 
 /**
  * Class Client
@@ -18,25 +19,12 @@ class Client
     private $merchantConfig;
 
     /**
-     * @var array
-     */
-    private $aluUrlHostname = array(
-        'ro' => 'https://secure.payu.ro',
-        'ru' => 'https://secure.payu.ru',
-        'ua' => 'https://secure.payu.ua',
-        'hu' => 'https://secure.payu.hu',
-        'tr' => 'https://secure.payu.com.tr',
-    );
-
-    /**
-     * @var string
-     */
-    private $aluUrlPath = '/order/alu/v3';
-
-    /**
      * @var string
      */
     private $customUrl = null;
+
+    /** @var AuthorizationPaymentsApiClientFactory */
+    private $authorizationPaymentsApiFactory;
 
     /**
      * @param MerchantConfig $merchantConfig
@@ -44,26 +32,12 @@ class Client
     public function __construct(MerchantConfig $merchantConfig)
     {
         $this->merchantConfig = $merchantConfig;
+        $this->authorizationPaymentsApiFactory = new AuthorizationPaymentsApiClientFactory();
     }
 
     /**
-     * @return string
-     * @throws ClientException
-     */
-    private function getAluUrl()
-    {
-        if (!empty($this->customUrl)) {
-            return $this->customUrl;
-        }
-
-        if (!isset($this->aluUrlHostname[$this->merchantConfig->getPlatform()])) {
-            throw new ClientException('Invalid platform');
-        }
-        return $this->aluUrlHostname[$this->merchantConfig->getPlatform()] . $this->aluUrlPath;
-    }
-
-    /**
-     * @param $fullUrl
+     * @deprecated Should use \PayU\Alu\Request::setCustomUrl instead for further usage
+     * @param string $fullUrl
      * @codeCoverageIgnore
      */
     public function setCustomUrl($fullUrl)
@@ -72,125 +46,39 @@ class Client
     }
 
     /**
-     * @param SimpleXMLElement $xmlObject
-     * @param SimpleXMLElement $xmlObject
-     * @return Response
-     */
-    private function getResponse(SimpleXMLElement $xmlObject)
-    {
-        $response = new Response();
-        $response->setRefno((string) $xmlObject->REFNO);
-        $response->setAlias((string) $xmlObject->ALIAS);
-        $response->setStatus((string) $xmlObject->STATUS);
-        $response->setReturnCode((string) $xmlObject->RETURN_CODE);
-        $response->setReturnMessage((string) $xmlObject->RETURN_MESSAGE);
-        $response->setDate((string) $xmlObject->DATE);
-
-        if (property_exists($xmlObject, 'HASH')) {
-            $response->setHash((string)$xmlObject->HASH);
-        }
-
-        // for 3D secure handling flow
-        if (property_exists($xmlObject, 'URL_3DS')) {
-            $response->setThreeDsUrl((string)$xmlObject->URL_3DS);
-        }
-
-        // 4 parameters used only on TR platform for ALU v1, v2 and v3
-        if (property_exists($xmlObject, 'AMOUNT')) {
-            $response->setAmount((string)$xmlObject->AMOUNT);
-        }
-        if (property_exists($xmlObject, 'CURRENCY')) {
-            $response->setCurrency((string)$xmlObject->CURRENCY);
-        }
-        if (property_exists($xmlObject, 'INSTALLMENTS_NO')) {
-            $response->setInstallmentsNo((string)$xmlObject->INSTALLMENTS_NO);
-        }
-        if (property_exists($xmlObject, 'CARD_PROGRAM_NAME')) {
-            $response->setCardProgramName((string)$xmlObject->CARD_PROGRAM_NAME);
-        }
-
-        // parameters used on ALU v2 and v3
-        if (property_exists($xmlObject, 'ORDER_REF')) {
-            $response->setOrderRef((string) $xmlObject->ORDER_REF);
-        }
-        if (property_exists($xmlObject, 'AUTH_CODE')) {
-            $response->setAuthCode((string)$xmlObject->AUTH_CODE);
-        }
-        if (property_exists($xmlObject, 'RRN')) {
-            $response->setRrn((string)$xmlObject->RRN);
-        }
-
-        if (property_exists($xmlObject, 'URL_REDIRECT')) {
-            $response->setUrlRedirect((string)$xmlObject->URL_REDIRECT);
-        }
-
-        $response->parseAdditionalParameters($xmlObject);
-
-        if (property_exists($xmlObject, 'TOKEN_HASH')) {
-            $response->setTokenHash((string)$xmlObject->TOKEN_HASH);
-        }
-
-        // parameters used for wire payments on ALU v3
-        if (property_exists($xmlObject, 'WIRE_ACCOUNTS') && count($xmlObject->WIRE_ACCOUNTS->ITEM) > 0) {
-            foreach ($xmlObject->WIRE_ACCOUNTS->ITEM as $account) {
-                $response->addWireAccount($this->getResponseWireAccount($account));
-            }
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param SimpleXMLElement $account
-     * @return ResponseWireAccount
-     */
-    private function getResponseWireAccount(SimpleXMLElement $account)
-    {
-        $responseWireAccount = new ResponseWireAccount();
-        $responseWireAccount->setBankIdentifier((string)$account->BANK_IDENTIFIER);
-        $responseWireAccount->setBankAccount((string)$account->BANK_ACCOUNT);
-        $responseWireAccount->setRoutingNumber((string)$account->ROUTING_NUMBER);
-        $responseWireAccount->setIbanAccount((string)$account->IBAN_ACCOUNT);
-        $responseWireAccount->setBankSwift((string)$account->BANK_SWIFT);
-        $responseWireAccount->setCountry((string)$account->COUNTRY);
-        $responseWireAccount->setWireRecipientName((string)$account->WIRE_RECIPIENT_NAME);
-        $responseWireAccount->setWireRecipientVatId((string)$account->WIRE_RECIPIENT_VAT_ID);
-
-        return $responseWireAccount;
-    }
-
-    /**
+     * Method responsible with making an authorization call, based on the payments API version, which should be set
+     * before on \PayU\Alu\Request instance.
+     * Depending on the API version, an AuthorizationPaymentsApiClient implementation is instantiated by
+     * AuthorizationPaymentsApiFactory and used to place the authorization call.
      * @param Request $request
      * @param HTTPClient $httpClient
      * @param HashService $hashService
-     * @throws ClientException
-     * @throws ConnectionException
      * @return Response
+     * @throws ClientException
      */
     public function pay(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
     {
-        if (null === $hashService) {
-            $hashService = new HashService($this->merchantConfig->getSecretKey());
+        if ($this->customUrl !== null) {
+            $request->setCustomUrl($this->customUrl);
         }
 
-        if (null === $httpClient) {
-            $httpClient = new HTTPClient();
-        }
-
-        $requestHash = $hashService->makeRequestHash($request);
-        $request->setOrderHash($requestHash);
-
-        $requestParams = $request->getRequestParams();
-        $responseXML = $httpClient->post($this->getAluUrl(), $requestParams);
         try {
-            $xmlObject = new SimpleXMLElement($responseXML);
-        } catch (\Exception $e) {
-            throw new ClientException($e->getMessage(), $e->getCode());
+            $paymentsApiClient = $this->authorizationPaymentsApiFactory->createPaymentsApiClient(
+                $request->getPaymentsApiVersion(),
+                $this->merchantConfig->getSecretKey(),
+                $httpClient,
+                $hashService
+            );
+        } catch (AuthorizationPaymentsApiClientFactoryException $exception) {
+            throw new ClientException($exception->getMessage());
         }
-        $response = $this->getResponse($xmlObject);
-        if ('' != $response->getHash()) {
-            $hashService->validateResponseHash($response);
+
+        try {
+            $response = $paymentsApiClient->authorize($request);
+        } catch (AuthorizationException $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
+
         return $response;
     }
 

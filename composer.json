@@ -19,7 +19,8 @@
     "autoload": {
         "psr-4": {
             "PayU\\Alu\\": "src/PayU/Alu/",
-            "PayU\\Alu\\Exceptions\\": "src/PayU/Alu/Exceptions"
+            "PayU\\Alu\\Exceptions\\": "src/PayU/Alu/Exceptions",
+            "PayU\\PaymentsApi\\": "src/PayU/PaymentsApi"
         }
     }
 }

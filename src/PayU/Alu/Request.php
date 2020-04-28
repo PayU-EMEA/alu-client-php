@@ -2,6 +2,8 @@
 
 namespace PayU\Alu;
 
+use PayU\PaymentsApi\AluV3\AluV3;
+
 /**
  * Class Request
  * @package PayU\Alu
@@ -63,24 +65,125 @@ class Request
     private $internalArray;
 
     /**
+     * @var string
+     */
+    private $paymentsApiVersion;
+
+    /**
+     * @var string
+     */
+    private $customUrl;
+
+    /**
      * @param MerchantConfig $merchantConfig
      * @param Order $order
      * @param Billing $billing
      * @param AbstractCommonAddress $delivery
      * @param User $user
+     * @param string $paymentsApiVersion
      */
     public function __construct(
         MerchantConfig $merchantConfig,
         Order $order,
         Billing $billing,
         AbstractCommonAddress $delivery = null,
-        User $user = null
+        User $user = null,
+        $paymentsApiVersion = AluV3::API_VERSION_V3
     ) {
         $this->merchantConfig = $merchantConfig;
         $this->order = $order;
         $this->billingData = $billing;
         $this->deliveryData = $delivery;
         $this->user = $user;
+        $this->paymentsApiVersion = $paymentsApiVersion;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @return Card
+     */
+    public function getCard()
+    {
+        return $this->card;
+    }
+
+    /**
+     * @return CardToken
+     */
+    public function getCardToken()
+    {
+        return $this->cardToken;
+    }
+
+    /**
+     * @return StoredCredentials
+     */
+    public function getStoredCredentials()
+    {
+        return $this->storedCredentials;
+    }
+
+    /**
+     * @return StrongCustomerAuthentication
+     */
+    public function getStrongCustomerAuthentication()
+    {
+        return $this->strongCustomerAuthentication;
+    }
+
+    /**
+     * @return Billing
+     */
+    public function getBillingData()
+    {
+        return $this->billingData;
+    }
+
+    /**
+     * @return AbstractCommonAddress
+     */
+    public function getDeliveryData()
+    {
+        return $this->deliveryData;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return FX
+     */
+    public function getFx()
+    {
+        return $this->fx;
+    }
+
+    /**
+     * @return MerchantConfig
+     */
+    public function getMerchantConfig()
+    {
+        return $this->merchantConfig;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentsApiVersion()
+    {
+        return $this->paymentsApiVersion;
     }
 
     /**
@@ -121,11 +224,29 @@ class Request
     }
 
     /**
+     * @return string
+     */
+    public function getCustomUrl()
+    {
+        return $this->customUrl;
+    }
+
+    /**
+     * @param string $customUrl
+     */
+    public function setCustomUrl($customUrl)
+    {
+        $this->customUrl = $customUrl;
+    }
+
+    /**
+     * @deprecated This logic was moved to \PayU\PaymentsApi\AluV3\Services\RequestBuilder
+     *
      * @return array
      */
     private function transformObject2Array()
     {
-        $this->internalArray = array();
+        $this->internalArray = [];
         $this->internalArray['MERCHANT'] = $this->merchantConfig->getMerchantCode();
         $this->internalArray['ORDER_REF'] = $this->order->getOrderRef();
         $this->internalArray['ORDER_DATE'] = $this->order->getOrderDate();
@@ -282,9 +403,14 @@ class Request
         return $this->internalArray;
     }
 
+    /**
+     * @deprecated This logic was moved to \PayU\PaymentsApi\AluV3\Services\RequestBuilder
+     *
+     * @return array
+     */
     private function threeDsTwoParams()
     {
-        return array(
+        return [
             'STRONG_CUSTOMER_AUTHENTICATION' => $this->strongCustomerAuthentication->getStrongCustomerAuthentication(),
             'ADDRESS_MATCH' => $this->strongCustomerAuthentication->getAddressMatch(),
             'BROWSER_ACCEPT_HEADER' => $this->strongCustomerAuthentication->getBrowserAcceptHeaders(),
@@ -354,10 +480,13 @@ class Request
             'REQUESTOR_AUTHENTICATION_DATA' => $this->strongCustomerAuthentication->getRequestorAuthenticationData(),
             'ACCOUNT_CARD_ADDED_INDICATOR' => $this->strongCustomerAuthentication->getAccountCardAddedIndicator(),
             'ACCOUNT_CARD_ADDED_DATE' => $this->strongCustomerAuthentication->getAccountCardAddedDate()
-        );
+        ];
     }
 
     /**
+     * @deprecated The request params should be used only to build the authorization request in
+     * \PayU\PaymentsApi\AluV3\Services\RequestBuilder::buildAuthorizationRequest
+     *
      * @return array
      */
     public function getRequestParams()
@@ -369,6 +498,10 @@ class Request
     }
 
     /**
+     * @deprecated The ORDER_HASH should be computed and added on the request from \PayU\PaymentsApi\ namespace
+     * If you are using ALU v3 version, please check following method:
+     * \PayU\PaymentsApi\AluV3\Services\RequestBuilder::buildAuthorizationRequest
+     *
      * @param string $hash
      */
     public function setOrderHash($hash)

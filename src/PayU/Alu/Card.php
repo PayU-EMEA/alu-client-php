@@ -43,13 +43,18 @@ class Card
      * @param int $cardCVV
      * @param string $cardOwnerName
      */
-    public function __construct($cardNumber, $cardExpirationMonth, $cardExpirationYear, $cardCVV, $cardOwnerName)
-    {
-        $this->cardNumber           = $cardNumber;
-        $this->cardExpirationMonth  = $cardExpirationMonth;
-        $this->cardExpirationYear   = $cardExpirationYear;
-        $this->cardCVV              = $cardCVV;
-        $this->cardOwnerName        = $cardOwnerName;
+    public function __construct(
+        $cardNumber,
+        $cardExpirationMonth,
+        $cardExpirationYear,
+        $cardCVV,
+        $cardOwnerName
+    ) {
+        $this->cardNumber = $cardNumber;
+        $this->cardExpirationMonth = $cardExpirationMonth;
+        $this->cardExpirationYear = $cardExpirationYear;
+        $this->cardCVV = $cardCVV;
+        $this->cardOwnerName = $cardOwnerName;
     }
 
     /**
@@ -59,7 +64,6 @@ class Card
     {
         return $this->cardCVV;
     }
-
 
     /**
      * @return int
@@ -77,7 +81,6 @@ class Card
         return $this->cardExpirationYear;
     }
 
-
     /**
      * @return string
      */
@@ -85,7 +88,6 @@ class Card
     {
         return $this->cardNumber;
     }
-
 
     /**
      * @return string
