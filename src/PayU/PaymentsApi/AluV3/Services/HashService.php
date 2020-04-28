@@ -6,10 +6,6 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\Alu\Request;
 use PayU\Alu\Response;
 
-/**
- * Class HashService
- * @package PayU\Alu
- */
 class HashService
 {
     /**
