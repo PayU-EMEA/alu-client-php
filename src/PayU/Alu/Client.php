@@ -4,8 +4,8 @@ namespace PayU\Alu;
 
 use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
-use PayU\PaymentsApi\Exceptions\AuthorizationPaymentsApiFactoryException;
-use PayU\PaymentsApi\Factories\AuthorizationPaymentsApiFactory;
+use PayU\PaymentsApi\Exceptions\AuthorizationPaymentsApiClientFactoryException;
+use PayU\PaymentsApi\Factories\AuthorizationPaymentsApiClientFactory;
 
 /**
  * Class Client
@@ -23,7 +23,7 @@ class Client
      */
     private $customUrl = null;
 
-    /** @var AuthorizationPaymentsApiFactory */
+    /** @var AuthorizationPaymentsApiClientFactory */
     private $authorizationPaymentsApiFactory;
 
     /**
@@ -32,7 +32,7 @@ class Client
     public function __construct(MerchantConfig $merchantConfig)
     {
         $this->merchantConfig = $merchantConfig;
-        $this->authorizationPaymentsApiFactory = new AuthorizationPaymentsApiFactory();
+        $this->authorizationPaymentsApiFactory = new AuthorizationPaymentsApiClientFactory();
     }
 
     /**
@@ -58,31 +58,19 @@ class Client
      */
     public function pay(Request $request, HTTPClient $httpClient = null, HashService $hashService = null)
     {
+        if ($this->customUrl !== null) {
+            $request->setCustomUrl($this->customUrl);
+        }
+
         try {
-            $paymentsApiVersion = $request->getPaymentsApiVersion();
-
-            if (null === $hashService) {
-                $hashService = $this->authorizationPaymentsApiFactory->createHashService(
-                    $paymentsApiVersion,
-                    $this->merchantConfig->getSecretKey()
-                );
-            }
-
-            if (null === $httpClient) {
-                $httpClient = $this->authorizationPaymentsApiFactory->createHttpClient($paymentsApiVersion);
-            }
-
             $paymentsApiClient = $this->authorizationPaymentsApiFactory->createPaymentsApiClient(
-                $paymentsApiVersion,
+                $request->getPaymentsApiVersion(),
+                $this->merchantConfig->getSecretKey(),
                 $httpClient,
                 $hashService
             );
-        } catch (AuthorizationPaymentsApiFactoryException $exception) {
+        } catch (AuthorizationPaymentsApiClientFactoryException $exception) {
             throw new ClientException($exception->getMessage());
-        }
-
-        if ($this->customUrl !== null) {
-            $request->setCustomUrl($this->customUrl);
         }
 
         try {
