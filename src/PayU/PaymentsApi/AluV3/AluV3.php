@@ -13,9 +13,13 @@ use PayU\PaymentsApi\AluV3\Services\RequestBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseBuilder;
 use PayU\PaymentsApi\AluV3\Services\ResponseParser;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
-use PayU\PaymentsApi\Interfaces\AuthorizationInterface;
+use PayU\PaymentsApi\Interfaces\AuthorizationPaymentsApiClient;
 
-final class AluV3 implements AuthorizationInterface
+/**
+ * This class is responsible with orchestrating calls to different services related to ALU v3 authorization call.
+ * Should not be instantiated separately, but through \PayU\PaymentsApi\Factories\AuthorizationPaymentsApiFactory
+ */
+final class AluV3 implements AuthorizationPaymentsApiClient
 {
     const ALU_URL_PATH = '/order/alu/v3';
     const API_VERSION_V3 = "v3";
@@ -24,8 +28,8 @@ final class AluV3 implements AuthorizationInterface
      * @var array
      */
     private $aluUrlHostname = [
-        'ro' => 'https://secure.payu.ro',
-        'ru' => 'https://secure.payu.ru',
+        //'ro' => 'https://secure.payu.ro',
+        'ru' => 'http://ru.payu.local',
         'tr' => 'https://secure.payu.com.tr',
     ];
 
