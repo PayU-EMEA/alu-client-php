@@ -5,6 +5,7 @@ namespace PayU\PaymentsApi\PaymentsV4\Services;
 use PayU\Alu\AirlineInfo;
 use PayU\Alu\Billing;
 use PayU\Alu\Card;
+use PayU\Alu\CardToken;
 use PayU\Alu\Delivery;
 use PayU\Alu\FX;
 use PayU\Alu\Marketplace;
@@ -473,5 +474,21 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             StoredCredentials::STORED_CREDENTIALS_CONSENT_TYPE,
             json_decode($this->requestBuilder->buildAuthorizationRequest($request), true)
         );
+    }
+
+    /**
+     * @expectedException  \PayU\PaymentsApi\PaymentsV4\Exceptions\RequestBuilderException
+     */
+    public function testBuildAuthorizationRequestThrowsRequestBuilderException()
+    {
+        // Given
+        $request = $this->createAluRequest();
+
+        $cardToken = new CardToken('TOKEN');
+        $request->setCardToken($cardToken);
+
+        // Then
+        $this->requestBuilder->buildAuthorizationRequest($request);
+
     }
 }
