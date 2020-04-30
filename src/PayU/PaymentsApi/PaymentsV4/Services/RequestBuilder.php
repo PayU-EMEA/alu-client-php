@@ -77,17 +77,13 @@ class RequestBuilder
                 $request->getApplePayToken()->getHeader()->getTransactionId()
             );
 
-                    $applePayToken = new ApplePayToken(
-                        $request->getApplePayToken()->getData(),
-                        $applePayHeader,
-                        $request->getApplePayToken()->getSignature(),
-                        $request->getApplePayToken()->getVersion()
-                    );
-                    $authorizationData->setApplePayToken($applePayToken);
-                } else {
-                    throw new RequestBuilderException("Too many payment instruments");
-                }
-            }
+            $applePayToken = new ApplePayToken(
+                $request->getApplePayToken()->getData(),
+                $applePayHeader,
+                $request->getApplePayToken()->getSignature(),
+                $request->getApplePayToken()->getVersion()
+            );
+            $authorizationData->setApplePayToken($applePayToken);
         }
 
         if ($request->getFx() !== null) {
