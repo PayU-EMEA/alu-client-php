@@ -187,7 +187,6 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                 'time' => '',
                 'communicationLanguage' => null
             ],
-            'merchant' => null,
             'products' => [
                 0 => [
                     'name' => 'PNAME01',

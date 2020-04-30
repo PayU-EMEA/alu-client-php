@@ -151,15 +151,6 @@ class RequestBuilder
             $this->getProductArray($request)
         );
 
-        /*
-         * no PosCode object in Request
-        if (!empty($request->getMerchant())){
-            $merchantData = new MerchantData($request->getMerchant());
-
-            $authorizationRequest->setMerchant($merchantData);
-        }
-        */
-
         if ($request->getOrder()->getAirlineInfo() !== null) {
             $flightSegments = $this->getFlightSegmentsArray($request);
 
