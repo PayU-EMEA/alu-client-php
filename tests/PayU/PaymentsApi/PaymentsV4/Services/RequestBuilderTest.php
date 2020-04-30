@@ -489,6 +489,5 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Then
         $this->requestBuilder->buildAuthorizationRequest($request);
-
     }
 }
