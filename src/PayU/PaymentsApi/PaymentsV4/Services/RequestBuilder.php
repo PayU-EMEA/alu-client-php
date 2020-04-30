@@ -35,9 +35,7 @@ class RequestBuilder
     {
         $authorizationData = new AuthorizationData($request->getOrder()->getPayMethod());
 
-        //HOSTED_PAGE in V3
-        //$authorizationData->setUsePaymentPage($request->getOrder()->getHostedPage());
-
+        $authorizationData->setUsePaymentPage($request->getOrder()->getUsePaymentPage());
         $authorizationData->setInstallmentsNumber($request->getOrder()->getInstallmentsNumber());
         $authorizationData->setUseLoyaltyPoints($request->getOrder()->getUseLoyaltyPoints());
         $authorizationData->setLoyaltyPointsAmount($request->getOrder()->getLoyaltyPointsAmount());

@@ -104,6 +104,27 @@ class Order
      */
     private $airlineInfo;
 
+    /** @var string */
+    private $usePaymentPage;
+
+    /**
+     * @param $usePaymentPage
+     * @return $this
+     */
+    public function withUsePaymentPage($usePaymentPage)
+    {
+        $this->usePaymentPage = $usePaymentPage;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsePaymentPage()
+    {
+        return $this->usePaymentPage;
+    }
+
     /**
      * @param string $name
      * @param string $value
