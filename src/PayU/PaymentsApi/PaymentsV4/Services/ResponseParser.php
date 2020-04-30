@@ -5,7 +5,6 @@ namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\AuthorizationResponseException;
-use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
 
 class ResponseParser
 {
@@ -21,7 +20,6 @@ class ResponseParser
      * @param string $jsonResponse
      * @return AuthorizationResponse
      * @throws AuthorizationResponseException
-     * @throws ResponseBuilderException
      */
     public function parseJsonResponse($jsonResponse)
     {
@@ -39,7 +37,6 @@ class ResponseParser
     /**
      * @param array $jsonResponse
      * @return array
-     * @throws ResponseBuilderException
      */
     private function createArray($jsonResponse)
     {

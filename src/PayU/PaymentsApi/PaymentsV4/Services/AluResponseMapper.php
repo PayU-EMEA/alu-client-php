@@ -2,8 +2,6 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
-use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
-
 class AluResponseMapper
 {
     const CODE = 'code';
@@ -86,7 +84,6 @@ class AluResponseMapper
     /**
      * @param array $aluResponseBody
      * @return array
-     * @throws ResponseBuilderException
      */
     public function processResponse($aluResponseBody)
     {

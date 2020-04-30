@@ -38,6 +38,9 @@ class ResponseParserTest extends \PHPUnit_Framework_TestCase
         $reflectionResponseMapper->setValue($this->responseParser, $this->mockAluResponseMapper);
     }
 
+    /**
+     * @return string
+     */
     private function createJsonResponse()
     {
         return '{
@@ -87,6 +90,9 @@ class ResponseParserTest extends \PHPUnit_Framework_TestCase
             }';
     }
 
+    /**
+     * @return string
+     */
     private function createWireAccountJsonResponse()
     {
         return '{
@@ -147,6 +153,9 @@ class ResponseParserTest extends \PHPUnit_Framework_TestCase
             }';
     }
 
+    /**
+     * @return array
+     */
     private function createExpectedResponseArray()
     {
         return [
@@ -186,33 +195,9 @@ class ResponseParserTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function createJsonResponseWithoutStatus()
-    {
-        return [
-            [
-                '{
-            "code": 200,
-            "message": "A text message with details about processing result or with some message error",
-            "payuPaymentReference": 896782,
-            "merchantPaymentReference": "34dfsd-sdgds",
-            "amount": 10.5,
-            "currency": "EUR"
-            }'
-            ],
-            [
-                '{
-            "code": 200,
-            "status": null,
-            "message": "A text message with details about processing result or with some message error",
-            "payuPaymentReference": 896782,
-            "merchantPaymentReference": "34dfsd-sdgds",
-            "amount": 10.5,
-            "currency": "EUR"
-            }'
-            ]
-        ];
-    }
-
+    /**
+     * @return array
+     */
     public function createRequestFailedResponse()
     {
         return [
@@ -345,16 +330,6 @@ class ResponseParserTest extends \PHPUnit_Framework_TestCase
         $jsonResponse = $this->createJsonResponse();
         $jsonResponse = substr($jsonResponse, 0, -1);
 
-        // When
-        $this->responseParser->parseJsonResponse($jsonResponse);
-    }
-
-    /**
-     * @dataProvider createJsonResponseWithoutStatus
-     * @expectedException PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException
-     */
-    public function testParseJsonResponseWillThrowRequestBuilderException($jsonResponse)
-    {
         // When
         $this->responseParser->parseJsonResponse($jsonResponse);
     }

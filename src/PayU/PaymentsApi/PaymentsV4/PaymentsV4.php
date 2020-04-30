@@ -7,7 +7,6 @@ use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Interfaces\AuthorizationPaymentsApiClient;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\RequestBuilderException;
-use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
 use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;
 use PayU\PaymentsApi\PaymentsV4\Services\RequestBuilder;
 use PayU\PaymentsApi\PaymentsV4\Services\ResponseBuilder;
@@ -97,10 +96,8 @@ class PaymentsV4 implements AuthorizationPaymentsApiClient
 
         try {
             $authorizationResponse = $this->responseParser->parseJsonResponse($responseJson);
-        } catch (AuthorizationResponseException $exception) {
-            throw new AuthorizationException($exception->getMessage());
-        } catch (ResponseBuilderException $e) {
-            throw new AuthorizationException($e->getMessage());
+        } catch (AuthorizationResponseException $e) {
+            throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $this->responseBuilder->buildResponse($authorizationResponse);

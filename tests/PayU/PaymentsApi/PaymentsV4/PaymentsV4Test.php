@@ -14,7 +14,6 @@ use PayU\Alu\User;
 use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\AuthorizationResponseException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
-use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
 use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;
 use PayU\PaymentsApi\PaymentsV4\Services\RequestBuilder;
 use PayU\PaymentsApi\PaymentsV4\Services\ResponseBuilder;
@@ -412,42 +411,6 @@ class PaymentsV4Test extends TestCase
             ->method('parseJsonResponse')
             ->with($jsonResponse)
             ->willThrowException(new AuthorizationResponseException());
-
-        $this->paymentsV4->authorize($aluRequest);
-    }
-
-    /**
-     * @expectedException \PayU\PaymentsApi\Exceptions\AuthorizationException
-     */
-    public function testResponseParserThrowsResponseBuilderException()
-    {
-        // Given
-        $aluRequest = $this->createAluRequest();
-        $jsonRequest = $this->createJsonRequest();
-        $jsonResponse = $this->createJsonResponse();
-
-        // When
-        $this->addMockObjectsToPaymentsV4();
-
-        $this->mockRequestBuilder->expects($this->once())
-            ->method('buildAuthorizationRequest')
-            ->with($aluRequest)
-            ->willReturn($jsonRequest);
-
-        $this->mockHttpClient->expects($this->once())
-            ->method('post')
-            ->with(
-                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
-                $aluRequest->getMerchantConfig(),
-                self::ORDER_DATE,
-                $jsonRequest
-            )
-            ->willReturn($jsonResponse);
-
-        $this->mockResponseParser->expects($this->once())
-            ->method('parseJsonResponse')
-            ->with($jsonResponse)
-            ->willThrowException(new ResponseBuilderException());
 
         $this->paymentsV4->authorize($aluRequest);
     }
