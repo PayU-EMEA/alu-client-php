@@ -139,7 +139,7 @@ class RequestBuilder
         if ($request->getUser() !== null) {
             $clientData->setIp($request->getUser()->getUserIPAddress());
             $clientData->setTime($request->getUser()->getClientTime());
-            //"communicationLanguage"
+            $clientData->setCommunicationLanguage($request->getUser()->getCommunicationLanguage());
         }
 
         $authorizationRequest = new AuthorizationRequest(
