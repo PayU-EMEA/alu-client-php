@@ -6,26 +6,26 @@ use PayU\PaymentsApi\PaymentsV4\Exceptions\ResponseBuilderException;
 
 class AluResponseMapper
 {
+    const CODE = 'code';
+    const PAYU_PAYMENT_REFERENCE = 'payuPaymentReference';
+    const MERCHANT_PAYMENT_REFERENCE = 'merchantPaymentReference';
+    const AMOUNT = 'amount';
+    const CURRENCY = 'currency';
+    const RETURN_MESSAGE = 'message';
+
     const PAYMENT_RESULT = 'paymentResult';
     const NODE_CARD_DETAILS = 'cardDetails';
     const NODE_3DS = '3dsDetails';
     const NODE_BANK = 'bankResponseDetails';
     const NODE_BANK_RESPONSE = 'response';
-    const STATUS_KEY = 'STATUS';
-
-    //used only for tests
-    const PAYMENT_RESULT_ANTIFRAUD = 'antifraud';
-    const PAYMENT_RESULT_ANTIFRAUD_SKIPPED_ANTIFRAUD_KEY = 'skipAntiFraudCheck';
-    const PAYMENT_RESULT_ANTIFRAUD_SKIPPED_ANTIFRAUD_VALUE = 'YES';
 
     const MAP = [
-        /* General*/
-        'code' => 'CODE',
-        'payuPaymentReference' => 'REFNO',
-        'merchantPaymentReference' => 'ORDER_REF',
-        'amount' => 'AMOUNT',
-        'currency' => 'CURRENCY',
-        'message' => 'RETURN_MESSAGE',
+        self::CODE => 'CODE',
+        self::PAYU_PAYMENT_REFERENCE => 'REFNO',
+        self::MERCHANT_PAYMENT_REFERENCE => 'ORDER_REF',
+        self::AMOUNT => 'AMOUNT',
+        self::CURRENCY => 'CURRENCY',
+        self::RETURN_MESSAGE => 'RETURN_MESSAGE',
         self::PAYMENT_RESULT . '.payuResponseCode' => 'RETURN_CODE',
 
         /* Authorization node => paymentResult.rrn */
@@ -66,6 +66,7 @@ class AluResponseMapper
         self::PAYMENT_RESULT . '.' . 'type' => 'TYPE',
         self::PAYMENT_RESULT . '.' . 'url' => 'URL_3DS',
         self::PAYMENT_RESULT . '.' . 'url' => 'URL_REDIRECT',
+
         /* used only for some decisions in AluResponseTransformation; won't be in the final response */
         'status' => 'STATUS',
     ];
@@ -100,6 +101,7 @@ class AluResponseMapper
     /**
      * @param $array
      * @return void
+     * todo see if can use array_walk_recursive
      */
     private function removeEmptyValuesFromArray(array &$array)
     {
