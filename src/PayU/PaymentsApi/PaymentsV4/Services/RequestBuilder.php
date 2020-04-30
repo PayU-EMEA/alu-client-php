@@ -24,14 +24,12 @@ use PayU\PaymentsApi\PaymentsV4\Entities\FlightSegments;
 use PayU\PaymentsApi\PaymentsV4\Entities\StoredCredentialsData;
 use PayU\PaymentsApi\PaymentsV4\Entities\ThreeDSecure;
 use PayU\PaymentsApi\PaymentsV4\Entities\TravelAgency;
-use PayU\PaymentsApi\PaymentsV4\Exceptions\RequestBuilderException;
 
 class RequestBuilder
 {
     /**
      * @param Request $request
      * @return false|string
-     * @throws RequestBuilderException
      */
     public function buildAuthorizationRequest($request)
     {
@@ -45,10 +43,7 @@ class RequestBuilder
         $authorizationData->setLoyaltyPointsAmount($request->getOrder()->getLoyaltyPointsAmount());
         $authorizationData->setCampaignType($request->getOrder()->getCampaignType());
 
-        if ($request->getCard() !== null &&
-            $request->getCardToken() === null &&
-            $request->getApplePayToken() === null
-        ) {
+        if ($request->getCard() !== null) {
             $cardDetails = new CardDetails(
                 $request->getCard()->getCardNumber(),
                 $request->getCard()->getCardExpirationMonth(),
@@ -59,34 +54,28 @@ class RequestBuilder
             $cardDetails->setOwner($request->getCard()->getCardOwnerName());
 
             $authorizationData->setCardDetails($cardDetails);
-        } else {
-            if ($request->getCard() === null &&
-                $request->getCardToken() !== null &&
-                $request->getApplePayToken() === null
-            ) {
-                $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
+        }
+        if ($request->getCardToken() !== null) {
+            $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
 
-                if ($request->getCardToken()->hasCvv()) {
-                    $merchantToken->setCvv($request->getCardToken()->getCvv());
-                }
+            if ($request->getCardToken()->hasCvv()) {
+                $merchantToken->setCvv($request->getCardToken()->getCvv());
+            }
 
-                if ($request->getCardToken()->hasOwner()) {
-                    $merchantToken->setOwner($request->getCardToken()->getOwner());
-                }
+//            if ($request->getCardToken()->hasOwner()) {
+//                $merchantToken->setOwner($request->getCardToken()->getOwner());
+//            }
 
-                $authorizationData->setMerchantToken($merchantToken);
-            } else {
-                if ($request->getCard() === null &&
-                    $request->getCardToken() === null &&
-                    $request->getApplePayToken()
-                ) {
-                    $applePayHeader = new ApplePayTokenHeader(
-                        $request->getApplePayToken()->getHeader()->getApplicationData(),
-                        $request->getApplePayToken()->getHeader()->getEphemeralPublicKey(),
-                        $request->getApplePayToken()->getHeader()->getWrappedKey(),
-                        $request->getApplePayToken()->getHeader()->getPublicKeyHash(),
-                        $request->getApplePayToken()->getHeader()->getTransactionId()
-                    );
+            $authorizationData->setMerchantToken($merchantToken);
+        }
+        if ($request->getApplePayToken() !== null) {
+            $applePayHeader = new ApplePayTokenHeader(
+                $request->getApplePayToken()->getHeader()->getApplicationData(),
+                $request->getApplePayToken()->getHeader()->getEphemeralPublicKey(),
+                $request->getApplePayToken()->getHeader()->getWrappedKey(),
+                $request->getApplePayToken()->getHeader()->getPublicKeyHash(),
+                $request->getApplePayToken()->getHeader()->getTransactionId()
+            );
 
                     $applePayToken = new ApplePayToken(
                         $request->getApplePayToken()->getData(),
