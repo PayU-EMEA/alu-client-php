@@ -36,6 +36,7 @@ class PaymentsV4Test extends TestCase
     const AIRLINE_INFO_NODE = 'airlineInfo';
     const STORED_CREDENTIALS_NODE = 'storedCredentials';
 
+    const PAYMENTS_URL = 'https://secure.payu.ro';
 
     /** @var PaymentsV4 */
     private $paymentsV4;
@@ -183,7 +184,7 @@ class PaymentsV4Test extends TestCase
                     'owner' => 'Card Owner Name',
                 ],
                 'merchantToken' => null,
-                //'applePayToken' => json_encode($this->applePayToken),
+                'applePayToken' => null,
                 'usePaymentPage' => null,
                 'installmentsNumber' => null,
                 'useLoyaltyPoints' => null,
@@ -322,7 +323,7 @@ class PaymentsV4Test extends TestCase
         $this->mockHttpClient->expects($this->once())
             ->method('post')
             ->with(
-                'http://ro.payu.local/api/v4/payments/authorize',
+                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
                 $aluRequest->getMerchantConfig(),
                 self::ORDER_DATE,
                 $jsonRequest
@@ -368,7 +369,7 @@ class PaymentsV4Test extends TestCase
         $this->mockHttpClient->expects($this->once())
             ->method('post')
             ->with(
-                'http://ro.payu.local/api/v4/payments/authorize',
+                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
                 $aluRequest->getMerchantConfig(),
                 self::ORDER_DATE,
                 $jsonRequest
@@ -400,7 +401,7 @@ class PaymentsV4Test extends TestCase
         $this->mockHttpClient->expects($this->once())
             ->method('post')
             ->with(
-                'http://ro.payu.local/api/v4/payments/authorize',
+                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
                 $aluRequest->getMerchantConfig(),
                 self::ORDER_DATE,
                 $jsonRequest
@@ -436,7 +437,7 @@ class PaymentsV4Test extends TestCase
         $this->mockHttpClient->expects($this->once())
             ->method('post')
             ->with(
-                'http://ro.payu.local/api/v4/payments/authorize',
+                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
                 $aluRequest->getMerchantConfig(),
                 self::ORDER_DATE,
                 $jsonRequest
