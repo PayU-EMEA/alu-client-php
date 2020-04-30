@@ -62,10 +62,6 @@ class RequestBuilder
                 $merchantToken->setCvv($request->getCardToken()->getCvv());
             }
 
-//            if ($request->getCardToken()->hasOwner()) {
-//                $merchantToken->setOwner($request->getCardToken()->getOwner());
-//            }
-
             $authorizationData->setMerchantToken($merchantToken);
         }
         if ($request->getApplePayToken() !== null) {

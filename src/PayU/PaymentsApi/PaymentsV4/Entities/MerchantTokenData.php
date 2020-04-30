@@ -16,11 +16,6 @@ final class MerchantTokenData implements \JsonSerializable
     private $cvv;
 
     /**
-     * @var string
-     */
-    private $owner;
-
-    /**
      * MerchantTokenData constructor.
      *
      * @param string $tokenHash
@@ -39,22 +34,13 @@ final class MerchantTokenData implements \JsonSerializable
     }
 
     /**
-     * @param string $owner
-     */
-    public function setOwner($owner)
-    {
-        $this->owner = $owner;
-    }
-
-    /**
      * @inheritDoc
      */
     public function jsonSerialize()
     {
         return [
             'tokenHash' => $this->tokenHash,
-            'cvv' => $this->cvv,
-            'owner' => $this->owner
+            'cvv' => $this->cvv
         ];
     }
 }
