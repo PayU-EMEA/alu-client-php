@@ -262,7 +262,7 @@ class RequestBuilder
             );
 
             $flightSegment->setAirlineCode($flightSegmentArray['AIRLINE_CODE']);
-            //$flightSegment->setAirlineName($flightSegmentArray['AIRLINE_NAME']);
+            $flightSegment->setAirlineName($flightSegmentArray['AIRLINE_NAME']);
             $flightSegment->setServiceClass($flightSegmentArray['SERVICE_CLASS']);
             $flightSegment->setStopover($flightSegmentArray['STOPOVER']);
             $flightSegment->setFareCode($flightSegmentArray['FARE_CODE']);
