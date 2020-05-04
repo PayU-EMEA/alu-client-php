@@ -2,6 +2,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4;
 
+use Exception;
 use PayU\Alu\Billing;
 use PayU\Alu\Card;
 use PayU\Alu\Delivery;
@@ -615,5 +616,58 @@ class PaymentsV4Test extends TestCase
         // Then
         $this->assertInstanceOf(Response::class, $actualResponse);
         $this->assertEquals($aluResponseToken, $actualResponse);
+    }
+
+    /**
+     * @expectedException \PayU\PaymentsApi\Exceptions\AuthorizationException
+     */
+    public function testRequestBuilderThrowsException()
+    {
+        // Given
+        $aluRequest = $this->createAluRequestWithTokenCreation();
+        $jsonRequest = $this->createJsonRequest();
+        $jsonResponse = $this->createJsonResponse();
+        $arrayResponse = $this->createArrayResponse();
+        $aluResponse = $this->createAluResponse();
+
+        // When
+        $this->addMockObjectsToPaymentsV4();
+
+        $this->mockRequestBuilder->expects($this->once())
+            ->method('buildAuthorizationRequest')
+            ->with($aluRequest)
+            ->willReturn($jsonRequest);
+
+        $this->mockHttpClient->expects($this->once())
+            ->method('post')
+            ->with(
+                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
+                $aluRequest->getMerchantConfig(),
+                self::ORDER_DATE,
+                $jsonRequest
+            )
+            ->willReturn($jsonResponse);
+
+        $authorizationResponse = new AuthorizationResponse($arrayResponse);
+
+        $this->mockResponseParser->expects($this->once())
+            ->method('parseJsonResponse')
+            ->with($jsonResponse)
+            ->willReturn($authorizationResponse);
+
+        $this->mockResponseBuilder->expects($this->once())
+            ->method('buildResponse')
+            ->with($authorizationResponse)
+            ->willReturn($aluResponse);
+
+        // Begin token flow
+
+        $this->mockRequestBuilder->expects($this->once())
+            ->method('buildTokenRequestBody')
+            ->with($aluRequest->getMerchantConfig()->getMerchantCode(), $aluResponse->getRefno())
+            ->willThrowException(new Exception());
+
+        // Then
+        $this->paymentsV4->authorize($aluRequest);
     }
 }
