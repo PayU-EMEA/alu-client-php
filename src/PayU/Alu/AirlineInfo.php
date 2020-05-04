@@ -133,11 +133,11 @@ class AirlineInfo
         $departureAirport,
         $destinationAirport,
         $airlineCode = null,
-        $airlineName = null,
         $serviceClass = null,
         $stopover = null,
         $fareCode = null,
-        $flightNumber = null
+        $flightNumber = null,
+        $airlineName = null
     ) {
         $segment = array(
             'DEPARTURE_DATE' => $departureDate,
