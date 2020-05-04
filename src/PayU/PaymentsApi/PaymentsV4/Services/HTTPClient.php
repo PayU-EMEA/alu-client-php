@@ -102,19 +102,26 @@ class HTTPClient
     }
 
     /**
-     * @param $url
-     * @param array $postParams
+     * @param string $url
+     * @param array $requestBody
+     * @param string $secretKey
      * @return string
      * @throws ConnectionException
      */
-    public function postTokenCreationRequest($url, array $postParams)
-    {
+    public function postTokenCreationRequest(
+        $url,
+        $requestBody,
+        $secretKey
+    ) {
+        $signature = $this->hashService->generateTokenSignature($requestBody, $secretKey);
+        $requestBody['signature'] = $signature;
+
         curl_setopt_array(
             $this->handler,
             array(
                 CURLOPT_URL => $url,
                 CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => http_build_query($postParams),
+                CURLOPT_POSTFIELDS => http_build_query($requestBody),
                 CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded')
             )
         );
