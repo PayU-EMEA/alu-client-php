@@ -24,8 +24,7 @@ use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
  * Secret Key - Your PayU Secret Key
  * Platform - RO | RU | UA | TR | HU
  */
-//todo modify merchantCode back to MERCHANT_CODE
-$cfg = new MerchantConfig('PAYU_2', 'SECRET_KEY', 'RO');
+$cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
 /**
  * Create user with params:
  *
@@ -46,15 +45,9 @@ $order = new Order();
  *
  * Full params available in the documentation
  */
-/**
- * todo remove $merchantOrderRef when pushing to master
- * also date format has been modified
- */
 
-$merchantOrderRef = strval(rand(1000, 9999));
 $order->withBackRef('http://path/to/your/returnUrlScript')
-    ->withOrderRef($merchantOrderRef)
-    //->withOrderRef('MerchantOrderRef')
+    ->withOrderRef('MerchantOrderRef')
     ->withCurrency('RON')
     ->withOrderDate(gmdate('Y-m-d\TH:i:sP'))
     ->withOrderTimeout(1000)
