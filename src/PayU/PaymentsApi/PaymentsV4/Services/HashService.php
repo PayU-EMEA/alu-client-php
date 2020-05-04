@@ -26,4 +26,22 @@ class HashService
 
         return hash_hmac("sha256", $stringToBeHashed, $merchantConfig->getSecretKey());
     }
+
+    /**
+     * @param array $requestArray
+     * @param string $secretKey
+     * @return string
+     */
+    public function generateTokenSignature($requestArray, $secretKey)
+    {
+        ksort($requestArray);
+        $stringToBeHashed = '';
+        foreach ($requestArray as $key => $val) {
+            if ($key !== 'timestamp')
+                $stringToBeHashed = $stringToBeHashed . $val;
+        }
+        $stringToBeHashed = $stringToBeHashed . $requestArray['timestamp'];
+
+        return hash_hmac("sha256", $stringToBeHashed, $secretKey);
+    }
 }
