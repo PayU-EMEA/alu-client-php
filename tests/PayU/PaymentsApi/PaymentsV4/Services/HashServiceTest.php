@@ -80,6 +80,22 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function generateTokenSignatureProvider()
+    {
+        return [
+            [
+                [
+                    'merchant' => 'CC921',
+                    'refNo' => 12039391,
+                    'timestamp' => 1428045257
+                ],
+                'secretKey' => 'SECRET_KEY',
+                'expectedHash' => 'c211b9fc82bc10fb9d104ba3c756bbb0e61eddb3bd26303b9e4109f271c7059e'
+            ]
+
+        ];
+    }
+
     /**
      * @dataProvider generateSignatureProvider
      */
@@ -99,6 +115,18 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $expectedHash,
             $this->hashService->generateSignature($this->merchantConfigMock, $orderDate, $jsonRequest)
+        );
+    }
+
+    /**
+     * @dataProvider generateTokenSignatureProvider
+     */
+    public function testGenerateTokenSignature($requestArray, $secretKey, $expectedHash)
+    {
+        // Then
+        $this->assertEquals(
+            $expectedHash,
+            $this->hashService->generateTokenSignature($requestArray, $secretKey)
         );
     }
 }
