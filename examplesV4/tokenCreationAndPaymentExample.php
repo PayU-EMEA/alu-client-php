@@ -208,7 +208,7 @@ try {
     echo('Token response data: ');
     echo $response->getTokenCode() . ' ' . $response->getTokenMessage() . ' Token:' . $response->getTokenHash() . "\n";
 
-    if ($response->getTokenCode() == 0 && $response->getTokenHash() !== ''){
+    if ($response->getTokenCode() == 0 && $response->getTokenHash() !== '') {
         $cardToken = new CardToken($response->getTokenHash());
         $requestWithToken->setCardToken($cardToken);
 
@@ -216,7 +216,6 @@ try {
 
         echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage() . "\n";
     }
-
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }
