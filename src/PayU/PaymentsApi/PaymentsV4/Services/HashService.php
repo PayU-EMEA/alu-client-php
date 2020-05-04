@@ -37,8 +37,9 @@ class HashService
         ksort($requestArray);
         $stringToBeHashed = '';
         foreach ($requestArray as $key => $val) {
-            if ($key !== 'timestamp')
+            if ($key !== 'timestamp') {
                 $stringToBeHashed = $stringToBeHashed . $val;
+            }
         }
         $stringToBeHashed = $stringToBeHashed . $requestArray['timestamp'];
 
