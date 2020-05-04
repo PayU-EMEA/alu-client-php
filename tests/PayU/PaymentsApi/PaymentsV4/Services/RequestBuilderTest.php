@@ -288,11 +288,11 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'ANK',
             'WDC',
             'XY',
-            'XY_NAME',
             'B',
             1,
             'MAXY12',
-            'F5512'
+            'F5512',
+            'XY_NAME'
         );
 
         $airlineInfoArray = [
