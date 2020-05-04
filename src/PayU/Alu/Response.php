@@ -119,6 +119,44 @@ class Response
      */
     private $type;
 
+    /** @var int */
+    private $tokenCode;
+
+    /** @var string */
+    private $tokenMessage;
+
+    /**
+     * @return int
+     */
+    public function getTokenCode()
+    {
+        return $this->tokenCode;
+    }
+
+    /**
+     * @param int $tokenCode
+     */
+    public function setTokenCode($tokenCode)
+    {
+        $this->tokenCode = $tokenCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenMessage()
+    {
+        return $this->tokenMessage;
+    }
+
+    /**
+     * @param string $tokenMessage
+     */
+    public function setTokenMessage($tokenMessage)
+    {
+        $this->tokenMessage = $tokenMessage;
+    }
+
     /**
      * @param string $type
      */
