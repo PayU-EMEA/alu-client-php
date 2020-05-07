@@ -3,7 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
-use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\PaymentsV4\Entities\Response\AuthorizationResponse;
 use ReflectionClass;
 
 class ResponseParserTest extends \PHPUnit_Framework_TestCase

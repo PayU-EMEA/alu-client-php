@@ -1,7 +1,10 @@
 <?php
 
 
-namespace PayU\PaymentsApi\PaymentsV4\Entities;
+namespace PayU\PaymentsApi\PaymentsV4\Entities\Request;
+
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\AirlineInfo\FlightSegments;
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\AirlineInfo\TravelAgency;
 
 final class AirlineInfoData implements \JsonSerializable
 {

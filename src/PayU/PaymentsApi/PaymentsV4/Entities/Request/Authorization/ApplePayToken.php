@@ -1,6 +1,8 @@
 <?php
 
-namespace PayU\PaymentsApi\PaymentsV4\Entities;
+namespace PayU\PaymentsApi\PaymentsV4\Entities\Request\Authorization;
+
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Authorization\ApplePayToken\ApplePayTokenHeader;
 
 final class ApplePayToken implements \JsonSerializable
 {

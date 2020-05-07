@@ -1,7 +1,9 @@
 <?php
 
 
-namespace PayU\PaymentsApi\PaymentsV4\Entities;
+namespace PayU\PaymentsApi\PaymentsV4\Entities\Request;
+
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Product\Marketplace;
 
 final class ProductData implements \JsonSerializable
 {

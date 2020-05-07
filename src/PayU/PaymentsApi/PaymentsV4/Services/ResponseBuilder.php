@@ -5,7 +5,7 @@ namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\Response;
 use PayU\Alu\ResponseWireAccount;
-use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\PaymentsV4\Entities\Response\AuthorizationResponse;
 
 class ResponseBuilder
 {

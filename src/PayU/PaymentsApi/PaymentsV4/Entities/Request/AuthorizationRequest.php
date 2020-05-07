@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PayU\PaymentsApi\PaymentsV4\Entities;
+namespace PayU\PaymentsApi\PaymentsV4\Entities\Request;
 
 final class AuthorizationRequest implements \JsonSerializable
 {
@@ -34,11 +34,6 @@ final class AuthorizationRequest implements \JsonSerializable
      * @var ProductData[]
      */
     private $products;
-
-    /**
-     * @var MerchantData
-     */
-    private $merchant;
 
     /** @var AirlineInfoData */
     private $airlineInfoData;
@@ -81,14 +76,6 @@ final class AuthorizationRequest implements \JsonSerializable
         $this->authorization = $authorization;
         $this->client = $client;
         $this->products = $products;
-    }
-
-    /**
-     * @param MerchantData $merchant
-     */
-    public function setMerchant($merchant)
-    {
-        $this->merchant = $merchant;
     }
 
     /**

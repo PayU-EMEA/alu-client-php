@@ -1,7 +1,10 @@
 <?php
 
 
-namespace PayU\PaymentsApi\PaymentsV4\Entities;
+namespace PayU\PaymentsApi\PaymentsV4\Entities\Request;
+
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Client\BillingData;
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Client\DeliveryData;
 
 final class ClientData implements \JsonSerializable
 {

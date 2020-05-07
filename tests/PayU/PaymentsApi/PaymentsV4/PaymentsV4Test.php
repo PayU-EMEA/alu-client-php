@@ -11,7 +11,7 @@ use PayU\Alu\Product;
 use PayU\Alu\Request;
 use PayU\Alu\Response;
 use PayU\Alu\User;
-use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
+use PayU\PaymentsApi\PaymentsV4\Entities\Response\AuthorizationResponse;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\AuthorizationResponseException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
 use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;

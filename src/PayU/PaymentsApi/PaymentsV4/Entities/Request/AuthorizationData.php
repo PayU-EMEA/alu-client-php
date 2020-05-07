@@ -1,7 +1,12 @@
 <?php
 
 
-namespace PayU\PaymentsApi\PaymentsV4\Entities;
+namespace PayU\PaymentsApi\PaymentsV4\Entities\Request;
+
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Authorization\ApplePayToken;
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Authorization\CardDetails;
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Authorization\FxData;
+use PayU\PaymentsApi\PaymentsV4\Entities\Request\Authorization\MerchantTokenData;
 
 final class AuthorizationData implements \JsonSerializable
 {
