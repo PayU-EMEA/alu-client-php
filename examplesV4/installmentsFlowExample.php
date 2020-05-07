@@ -158,7 +158,13 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '01', '2026', '123', 'Card Owner Name');
+$card = new Card(
+    '4111111111111111',
+    '01',
+    date("Y", strtotime("+1 year")),
+    '123',
+    'Card Owner Name'
+);
 
 /**
  * Create new Request with params:
