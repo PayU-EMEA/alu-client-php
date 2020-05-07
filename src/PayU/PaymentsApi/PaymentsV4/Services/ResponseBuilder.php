@@ -28,50 +28,50 @@ class ResponseBuilder
 
         $response = new Response();
         $response->setCode($responseArray['CODE']);
-        $response->setRefno($responseArray['REFNO']);
-        $response->setAlias($responseArray['ALIAS']);
-        $response->setStatus($responseArray['STATUS']);
-        $response->setReturnCode($responseArray['RETURN_CODE']);
+
+        if (isset($responseArray['STATUS'])) {
+            $response->setStatus($responseArray['STATUS']);
+        }
+
         $response->setReturnMessage($responseArray['RETURN_MESSAGE']);
-        $response->setDate($responseArray['DATE']);
+        $response->setRefno($responseArray['REFNO']);
 
-        // for 3D secure handling flow
-        if ($responseArray['URL_3DS'] !== null) {
-            $response->setThreeDsUrl($responseArray['URL_3DS']);
+        if (isset($responseArray['ORDER_REF'])) {
+            $response->setOrderRef($responseArray['ORDER_REF']);
         }
 
-        // 4 parameters used only on TR platform for ALU v1, v2 and v3
-        if ($responseArray['AMOUNT'] !== null) {
-            $response->setAmount($responseArray['AMOUNT']);
-        }
-        if ($responseArray['CURRENCY'] !== null) {
+        $response->setAmount($responseArray['AMOUNT']);
+
+        if (isset($responseArray['CURRENCY'])) {
             $response->setCurrency($responseArray['CURRENCY']);
         }
-        if ($responseArray['INSTALLMENTS_NO'] !== null) {
+
+        // PaymentResult object
+        if (isset($responseArray['RETURN_CODE'])) {
+            $response->setReturnCode($responseArray['RETURN_CODE']);
+        }
+        if (isset($responseArray['AUTH_CODE'])) {
+            $response->setAuthCode($responseArray['AUTH_CODE']);
+        }
+        if (isset($responseArray['RRN'])) {
+            $response->setRrn($responseArray['RRN']);
+        }
+        if (isset($responseArray['INSTALLMENTS_NO'])) {
             $response->setInstallmentsNo($responseArray['INSTALLMENTS_NO']);
         }
-        if ($responseArray['CARD_PROGRAM_NAME'] !== null) {
+        if (isset($responseArray['CARD_PROGRAM_NAME'])) {
             $response->setCardProgramName($responseArray['CARD_PROGRAM_NAME']);
         }
 
-        // parameters used on ALU v2 and v3
-        if ($responseArray['ORDER_REF'] !== null) {
-            $response->setOrderRef($responseArray['ORDER_REF']);
-        }
-        if ($responseArray['AUTH_CODE'] !== null) {
-            $response->setAuthCode($responseArray['AUTH_CODE']);
-        }
-        if ($responseArray['RRN'] !== null) {
-            $response->setRrn($responseArray['RRN']);
-        }
-        if ($responseArray['URL_REDIRECT'] !== null) {
+        if (isset($responseArray['URL_REDIRECT'])) {
             $response->setUrlRedirect($responseArray['URL_REDIRECT']);
+            $response->setThreeDsUrl($responseArray['URL_3DS']);
         }
 
         $response->parseAdditionalParameters($responseArray);
 
         // parameters used for wire payments on ALU v3
-        if ($responseArray['WIRE_ACCOUNTS'] !== null && count($responseArray['WIRE_ACCOUNTS']) > 0) {
+        if (isset($responseArray['WIRE_ACCOUNTS']) && count($responseArray['WIRE_ACCOUNTS']) > 0) {
             foreach ($responseArray['WIRE_ACCOUNTS'] as $account) {
                 $response->addWireAccount($this->getResponseWireAccount($account));
             }
