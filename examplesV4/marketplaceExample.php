@@ -176,7 +176,8 @@ $card = new Card(
     '01',
     date("Y", strtotime("+1 year")),
     '123',
-    'Card Owner Name');
+    'Card Owner Name'
+);
 
 /**
  * Create new Request with params:
