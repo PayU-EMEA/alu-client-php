@@ -49,7 +49,7 @@ final class AuthorizationPaymentsApiClientFactory
                 } catch (HttpClientException $e) {
                     throw new ClientException($e->getMessage(), $e->getCode(), $e);
                 }
-
+                break;
             default:
                 throw new AuthorizationPaymentsApiClientFactoryException('Invalid API version provided.');
         }
