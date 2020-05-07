@@ -4,8 +4,8 @@
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\MerchantConfig;
-use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
+use PayU\PaymentsApi\PaymentsV4\Exceptions\HttpClientException;
 
 class HTTPClient
 {
@@ -23,12 +23,12 @@ class HTTPClient
 
     /**
      * HTTPClient constructor.
-     * @throws AuthorizationException
+     * @throws HttpClientException
      */
     public function __construct()
     {
         if (!function_exists('curl_init')) {
-            throw new AuthorizationException('CURL php extension is not available on your system');
+            throw new HttpClientException('CURL php extension is not available on your system');
         }
 
         $this->hashService = new HashService();

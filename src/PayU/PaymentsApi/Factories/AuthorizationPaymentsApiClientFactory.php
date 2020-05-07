@@ -6,8 +6,8 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\AluV3\AluV3;
 use PayU\PaymentsApi\AluV3\Services\HashService;
 use PayU\PaymentsApi\AluV3\Services\HTTPClient;
-use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Exceptions\AuthorizationPaymentsApiClientFactoryException;
+use PayU\PaymentsApi\PaymentsV4\Exceptions\HttpClientException;
 use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
 /**
@@ -26,7 +26,6 @@ final class AuthorizationPaymentsApiClientFactory
      * @return AluV3 | PaymentsV4
      * @throws AuthorizationPaymentsApiClientFactoryException
      * @throws ClientException
-     * @throws AuthorizationException
      */
     public function createPaymentsApiClient(
         $apiVersion,
@@ -45,7 +44,12 @@ final class AuthorizationPaymentsApiClientFactory
                 }
                 return new AluV3($httpClient, $hashService);
             case PaymentsV4::API_VERSION_V4:
-                return new PaymentsV4();
+                try {
+                    return new PaymentsV4();
+                } catch (HttpClientException $e) {
+                    throw new ClientException($e->getMessage(), $e->getCode(), $e);
+                }
+
             default:
                 throw new AuthorizationPaymentsApiClientFactoryException('Invalid API version provided.');
         }

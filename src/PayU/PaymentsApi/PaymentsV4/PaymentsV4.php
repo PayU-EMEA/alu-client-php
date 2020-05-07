@@ -6,6 +6,7 @@ use PayU\Alu\Request;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Interfaces\AuthorizationPaymentsApiClient;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
+use PayU\PaymentsApi\PaymentsV4\Exceptions\HttpClientException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\RequestBuilderException;
 use PayU\PaymentsApi\PaymentsV4\Services\HTTPClient;
 use PayU\PaymentsApi\PaymentsV4\Services\RequestBuilder;
@@ -40,7 +41,7 @@ class PaymentsV4 implements AuthorizationPaymentsApiClient
 
     /**
      * PaymentsV4 constructor.
-     * @throws AuthorizationException
+     * @throws HttpClientException
      */
     public function __construct()
     {
