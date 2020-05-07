@@ -6,6 +6,7 @@ use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\Exceptions\AuthorizationException;
 use PayU\PaymentsApi\Exceptions\AuthorizationPaymentsApiClientFactoryException;
 use PayU\PaymentsApi\Factories\AuthorizationPaymentsApiClientFactory;
+use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
 /**
  * Class Client
@@ -60,6 +61,11 @@ class Client
     {
         if ($this->customUrl !== null) {
             $request->setCustomUrl($this->customUrl);
+        }
+
+        if ($request->getPaymentsApiVersion() === PaymentsV4::API_VERSION_V4) {
+            $date = $request->getOrder()->getOrderDate();
+            $request->getOrder()->withOrderDate(gmdate('Y-m-d\TH:i:sP', strtotime($date)));
         }
 
         try {
