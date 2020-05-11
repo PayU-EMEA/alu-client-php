@@ -340,7 +340,7 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $result,
             json_decode(
-                $this->requestBuilder->buildAuthorizationRequest($request, $this->mockHashService),
+                $this->requestBuilder->buildAuthorizationRequest($request),
                 true
             )
         );
