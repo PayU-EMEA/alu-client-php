@@ -27,20 +27,29 @@ class ResponseBuilder
         $responseArray = $authorizationResponse->getResponse();
 
         $response = new Response();
-        $response->setCode($responseArray['CODE']);
+        if (isset($responseArray['CODE'])) {
+            $response->setCode($responseArray['CODE']);
+        }
 
         if (isset($responseArray['STATUS'])) {
             $response->setStatus($responseArray['STATUS']);
         }
 
-        $response->setReturnMessage($responseArray['RETURN_MESSAGE']);
-        $response->setRefno($responseArray['REFNO']);
+        if (isset($responseArray['RETURN_MESSAGE'])) {
+            $response->setReturnMessage($responseArray['RETURN_MESSAGE']);
+        }
+
+        if (isset($responseArray['REFNO'])) {
+            $response->setRefno($responseArray['REFNO']);
+        }
 
         if (isset($responseArray['ORDER_REF'])) {
             $response->setOrderRef($responseArray['ORDER_REF']);
         }
 
-        $response->setAmount($responseArray['AMOUNT']);
+        if (isset($responseArray['AMOUNT'])) {
+            $response->setAmount($responseArray['AMOUNT']);
+        }
 
         if (isset($responseArray['CURRENCY'])) {
             $response->setCurrency($responseArray['CURRENCY']);
@@ -65,7 +74,7 @@ class ResponseBuilder
 
         if (isset($responseArray['URL_REDIRECT'])) {
             $response->setUrlRedirect($responseArray['URL_REDIRECT']);
-            $response->setThreeDsUrl($responseArray['URL_3DS']);
+            $response->setThreeDsUrl($responseArray['URL_REDIRECT']);
         }
 
         $response->parseAdditionalParameters($responseArray);
