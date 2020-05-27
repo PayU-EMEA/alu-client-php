@@ -4,7 +4,6 @@
  */
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
-
 use PayU\Alu\Billing;
 use PayU\Alu\Card;
 use PayU\Alu\Client;
@@ -48,16 +47,10 @@ $order = new Order();
  * Full params available in the documentation
  */
 
-/**
- * todo remove $merchantOrderRef when pushing to master
- */
-
-$merchantOrderRef = strval(rand(1000, 9999));
 $order->withBackRef('http://path/to/your/returnUrlScript')
-    ->withOrderRef($merchantOrderRef)
-    //->withOrderRef('MerchantOrderRef')
+    ->withOrderRef((string)random_int(1000, 9999))
     ->withCurrency('RON')
-    ->withOrderDate(gmdate('Y-m-d H:i:s'))
+    ->withOrderDate(gmdate('Y-m-d\TH:i:sP')) // Different format from ALU v3
     ->withOrderTimeout(1000)
     ->withPayMethod('CCVISAMC');
 
@@ -72,10 +65,10 @@ $product = new Product();
  * Full params available in the documentation
  */
 $marketplace = new Marketplace(
-    'Market1',
-    '7cff8d290e58-b4de-4c31-ac82-ac1ae54c',
+    '49a88d24-7615-11e8-adc0-fa7ae01bbeb2', // Make sure to generate a product id with uuid format
+    'b6a5e941-5f06-4c24-b834-0d9c0a75f487', // Seller ID as uuid format from Marketplace module
     1.66,
-    'EUR'
+    'RON' // Should be the same currency as the one of total amount of order
 );
 
 $product->withCode('PCODE01')
@@ -101,10 +94,10 @@ $product = new Product();
  * Full params available in the documentation
  */
 $marketplace = new Marketplace(
-    'Market2',
-    '7cff8d290e58-b4de-4c31-ac82-ac1ae54c',
+    '49a88d24-7615-11e8-adc0-fa7ae01bbeb1', // Make sure to generate a product id with uuid format
+    'ac1ae54c-ac82-4c31-b4de-7cff8d290e58', // Seller ID as uuid format from Marketplace module
     1.86,
-    'EUR'
+    'RON' // Should be the same currency as the one of total amount of order
 );
 
 $product->withCode('PCODE02')
