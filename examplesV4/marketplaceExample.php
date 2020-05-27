@@ -64,8 +64,9 @@ $product = new Product();
  *
  * Full params available in the documentation
  */
+$randomProductId = (string)random_int(100, 999);
 $marketplace = new Marketplace(
-    '49a88d24-7615-11e8-adc0-fa7ae01bbeb2', // Make sure to generate a product id with uuid format
+    "49a88d24-7615-11e8-adc0-fa7ae01bb$randomProductId", // Make sure to generate a product id with uuid format
     'b6a5e941-5f06-4c24-b834-0d9c0a75f487', // Seller ID as uuid format from Marketplace module
     1.66,
     'RON' // Should be the same currency as the one of total amount of order
@@ -94,7 +95,7 @@ $product = new Product();
  * Full params available in the documentation
  */
 $marketplace = new Marketplace(
-    '49a88d24-7615-11e8-adc0-fa7ae01bbeb1', // Make sure to generate a product id with uuid format
+    $randomProductId . '88d24-7615-11e8-11e8-fa7ae01bbeb1', // Make sure to generate a product id with uuid format
     'ac1ae54c-ac82-4c31-b4de-7cff8d290e58', // Seller ID as uuid format from Marketplace module
     1.86,
     'RON' // Should be the same currency as the one of total amount of order
