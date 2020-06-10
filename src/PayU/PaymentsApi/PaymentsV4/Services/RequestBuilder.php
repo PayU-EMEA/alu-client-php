@@ -3,6 +3,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
+use DateTime;
 use PayU\Alu\Product;
 use PayU\Alu\Request;
 use PayU\PaymentsApi\PaymentsV4\Entities\Request\Authorization\ApplePayToken;
@@ -287,5 +288,22 @@ class RequestBuilder
         }
 
         return $flightSegmentsArray;
+    }
+
+    /**
+     * @param string $merchantCode
+     * @param int $payuPaymentReference
+     * @return array
+     * @throws \Exception
+     */
+    public function buildTokenRequestBody($merchantCode, $payuPaymentReference)
+    {
+        $date = new DateTime();
+
+        return [
+            'merchant' => $merchantCode,
+            'refNo' => $payuPaymentReference,
+            'timestamp' => strval($date->getTimestamp())
+        ];
     }
 }

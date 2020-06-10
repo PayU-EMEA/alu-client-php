@@ -2,6 +2,7 @@
 
 namespace PayU\PaymentsApi\PaymentsV4;
 
+use Exception;
 use PayU\Alu\Billing;
 use PayU\Alu\Card;
 use PayU\Alu\Delivery;
@@ -56,22 +57,22 @@ class PaymentsV4Test extends TestCase
     {
         $this->mockRequestBuilder = $this->getMockBuilder(RequestBuilder::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('buildAuthorizationRequest'))
+            ->setMethods(array('buildAuthorizationRequest', 'buildTokenRequestBody'))
             ->getMock();
 
         $this->mockResponseParser = $this->getMockBuilder(ResponseParser::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('parseJsonResponse'))
+            ->setMethods(array('parseJsonResponse', 'parseTokenJsonResponse'))
             ->getMock();
 
         $this->mockResponseBuilder = $this->getMockBuilder(ResponseBuilder::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('buildResponse'))
+            ->setMethods(array('buildResponse', 'buildTokenResponse'))
             ->getMock();
 
         $this->mockHttpClient = $this->getMockBuilder(HTTPClient::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('post'))
+            ->setMethods(array('post', 'postTokenCreationRequest'))
             ->getMock();
 
         $this->paymentsV4 = new PaymentsV4();
@@ -103,7 +104,7 @@ class PaymentsV4Test extends TestCase
      */
     private function createAluRequest()
     {
-        $cfg = new MerchantConfig('PAYU_2', 'SECRET_KEY', 'RO');
+        $cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
 
         $user = new User('127.0.0.1');
 
@@ -159,6 +160,74 @@ class PaymentsV4Test extends TestCase
 
 
         $card = new Card('4111111111111111', '01', '2026', 123, 'Card Owner Name');
+
+        $request = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
+
+        $request->setCard($card);
+
+        return $request;
+    }
+
+
+    private function createAluRequestWithTokenCreation()
+    {
+        $cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
+
+        $user = new User('127.0.0.1');
+
+        $order = new Order();
+
+        $order->withBackRef('http://path/to/your/returnUrlScript')
+            ->withOrderRef(self::MERCHANT_PAYMENT_REFERENCE)
+            ->withCurrency('RON')
+            ->withOrderDate(self::ORDER_DATE)
+            ->withOrderTimeout(1000)
+            ->withPayMethod('CCVISAMC');
+
+        $product = new Product();
+        $product->withCode('PCODE01')
+            ->withName('PNAME01')
+            ->withPrice(100.0)
+            ->withVAT(24.0)
+            ->withQuantity(1);
+
+        $order->addProduct($product);
+
+        $product = new Product();
+        $product->withCode('PCODE02')
+            ->withName('PNAME02')
+            ->withPrice(200.0)
+            ->withVAT(24.0)
+            ->withQuantity(1);
+
+        $order->addProduct($product);
+
+        $billing = new Billing();
+
+        $billing->withAddressLine1('Address1')
+            ->withAddressLine2('Address2')
+            ->withCity('City')
+            ->withCountryCode('RO')
+            ->withEmail('john.doe@mail.com')
+            ->withFirstName('FirstName')
+            ->withLastName('LastName')
+            ->withPhoneNumber('40123456789')
+            ->withIdentityCardNumber('111222')
+            ->withIdentityCardType(null);
+
+        $delivery = new Delivery();
+        $delivery->withAddressLine1('Address1')
+            ->withAddressLine2('Address2')
+            ->withCity('City')
+            ->withCountryCode('RO')
+            ->withEmail('john.doe@mail.com')
+            ->withFirstName('FirstName')
+            ->withLastName('LastName')
+            ->withPhoneNumber('40123456789');
+
+
+        $card = new Card('4111111111111111', '01', '2026', 123, 'Card Owner Name');
+        $card->enableTokenCreation();
 
         $request = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
 
@@ -302,6 +371,57 @@ class PaymentsV4Test extends TestCase
         return $response;
     }
 
+    private function createTokenRequestArray()
+    {
+        return [
+            'merchant' => 'MERCHANT_CODE',
+            'refNo' => self::PAYU_PAYMENT_REFERENCE,
+            'timestamp' => '1428045257'
+        ];
+    }
+
+    private function createTokenJsonResponse()
+    {
+        return '{
+           "meta":{
+              "status":{
+                 "code":0,
+                 "message":"success"
+              },
+              "response":{
+                 "httpCode":200,
+                 "httpMessage":"200 OK"
+              },
+              "version":"v2"
+           },
+           "response":{
+              "token":"b7e5d8649c9e2e75726b59c56c29e91d",
+              "cardUniqueIdentifier":"e9fc5107db302fa8373efbedf55a1614b5a3125ee59fe274e7dc802930d68f6d"
+           }
+        ';
+    }
+
+    private function createTokenArrayResponse()
+    {
+        return [
+            'meta' => [
+                'status' => [
+                    "code" => 0,
+                    "message" => "success"
+                ],
+                'response' => [
+                    "httpCode" => 200,
+                    "httpMessage" => "200 OK"
+                ],
+                'version' => 'v2'
+            ],
+            'response' => [
+                "token" => "b7e5d8649c9e2e75726b59c56c29e91d",
+                "cardUniqueIdentifier" => "e9fc5107db302fa8373efbedf55a1614b5a3125ee59fe274e7dc802930d68f6d"
+            ]
+        ];
+    }
+
     public function testAuthorize()
     {
         // Given
@@ -412,6 +532,142 @@ class PaymentsV4Test extends TestCase
             ->with($jsonResponse)
             ->willThrowException(new AuthorizationResponseException());
 
+        $this->paymentsV4->authorize($aluRequest);
+    }
+
+    public function testAuthorizeWithCreateToken()
+    {
+        // Given
+        $aluRequest = $this->createAluRequestWithTokenCreation();
+        $jsonRequest = $this->createJsonRequest();
+        $jsonResponse = $this->createJsonResponse();
+        $arrayResponse = $this->createArrayResponse();
+        $aluResponse = $this->createAluResponse();
+
+        $tokenRequest = $this->createTokenRequestArray();
+        $tokenJsonResponse = $this->createTokenJsonResponse();
+        $tokenArrayResponse = $this->createTokenArrayResponse();
+        $aluResponseToken = $this->createAluResponse();
+
+        $aluResponseToken->setTokenCode(0);
+        $aluResponseToken->setTokenMessage('success');
+        $aluResponseToken->setTokenHash('b7e5d8649c9e2e75726b59c56c29e91d');
+
+        // When
+        $this->addMockObjectsToPaymentsV4();
+
+        $this->mockRequestBuilder->expects($this->once())
+            ->method('buildAuthorizationRequest')
+            ->with($aluRequest)
+            ->willReturn($jsonRequest);
+
+        $this->mockHttpClient->expects($this->once())
+            ->method('post')
+            ->with(
+                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
+                $aluRequest->getMerchantConfig(),
+                self::ORDER_DATE,
+                $jsonRequest
+            )
+            ->willReturn($jsonResponse);
+
+        $authorizationResponse = new AuthorizationResponse($arrayResponse);
+
+        $this->mockResponseParser->expects($this->once())
+            ->method('parseJsonResponse')
+            ->with($jsonResponse)
+            ->willReturn($authorizationResponse);
+
+        $this->mockResponseBuilder->expects($this->once())
+            ->method('buildResponse')
+            ->with($authorizationResponse)
+            ->willReturn($aluResponse);
+
+        // Begin token flow
+
+        $this->mockRequestBuilder->expects($this->once())
+            ->method('buildTokenRequestBody')
+            ->with($aluRequest->getMerchantConfig()->getMerchantCode(), $aluResponse->getRefno())
+            ->willReturn($tokenRequest);
+
+        $this->mockHttpClient->expects($this->once())
+            ->method('postTokenCreationRequest')
+            ->with(
+                self::PAYMENTS_URL . PaymentsV4::BASE_CREATE_TOKEN_PATH,
+                $tokenRequest,
+                $aluRequest->getMerchantConfig()->getSecretKey()
+            )
+            ->willReturn($tokenJsonResponse);
+
+        $authorizationTokenResponse = new AuthorizationResponse($tokenArrayResponse);
+
+        $this->mockResponseParser->expects($this->once())
+            ->method('parseTokenJsonResponse')
+            ->with($tokenJsonResponse)
+            ->willReturn($authorizationTokenResponse);
+
+        $this->mockResponseBuilder->expects($this->once())
+            ->method('buildTokenResponse')
+            ->with($authorizationTokenResponse, $aluResponse)
+            ->willReturn($aluResponseToken);
+
+        $actualResponse = $this->paymentsV4->authorize($aluRequest);
+
+        // Then
+        $this->assertInstanceOf(Response::class, $actualResponse);
+        $this->assertEquals($aluResponseToken, $actualResponse);
+    }
+
+    /**
+     * @expectedException \PayU\PaymentsApi\Exceptions\AuthorizationException
+     */
+    public function testRequestBuilderThrowsException()
+    {
+        // Given
+        $aluRequest = $this->createAluRequestWithTokenCreation();
+        $jsonRequest = $this->createJsonRequest();
+        $jsonResponse = $this->createJsonResponse();
+        $arrayResponse = $this->createArrayResponse();
+        $aluResponse = $this->createAluResponse();
+
+        // When
+        $this->addMockObjectsToPaymentsV4();
+
+        $this->mockRequestBuilder->expects($this->once())
+            ->method('buildAuthorizationRequest')
+            ->with($aluRequest)
+            ->willReturn($jsonRequest);
+
+        $this->mockHttpClient->expects($this->once())
+            ->method('post')
+            ->with(
+                self::PAYMENTS_URL . PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
+                $aluRequest->getMerchantConfig(),
+                self::ORDER_DATE,
+                $jsonRequest
+            )
+            ->willReturn($jsonResponse);
+
+        $authorizationResponse = new AuthorizationResponse($arrayResponse);
+
+        $this->mockResponseParser->expects($this->once())
+            ->method('parseJsonResponse')
+            ->with($jsonResponse)
+            ->willReturn($authorizationResponse);
+
+        $this->mockResponseBuilder->expects($this->once())
+            ->method('buildResponse')
+            ->with($authorizationResponse)
+            ->willReturn($aluResponse);
+
+        // Begin token flow
+
+        $this->mockRequestBuilder->expects($this->once())
+            ->method('buildTokenRequestBody')
+            ->with($aluRequest->getMerchantConfig()->getMerchantCode(), $aluResponse->getRefno())
+            ->willThrowException(new Exception());
+
+        // Then
         $this->paymentsV4->authorize($aluRequest);
     }
 }

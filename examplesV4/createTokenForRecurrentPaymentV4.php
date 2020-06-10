@@ -1,9 +1,9 @@
 <?php
+
 /**
  * Include composer class autoloader
  */
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
-
 
 use PayU\Alu\Billing;
 use PayU\Alu\Card;
@@ -14,7 +14,6 @@ use PayU\Alu\Order;
 use PayU\Alu\Product;
 use PayU\Alu\Request;
 use PayU\Alu\User;
-use PayU\Alu\Exceptions\ConnectionException;
 use PayU\Alu\Exceptions\ClientException;
 use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
@@ -25,13 +24,12 @@ use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
  * Secret Key - Your PayU Secret Key
  * Platform - RO | RU | UA | TR | HU
  */
-//todo modify merchantCode back to MERCHANT_CODE
-$cfg = new MerchantConfig('PAYU_2', 'SECRET_KEY', 'RO');
-
+$cfg = new MerchantConfig('MERCHANT_CODE', 'SECRET_KEY', 'RO');
 /**
  * Create user with params:
  *
  * User IP - User's IP address
+ * Card Number Input Time - Time it took the user to enter credit card number in seconds
  * User Time  - Time of user computer - optional
  *
  */
@@ -48,15 +46,8 @@ $order = new Order();
  * Full params available in the documentation
  */
 
-/**
- * todo remove $merchantOrderRef when pushing to master
- * also date format has been modified
- */
-
-$merchantOrderRef = strval(rand(1000, 9999));
 $order->withBackRef('http://path/to/your/returnUrlScript')
-    ->withOrderRef($merchantOrderRef)
-    //->withOrderRef('MerchantOrderRef')
+    ->withOrderRef('MerchantOrderRef')
     ->withCurrency('RON')
     ->withOrderDate(gmdate('Y-m-d\TH:i:sP'))
     ->withOrderTimeout(1000)
@@ -124,7 +115,6 @@ $billing->withAddressLine1('Address1')
     ->withPhoneNumber('40123456789')
     ->withIdentityCardNumber('111222');
 
-
 /**
  * Create new delivery address
  *
@@ -156,7 +146,18 @@ $delivery->withAddressLine1('Address1')
  * Credit Card CVV (Security Code)
  * Credit Card Owner
  */
-$card = new Card('4111111111111111', '01', '2026', '123', 'Card Owner Name');
+$card = new Card(
+    '4111111111111111',
+    '01',
+    date("Y", strtotime("+1 year")),
+    123,
+    'Card Owner Name'
+);
+
+/**
+ * tokenize card for further token payments
+ */
+$card->enableTokenCreation();
 
 /**
  * Create new Request with params:
@@ -168,7 +169,6 @@ $card = new Card('4111111111111111', '01', '2026', '123', 'Card Owner Name');
  * User object
  */
 $request = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
-//$request = new Request($cfg, $order, $billing, $delivery, $user);
 
 /**
  * Add the Credit Card to the Request
@@ -202,12 +202,9 @@ try {
         die();
     }
 
-    echo $response->getCode()
-        . ' ' . $response->getStatus()
-        . ' ' . $response->getReturnCode()
-        . ' ' . $response->getReturnMessage();
-} catch (ConnectionException $exception) {
-    echo $exception->getMessage();
+    echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo('Token response data: ');
+    echo $response->getTokenCode() . ' ' . $response->getTokenMessage() . ' Token:' . $response->getTokenHash();
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }

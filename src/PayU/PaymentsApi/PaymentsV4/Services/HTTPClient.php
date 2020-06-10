@@ -100,4 +100,42 @@ class HTTPClient
             'Content-Type: application/json;charset=utf-8'
         ];
     }
+
+    /**
+     * @param string $url
+     * @param array $requestBody
+     * @param string $secretKey
+     * @return string
+     * @throws ConnectionException
+     */
+    public function postTokenCreationRequest(
+        $url,
+        $requestBody,
+        $secretKey
+    ) {
+        $signature = $this->hashService->generateTokenSignature($requestBody, $secretKey);
+        $requestBody['signature'] = $signature;
+
+        curl_setopt_array(
+            $this->handler,
+            array(
+                CURLOPT_URL => $url,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => http_build_query($requestBody),
+                CURLOPT_HTTPHEADER => array('Content-Type: application/x-www-form-urlencoded')
+            )
+        );
+
+        $result = curl_exec($this->handler);
+        if (curl_errno($this->handler) > 0) {
+            throw new ConnectionException(
+                sprintf(
+                    'Curl error "%s" when accessing url: "%s"',
+                    curl_error($this->handler),
+                    $url
+                )
+            );
+        }
+        return $result;
+    }
 }

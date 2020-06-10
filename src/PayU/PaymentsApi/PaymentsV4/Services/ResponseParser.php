@@ -42,4 +42,20 @@ class ResponseParser
     {
         return $this->aluResponseMapper->processResponse($jsonResponse);
     }
+
+    /**
+     * @param string $jsonResponse
+     * @return AuthorizationResponse
+     * @throws AuthorizationResponseException
+     */
+    public function parseTokenJsonResponse($jsonResponse)
+    {
+        $responseArray = json_decode($jsonResponse, true);
+
+        if (is_array($responseArray)) {
+            return new AuthorizationResponse($responseArray);
+        }
+
+        throw new AuthorizationResponseException('Could not decode Json response');
+    }
 }

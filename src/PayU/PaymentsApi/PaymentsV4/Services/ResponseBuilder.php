@@ -107,4 +107,24 @@ class ResponseBuilder
 
         return $responseWireAccount;
     }
+
+    /**
+     * @param AuthorizationResponse $authorizationResponse
+     * @param Response $response
+     * @return Response
+     */
+    public function buildTokenResponse(
+        AuthorizationResponse $authorizationResponse,
+        Response $response
+    ) {
+        $responseArray = $authorizationResponse->getResponse();
+
+        if ($responseArray["meta"]["status"]["code"] === 0) {
+            $response->setTokenHash($responseArray["response"]["token"]);
+        }
+        $response->setTokenCode($responseArray["meta"]["status"]["code"]);
+        $response->setTokenMessage($responseArray["meta"]["status"]["message"]);
+
+        return $response;
+    }
 }
