@@ -143,7 +143,12 @@ class RequestBuilder
             $authorizationRequest->setStoredCredentialsData($storedCredentials);
         }
 
-        return json_encode($authorizationRequest);
+        $jsonRequest = json_encode($authorizationRequest);
+        if ($jsonRequest === false) {
+            throw new RequestBuilderException('Failed json encoding the request!');
+        }
+
+        return $jsonRequest;
     }
 
     /**
@@ -285,7 +290,8 @@ class RequestBuilder
      * @param Request $request
      * @return AirlineInfoData
      */
-    private function getAirlineInfoData($request) {
+    private function getAirlineInfoData($request)
+    {
         $flightSegments = $this->getFlightSegmentsArray($request);
 
         $airlineInfo = new AirlineInfoData(
