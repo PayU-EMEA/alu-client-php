@@ -26,20 +26,11 @@ class ResponseParser
         $responseArray = json_decode($jsonResponse, true);
 
         if (is_array($responseArray)) {
-            $responseArray = $this->createArray($responseArray);
+            $responseArray = $this->aluResponseMapper->processResponse($responseArray);
 
             return new AuthorizationResponse($responseArray);
         }
 
         throw new AuthorizationResponseException('Could not decode Json response');
-    }
-
-    /**
-     * @param array $jsonResponse
-     * @return array
-     */
-    private function createArray($jsonResponse)
-    {
-        return $this->aluResponseMapper->processResponse($jsonResponse);
     }
 }
