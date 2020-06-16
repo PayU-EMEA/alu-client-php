@@ -43,57 +43,7 @@ class RequestBuilder
         $authorizationData->setLoyaltyPointsAmount($request->getOrder()->getLoyaltyPointsAmount());
         $authorizationData->setCampaignType($request->getOrder()->getCampaignType());
 
-        if ($request->getCard() !== null &&
-            $request->getCardToken() === null &&
-            $request->getApplePayToken() === null
-        ) {
-            $cardDetails = new CardDetails(
-                $request->getCard()->getCardNumber(),
-                $request->getCard()->getCardExpirationMonth(),
-                $request->getCard()->getCardExpirationYear()
-            );
-
-            $cardDetails->setCvv($request->getCard()->getCardCVV());
-            $cardDetails->setOwner($request->getCard()->getCardOwnerName());
-
-            $authorizationData->setCardDetails($cardDetails);
-        } else {
-            if ($request->getCard() === null &&
-                $request->getCardToken() !== null &&
-                $request->getApplePayToken() === null
-            ) {
-                $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
-
-                if ($request->getCardToken()->hasCvv()) {
-                    $merchantToken->setCvv($request->getCardToken()->getCvv());
-                }
-
-                $authorizationData->setMerchantToken($merchantToken);
-            } else {
-                if ($request->getCard() === null &&
-                    $request->getCardToken() === null &&
-                    $request->getApplePayToken() !== null
-                ) {
-                    $applePayHeader = new ApplePayTokenHeader(
-                        $request->getApplePayToken()->getHeader()->getApplicationData(),
-                        $request->getApplePayToken()->getHeader()->getEphemeralPublicKey(),
-                        $request->getApplePayToken()->getHeader()->getWrappedKey(),
-                        $request->getApplePayToken()->getHeader()->getPublicKeyHash(),
-                        $request->getApplePayToken()->getHeader()->getTransactionId()
-                    );
-
-                    $applePayToken = new ApplePayToken(
-                        $request->getApplePayToken()->getData(),
-                        $applePayHeader,
-                        $request->getApplePayToken()->getSignature(),
-                        $request->getApplePayToken()->getVersion()
-                    );
-                    $authorizationData->setApplePayToken($applePayToken);
-                } else {
-                    throw new RequestBuilderException('Only one payment instrument can be sent');
-                }
-            }
-        }
+        $this->setPaymentInstrument($request, $authorizationData);
 
         if ($request->getFx() !== null) {
             $fxData = new FxData(
@@ -167,28 +117,7 @@ class RequestBuilder
         );
 
         if ($request->getOrder()->getAirlineInfo() !== null) {
-            $flightSegments = $this->getFlightSegmentsArray($request);
-
-            $airlineInfo = new AirlineInfoData(
-                $request->getOrder()->getAirlineInfo()->getPassengerName(),
-                $flightSegments
-            );
-
-            $airlineInfo->setTicketNumber($request->getOrder()->getAirlineInfo()->getTicketNumber());
-            $airlineInfo->setRefundPolicy($request->getOrder()->getAirlineInfo()->getRestrictedRefund());
-            $airlineInfo->setReservationSystem($request->getOrder()->getAirlineInfo()->getReservationSystem());
-
-            if ($request->getOrder()->getAirlineInfo()->getTravelAgencyCode() !== null ||
-                $request->getOrder()->getAirlineInfo()->getTravelAgencyName() !== null
-            ) {
-                $travelAgency = new TravelAgency();
-                $travelAgency->setCode($request->getOrder()->getAirlineInfo()->getTravelAgencyCode());
-                $travelAgency->setName($request->getOrder()->getAirlineInfo()->getTravelAgencyName());
-
-                $airlineInfo->setTravelAgency($travelAgency);
-            }
-
-            $authorizationRequest->setAirlineInfoData($airlineInfo);
+            $authorizationRequest->setAirlineInfoData($this->getAirlineInfoData($request));
         }
 
         if ($request->getThreeDSecure() !== null) {
@@ -287,5 +216,97 @@ class RequestBuilder
         }
 
         return $flightSegmentsArray;
+    }
+
+    /**
+     * @param Request $request
+     * @param AuthorizationData $authorizationData
+     * @throws RequestBuilderException
+     */
+    private function setPaymentInstrument($request, &$authorizationData)
+    {
+        if ($request->getCard() !== null &&
+            $request->getCardToken() === null &&
+            $request->getApplePayToken() === null
+        ) {
+            $cardDetails = new CardDetails(
+                $request->getCard()->getCardNumber(),
+                $request->getCard()->getCardExpirationMonth(),
+                $request->getCard()->getCardExpirationYear()
+            );
+
+            $cardDetails->setCvv($request->getCard()->getCardCVV());
+            $cardDetails->setOwner($request->getCard()->getCardOwnerName());
+
+            $authorizationData->setCardDetails($cardDetails);
+            return;
+        }
+
+        if ($request->getCard() === null &&
+            $request->getCardToken() !== null &&
+            $request->getApplePayToken() === null
+        ) {
+            $merchantToken = new MerchantTokenData($request->getCardToken()->getToken());
+
+            if ($request->getCardToken()->hasCvv()) {
+                $merchantToken->setCvv($request->getCardToken()->getCvv());
+            }
+
+            $authorizationData->setMerchantToken($merchantToken);
+            return;
+        }
+
+        if ($request->getCard() === null &&
+            $request->getCardToken() === null &&
+            $request->getApplePayToken() !== null
+        ) {
+            $applePayHeader = new ApplePayTokenHeader(
+                $request->getApplePayToken()->getHeader()->getApplicationData(),
+                $request->getApplePayToken()->getHeader()->getEphemeralPublicKey(),
+                $request->getApplePayToken()->getHeader()->getWrappedKey(),
+                $request->getApplePayToken()->getHeader()->getPublicKeyHash(),
+                $request->getApplePayToken()->getHeader()->getTransactionId()
+            );
+
+            $applePayToken = new ApplePayToken(
+                $request->getApplePayToken()->getData(),
+                $applePayHeader,
+                $request->getApplePayToken()->getSignature(),
+                $request->getApplePayToken()->getVersion()
+            );
+            $authorizationData->setApplePayToken($applePayToken);
+            return;
+        }
+
+        throw new RequestBuilderException('Only one payment instrument can be sent');
+    }
+
+    /**
+     * @param Request $request
+     * @return AirlineInfoData
+     */
+    private function getAirlineInfoData($request) {
+        $flightSegments = $this->getFlightSegmentsArray($request);
+
+        $airlineInfo = new AirlineInfoData(
+            $request->getOrder()->getAirlineInfo()->getPassengerName(),
+            $flightSegments
+        );
+
+        $airlineInfo->setTicketNumber($request->getOrder()->getAirlineInfo()->getTicketNumber());
+        $airlineInfo->setRefundPolicy($request->getOrder()->getAirlineInfo()->getRestrictedRefund());
+        $airlineInfo->setReservationSystem($request->getOrder()->getAirlineInfo()->getReservationSystem());
+
+        if ($request->getOrder()->getAirlineInfo()->getTravelAgencyCode() !== null ||
+            $request->getOrder()->getAirlineInfo()->getTravelAgencyName() !== null
+        ) {
+            $travelAgency = new TravelAgency();
+            $travelAgency->setCode($request->getOrder()->getAirlineInfo()->getTravelAgencyCode());
+            $travelAgency->setName($request->getOrder()->getAirlineInfo()->getTravelAgencyName());
+
+            $airlineInfo->setTravelAgency($travelAgency);
+        }
+
+        return $airlineInfo;
     }
 }
