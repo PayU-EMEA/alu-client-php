@@ -4,6 +4,7 @@
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\MerchantConfig;
+use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
 class HashServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -98,7 +99,13 @@ class HashServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expectedHash,
-            $this->hashService->generateSignature($this->merchantConfigMock, $orderDate, $jsonRequest)
+            $this->hashService->generateSignature(
+                $this->merchantConfigMock,
+                $orderDate,
+                HTTPClient::POST_METHOD,
+                PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
+                $jsonRequest
+            )
         );
     }
 }

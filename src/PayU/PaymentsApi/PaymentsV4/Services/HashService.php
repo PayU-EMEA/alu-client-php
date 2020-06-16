@@ -11,16 +11,18 @@ class HashService
     /**
      * @param MerchantConfig $merchantConfig
      * @param string $orderDate
+     * @param string $httpMethod
+     * @param string $basePath
      * @param string $jsonRequest
      * @return string
      */
-    public function generateSignature($merchantConfig, $orderDate, $jsonRequest)
+    public function generateSignature($merchantConfig, $orderDate, $httpMethod, $basePath, $jsonRequest)
     {
         $stringToBeHashed =
             $merchantConfig->getMerchantCode() .
             $orderDate .
-            HTTPClient::POST_METHOD .
-            PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH .
+            $httpMethod .
+            $basePath .
             '' .
             md5($jsonRequest);
 

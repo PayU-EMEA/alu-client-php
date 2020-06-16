@@ -6,6 +6,7 @@ namespace PayU\PaymentsApi\PaymentsV4\Services;
 use PayU\Alu\MerchantConfig;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\ConnectionException;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\HttpClientException;
+use PayU\PaymentsApi\PaymentsV4\PaymentsV4;
 
 class HTTPClient
 {
@@ -57,7 +58,13 @@ class HTTPClient
         $orderDate,
         $requestBody
     ) {
-        $signature = $this->hashService->generateSignature($merchantConfig, $orderDate, $requestBody);
+        $signature = $this->hashService->generateSignature(
+            $merchantConfig,
+            $orderDate,
+            HTTPClient::POST_METHOD,
+            PaymentsV4::PAYMENTS_API_AUTHORIZE_PATH,
+            $requestBody
+        );
         $requestHeaders = $this->buildRequestHeaders($merchantConfig->getMerchantCode(), $orderDate, $signature);
 
         curl_setopt_array(
