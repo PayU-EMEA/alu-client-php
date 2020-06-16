@@ -66,7 +66,7 @@ class PaymentsV4Test extends TestCase
 
         $this->mockResponseBuilder = $this->getMockBuilder(ResponseBuilder::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('buildResponse'))
+            ->setMethods(array('build'))
             ->getMock();
 
         $this->mockHttpClient = $this->getMockBuilder(HTTPClient::class)
@@ -337,7 +337,7 @@ class PaymentsV4Test extends TestCase
             ->willReturn($authorizationResponse);
 
         $this->mockResponseBuilder->expects($this->once())
-            ->method('buildResponse')
+            ->method('build')
             ->with($authorizationResponse)
             ->willReturn($aluResponse);
 

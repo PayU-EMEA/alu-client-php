@@ -13,16 +13,7 @@ class ResponseBuilder
      * @param AuthorizationResponse $authorizationResponse
      * @return Response
      */
-    public function buildResponse(AuthorizationResponse $authorizationResponse)
-    {
-        return $this->build($authorizationResponse);
-    }
-
-    /**
-     * @param AuthorizationResponse $authorizationResponse
-     * @return Response
-     */
-    private function build(AuthorizationResponse $authorizationResponse)
+    public function build(AuthorizationResponse $authorizationResponse)
     {
         $responseArray = $authorizationResponse->getResponse();
 

@@ -101,6 +101,6 @@ class PaymentsV4 implements AuthorizationPaymentsApiClient
             throw new AuthorizationException($e->getMessage(), $e->getCode(), $e);
         }
 
-        return $this->responseBuilder->buildResponse($authorizationResponse);
+        return $this->responseBuilder->build($authorizationResponse);
     }
 }
