@@ -98,7 +98,6 @@ class AluResponseMapper
     /**
      * @param $array
      * @return void
-     * todo see if can use array_walk_recursive
      */
     private function removeEmptyValuesFromArray(array &$array)
     {
