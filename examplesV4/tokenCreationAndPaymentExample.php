@@ -218,11 +218,21 @@ try {
         ' Token:' . $initialPaymentResponse->getTokenHash() .
         "\n";
 
-    if ($initialPaymentResponse->getTokenResponseData()->getTokenCode() == 0 && $initialPaymentResponse->getTokenHash() !== '') {
+    if (
+        $initialPaymentResponse->getTokenResponseData()->getTokenCode() == 0 &&
+        $initialPaymentResponse->getTokenHash() !== ''
+    ) {
         $cardToken = new CardToken($initialPaymentResponse->getTokenHash());
 
         // Create a new request using the token received
-        $requestWithToken = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
+        $requestWithToken = new Request(
+            $cfg,
+            $order,
+            $billing,
+            $delivery,
+            $user,
+            PaymentsV4::API_VERSION_V4
+        );
         $requestWithToken->getOrder()->withOrderRef('TokenOrderRef');
         $requestWithToken->setCardToken($cardToken);
 
