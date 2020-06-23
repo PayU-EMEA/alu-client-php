@@ -45,8 +45,6 @@ class PaymentsV4 implements AuthorizationPaymentsApiClient
     private $platformHostname = [
         'ro' => 'https://secure.payu.ro',
         'ru' => 'https://secure.payu.ru',
-        'ua' => 'https://secure.payu.ua',
-        'hu' => 'https://secure.payu.hu',
         'tr' => 'https://secure.payu.com.tr',
     ];
 
