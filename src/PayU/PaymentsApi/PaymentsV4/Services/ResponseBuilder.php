@@ -5,6 +5,7 @@ namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\Response;
 use PayU\Alu\ResponseWireAccount;
+use PayU\Alu\TokenResponseData;
 use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
 
 class ResponseBuilder
@@ -113,8 +114,12 @@ class ResponseBuilder
         if ($responseArray["meta"]["status"]["code"] === 0) {
             $response->setTokenHash($responseArray["response"]["token"]);
         }
-        $response->setTokenCode($responseArray["meta"]["status"]["code"]);
-        $response->setTokenMessage($responseArray["meta"]["status"]["message"]);
+
+        $responseTokenData = new TokenResponseData(
+            $responseArray["meta"]["status"]["code"],
+            $responseArray["meta"]["status"]["message"]
+        );
+        $response->setTokenResponseData($responseTokenData);
 
         return $response;
     }

@@ -11,6 +11,7 @@ use PayU\Alu\Order;
 use PayU\Alu\Product;
 use PayU\Alu\Request;
 use PayU\Alu\Response;
+use PayU\Alu\TokenResponseData;
 use PayU\Alu\User;
 use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
 use PayU\PaymentsApi\PaymentsV4\Exceptions\AuthorizationResponseException;
@@ -549,8 +550,8 @@ class PaymentsV4Test extends TestCase
         $tokenArrayResponse = $this->createTokenArrayResponse();
         $aluResponseToken = $this->createAluResponse();
 
-        $aluResponseToken->setTokenCode(0);
-        $aluResponseToken->setTokenMessage('success');
+        $tokenResponseData = new TokenResponseData(0, 'success');
+        $aluResponseToken->setTokenResponseData($tokenResponseData);
         $aluResponseToken->setTokenHash('b7e5d8649c9e2e75726b59c56c29e91d');
 
         // When

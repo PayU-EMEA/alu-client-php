@@ -170,8 +170,6 @@ $card->enableTokenCreation();
  * User object
  */
 $request = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
-$requestWithToken = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
-$requestWithToken->getOrder()->withOrderRef('TokenOrderRef');
 /**
  * Add the Credit Card to the Request
  */
@@ -191,7 +189,7 @@ try {
      *
      * See documentation for Response params
      */
-    $response = $client->pay($request);
+    $initialPaymentResponse = $client->pay($request);
 
     /**
      * In case of 3DS enrolled cards, PayU will return the URL_3DS that contains a unique url for each
@@ -199,22 +197,38 @@ try {
      * After the authentication process ends the user will be redirected to BACK_REF url
      * with payment result in a HTTP POST request
      */
-    if ($response->isThreeDs()) {
-        header("Location:" . $response->getThreeDsUrl());
+    if ($initialPaymentResponse->isThreeDs()) {
+        header("Location:" . $initialPaymentResponse->getThreeDsUrl());
         die();
     }
 
-    echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage() . "\n";
-    echo('Token response data: ');
-    echo $response->getTokenCode() . ' ' . $response->getTokenMessage() . ' Token:' . $response->getTokenHash() . "\n";
+    echo $initialPaymentResponse->getStatus() . ' ' .
+        $initialPaymentResponse->getReturnCode() . ' ' .
+        $initialPaymentResponse->getReturnMessage() .
+        "\n";
 
-    if ($response->getTokenCode() == 0 && $response->getTokenHash() !== '') {
-        $cardToken = new CardToken($response->getTokenHash());
+    echo('Token response data: ');
+    echo $initialPaymentResponse->getTokenResponseData()->getTokenCode() . ' ' .
+        $initialPaymentResponse->getTokenResponseData()->getTokenMessage() .
+        ' Token:' . $initialPaymentResponse->getTokenHash() .
+        "\n";
+
+    if ($initialPaymentResponse->getTokenResponseData()->getTokenCode() == 0 && $initialPaymentResponse->getTokenHash() !== '') {
+        $cardToken = new CardToken($initialPaymentResponse->getTokenHash());
+
+        // Create a new request using the token received
+        $requestWithToken = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
+        $requestWithToken->getOrder()->withOrderRef(4444);
         $requestWithToken->setCardToken($cardToken);
 
-        $response = $client->pay($requestWithToken);
+        $tokenPaymentResponse = $client->pay($requestWithToken);
 
-        echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage() . "\n";
+        echo $tokenPaymentResponse->getStatus() . ' ' .
+            $tokenPaymentResponse->getReturnCode() . ' ' .
+            $tokenPaymentResponse->getReturnMessage() .
+            "\n";
+    } else {
+        echo "No token received";
     }
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();

@@ -4,6 +4,7 @@
 namespace PayU\PaymentsApi\PaymentsV4\Services;
 
 use PayU\Alu\Response;
+use PayU\Alu\TokenResponseData;
 use PayU\PaymentsApi\PaymentsV4\Entities\AuthorizationResponse;
 use PHPUnit\Framework\TestCase;
 
@@ -66,8 +67,8 @@ class ResponseBuilderTest extends TestCase
         // Given
         $authorizationResponse = new AuthorizationResponse($this->createSuccessResponseArray());
         $expectedResponse = new Response();
-        $expectedResponse->setTokenCode(0);
-        $expectedResponse->setTokenMessage('success');
+        $tokenResponseData = new TokenResponseData(0, 'success');
+        $expectedResponse->setTokenResponseData($tokenResponseData);
         $expectedResponse->setTokenHash('b7e5d8649c9e2e75726b59c56c29e91d');
 
         // Then
@@ -82,8 +83,11 @@ class ResponseBuilderTest extends TestCase
         // Given
         $authorizationResponse = new AuthorizationResponse($this->createErrorResponseArray());
         $expectedResponse = new Response();
-        $expectedResponse->setTokenCode(400);
-        $expectedResponse->setTokenMessage('No order with reference number: 120393911');
+        $tokenResponseData = new TokenResponseData(
+            400,
+            'No order with reference number: 120393911'
+        );
+        $expectedResponse->setTokenResponseData($tokenResponseData);
 
         // Then
         $this->assertEquals(

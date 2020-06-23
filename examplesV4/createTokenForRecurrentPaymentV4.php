@@ -204,7 +204,9 @@ try {
 
     echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
     echo('Token response data: ');
-    echo $response->getTokenCode() . ' ' . $response->getTokenMessage() . ' Token:' . $response->getTokenHash();
+    echo $response->getTokenResponseData()->getTokenCode() . ' ' .
+        $response->getTokenResponseData()->getTokenMessage() .
+        ' Token:' . $response->getTokenHash();
 } catch (ClientException $exception) {
     echo $exception->getErrorMessage();
 }
