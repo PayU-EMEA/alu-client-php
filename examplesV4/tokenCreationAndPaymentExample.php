@@ -218,8 +218,7 @@ try {
         ' Token:' . $initialPaymentResponse->getTokenHash() .
         "\n";
 
-    if (
-        $initialPaymentResponse->getTokenResponseData()->getTokenCode() == 0 &&
+    if ($initialPaymentResponse->getTokenResponseData()->getTokenCode() == 0 &&
         $initialPaymentResponse->getTokenHash() !== ''
     ) {
         $cardToken = new CardToken($initialPaymentResponse->getTokenHash());
