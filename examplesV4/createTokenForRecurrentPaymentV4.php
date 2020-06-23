@@ -202,7 +202,13 @@ try {
         die();
     }
 
-    echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage();
+    echo $response->getStatus() . ' ' . $response->getReturnCode() . ' ' . $response->getReturnMessage() . "\n";
+
+    if ($response->getTokenResponseData() === null) {
+        echo 'Could not make token request because authorization failed.' . "\n";
+        die();
+    }
+
     echo('Token response data: ');
     echo $response->getTokenResponseData()->getTokenCode() . ' ' .
         $response->getTokenResponseData()->getTokenMessage() .

@@ -207,7 +207,12 @@ try {
         $initialPaymentResponse->getReturnMessage() .
         "\n";
 
-    echo('Token response data: ');
+    if ($initialPaymentResponse->getTokenResponseData() === null) {
+        echo 'Could not make token request because authorization failed.' . "\n";
+        die();
+    }
+
+    echo 'Token response data: ';
     echo $initialPaymentResponse->getTokenResponseData()->getTokenCode() . ' ' .
         $initialPaymentResponse->getTokenResponseData()->getTokenMessage() .
         ' Token:' . $initialPaymentResponse->getTokenHash() .
@@ -218,7 +223,7 @@ try {
 
         // Create a new request using the token received
         $requestWithToken = new Request($cfg, $order, $billing, $delivery, $user, PaymentsV4::API_VERSION_V4);
-        $requestWithToken->getOrder()->withOrderRef(4444);
+        $requestWithToken->getOrder()->withOrderRef('TokenOrderRef');
         $requestWithToken->setCardToken($cardToken);
 
         $tokenPaymentResponse = $client->pay($requestWithToken);
