@@ -74,6 +74,12 @@ class Request
      */
     private $customUrl;
 
+    /** @var ApplePayToken */
+    private $applePayToken;
+
+    /** @var ThreeDSecure */
+    private $threeDSecure;
+
     /**
      * @param MerchantConfig $merchantConfig
      * @param Order $order
@@ -96,6 +102,38 @@ class Request
         $this->deliveryData = $delivery;
         $this->user = $user;
         $this->paymentsApiVersion = $paymentsApiVersion;
+    }
+
+    /**
+     * @return ThreeDSecure
+     */
+    public function getThreeDSecure()
+    {
+        return $this->threeDSecure;
+    }
+
+    /**
+     * @param ThreeDSecure $threeDSecure
+     */
+    public function setThreeDSecure($threeDSecure)
+    {
+        $this->threeDSecure = $threeDSecure;
+    }
+
+    /**
+     * @param ApplePayToken $applePayToken
+     */
+    public function setApplePayToken($applePayToken)
+    {
+        $this->applePayToken = $applePayToken;
+    }
+
+    /**
+     * @return ApplePayToken
+     */
+    public function getApplePayToken()
+    {
+        return $this->applePayToken;
     }
 
     /**

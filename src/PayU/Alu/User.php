@@ -18,6 +18,9 @@ class User
      */
     private $clientTime;
 
+    /** @var string */
+    private $communicationLanguage;
+
     /**
      * @param string $userIPAddress
      * @param string $userTime
@@ -42,5 +45,21 @@ class User
     public function getClientTime()
     {
         return $this->clientTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommunicationLanguage()
+    {
+        return $this->communicationLanguage;
+    }
+
+    /**
+     * @param string $communicationLanguage
+     */
+    public function setCommunicationLanguage($communicationLanguage)
+    {
+        $this->communicationLanguage = $communicationLanguage;
     }
 }

@@ -485,7 +485,8 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
             'B',
             1,
             'MAXY12',
-            'F5512'
+            'F5512',
+            'XY_NAME'
         );
 
         $airlineInfoResult = [
@@ -506,12 +507,14 @@ class RequestBuilderTest extends \PHPUnit_Framework_TestCase
                         'STOPOVER' => null,
                         'FARE_CODE' => null,
                         'FLIGHT_NUMBER' => null,
+                        'AIRLINE_NAME' => null
                     ],
                     [
                         'DEPARTURE_DATE' => '2017-02-10',
                         'DEPARTURE_AIRPORT' => 'ANK',
                         'DESTINATION_AIRPORT' => 'WDC',
                         'AIRLINE_CODE' => 'XY',
+                        'AIRLINE_NAME' => 'XY_NAME',
                         'SERVICE_CLASS' => 'B',
                         'STOPOVER' => 1,
                         'FARE_CODE' => 'MAXY12',

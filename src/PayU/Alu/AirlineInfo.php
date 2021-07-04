@@ -119,6 +119,7 @@ class AirlineInfo
      * @param string $departureAirport Departure airport code (max. 3 chars)
      * @param string $destinationAirport Destination airport code (max. 3 chars)
      * @param string $airlineCode Airline 2-letters code
+     * @param string $airlineName Airline name
      * @param string $serviceClass Ticket type (class) (economy, business class, etc.) (1 char)
      * @param int $stopover Displays the possibility of stop-over for the given ticket;
      *                      1 = Stop-over is permitted, 0 otherwise
@@ -135,13 +136,15 @@ class AirlineInfo
         $serviceClass = null,
         $stopover = null,
         $fareCode = null,
-        $flightNumber = null
+        $flightNumber = null,
+        $airlineName = null
     ) {
         $segment = array(
             'DEPARTURE_DATE' => $departureDate,
             'DEPARTURE_AIRPORT' => $departureAirport,
             'DESTINATION_AIRPORT' => $destinationAirport,
             'AIRLINE_CODE' => $airlineCode,
+            'AIRLINE_NAME' => $airlineName,
             'SERVICE_CLASS' => $serviceClass,
             'STOPOVER' => $stopover,
             'FARE_CODE' => $fareCode,
