@@ -29,7 +29,7 @@ final class AluV3 implements AuthorizationPaymentsApiClient
      */
     private $aluUrlHostname = [
         'ro' => 'https://secure.payu.ro',
-        'ru' => 'http://ru.payu.local',
+        'ru' => 'https://secure.payu.ru',
         'tr' => 'https://secure.payu.com.tr',
     ];
 
